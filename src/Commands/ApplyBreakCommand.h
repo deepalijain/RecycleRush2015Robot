@@ -21,9 +21,9 @@
  *
  * @author ExampleAuthor
  */
-class BreakCommand: public Command {
+class ApplyBreakCommand: public Command {
 public:
-	BreakCommand();
+	ApplyBreakCommand();
 	virtual void Initialize();
 	virtual void Execute();
 	virtual bool IsFinished();
