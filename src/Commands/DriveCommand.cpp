@@ -23,6 +23,10 @@ DriveCommand::DriveCommand() {
 
 // Called just before this Command runs the first time
 void DriveCommand::Initialize() {
+}
+
+// Called repeatedly when this Command is scheduled to run
+void DriveCommand::Execute() {
 	float y = Robot::oi->joystick1->GetY();
 	// Note that the sense of Y is negative, That is, if one pushes the joystick forward, Y is negative.
 	// So a negative y value means we want to drive forward.
@@ -33,10 +37,6 @@ void DriveCommand::Initialize() {
 	SmartDashboard::PutNumber("Drive Command Y", y);
 	SmartDashboard::PutNumber("Drive Command X", x);
 
-}
-
-// Called repeatedly when this Command is scheduled to run
-void DriveCommand::Execute() {
 	
 }
 
