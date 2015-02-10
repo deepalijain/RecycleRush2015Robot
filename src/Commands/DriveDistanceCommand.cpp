@@ -37,6 +37,8 @@ bool DriveDistanceCommand::IsFinished() {
 
 // Called once after isFinished returns true
 void DriveDistanceCommand::End() {
+	Robot::driveSubsystem->robotDrive->ArcadeDrive(0, 0, true);
+	((DriveCommand *)Robot::driveCommand)->Start();
 
 }
 
