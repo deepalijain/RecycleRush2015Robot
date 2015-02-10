@@ -10,6 +10,7 @@
 
 
 #include "PickUpCanCommand.h"
+#include "../Robot.h"
 
 PickUpCanCommand::PickUpCanCommand() {
 	// Use requires() here to declare subsystem dependencies
@@ -22,12 +23,12 @@ PickUpCanCommand::PickUpCanCommand() {
 
 // Called just before this Command runs the first time
 void PickUpCanCommand::Initialize() {
-	
+
 }
 
 // Called repeatedly when this Command is scheduled to run
 void PickUpCanCommand::Execute() {
-	
+
 }
 
 // Make this return true when this Command no longer needs to run execute()
