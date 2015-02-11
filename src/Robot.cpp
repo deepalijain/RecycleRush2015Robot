@@ -78,6 +78,10 @@ void Robot::TeleopInit() {
 	// these lines or comment it out.
 	if (autonomousCommand != NULL)
 		autonomousCommand->Cancel();
+
+	RobotMap::armFlapSolenoid->Set(DoubleSolenoid::kOff);
+	RobotMap::shifterSolenoid->Set(DoubleSolenoid::kOff);
+	RobotMap::otherSolenoid->Set(DoubleSolenoid::kOff);
 }
 
 void Robot::TeleopPeriodic() {

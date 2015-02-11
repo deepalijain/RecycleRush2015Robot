@@ -50,7 +50,8 @@ OI::OI() {
 	joystickButton2->WhenPressed(pickupCanCommand);
 	joystickButton1 = new JoystickButton(joystick1, 1);
 	joystickButton1->WhenPressed(pickupToteCommand);
-     
+
+	toggleArmFlapButton = new JoystickButton(joystick1,7);
 
         // SmartDashboard Buttons
 	SmartDashboard::PutData("AutonomousCommand", autonomousCommand);
