@@ -39,7 +39,7 @@ bool PickUpCanCommand::IsFinished() {
 // Called once after isFinished returns true
 void PickUpCanCommand::End() {
 	Robot::pickupSubsystem->pickupMotor1->Set(0);
-	((PickupDriveCommand *)Robot::pickupDriveCommand)->Start();
+	//comment ((PickupDriveCommand *)Robot::pickupDriveCommand)->Start();
 	
 }
 
