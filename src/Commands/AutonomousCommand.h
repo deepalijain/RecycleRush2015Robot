@@ -21,7 +21,7 @@
  *
  * @author ExampleAuthor
  */
-class AutonomousCommand: public Command {
+class AutonomousCommand: public CommandGroup {
 public:
 	AutonomousCommand();
 	virtual void Initialize();

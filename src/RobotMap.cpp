@@ -94,7 +94,7 @@ void RobotMap::init() {
 //	Ct = new CANTalons();
 //
 //	driveFrontLeft = Ct->Init(5, (char *)"FrontLeft");
-//	//lw->AddActuator("DriveSubsystem", "motorControllerFrontLeft", (CANTalon*) driveSubsystemmotorControllerFrontLeft);
+//	//lw->AddActuator("DriveSubsystem", "motorControllerFrontLeft", (CANTalon*) driveFrontLeft);
 //	driveFrontRight =  Ct->Init(3, (char *)"FrontRight");
 //	//lw->AddActuator("DriveSubsystem", "motorControlleFrontRight", (CANTalon*) driveSubsystemmotorControlleFrontRight);
 //	driveBackLeft  =  Ct->Init(4, (char *)"BackLeft");
