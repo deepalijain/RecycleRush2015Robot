@@ -73,6 +73,7 @@ void RobotMap::init() {
 
 	pickupMotor1 = Ct->Init(1, (char *)"Pickup Lead");
 	lw->AddActuator("PickupSubsystem", "pickupMotor1", (Talon*) pickupMotor1);
+	pickupMotor1->SetControlMode(CANSpeedController::kPercentVbus);
 	
 //	pickupMotor2 = Ct->Init(1, (char *)"Pickup Follow");
 	// Need to use CanTalonSRX for pickupMotor2 so we can invert the following Talon

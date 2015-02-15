@@ -29,7 +29,7 @@ void PickupDriveCommand::Initialize() {
 void PickupDriveCommand::Execute() {
 	float up = Robot::oi->joystick1->GetRawAxis(3);
 	float down = Robot::oi->joystick1->GetRawAxis(2);
-	//pickupMotor1 is upside down and mnot invertale, not being in a drive,
+	//pickupMotor1 is upside down and not invertable, not being in a drive,
 	//so we simply take the negative of what would be expected here
 	Robot::pickupSubsystem->pickupMotor1->Set(down - up);
 	
