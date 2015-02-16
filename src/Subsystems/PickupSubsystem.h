@@ -39,6 +39,7 @@ public:
 	void InitDefaultCommand();
 	void ArmFlapUp();
 	void ArmFlapDown();
+	double GetEncoderPosition();
 };
 
 #endif

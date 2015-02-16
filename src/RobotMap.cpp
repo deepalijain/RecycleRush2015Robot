@@ -58,6 +58,11 @@ void RobotMap::init() {
         driveSubsystem->SetExpiration(0.1);
         driveSubsystem->SetSensitivity(0.5);
         driveSubsystem->SetMaxOutput(1.0);
+        driveFrontLeft->SetVoltageRampRate(0.1);
+        driveFrontRight->SetVoltageRampRate(0.1);
+        driveBackLeft->SetVoltageRampRate(0.1);
+        driveBackRight->SetVoltageRampRate(0.1);
+//        pickupMotor1->SetVoltageRampRate(0.02);
 
 	
 	driveLeftEncoder = new Encoder(0, 1, false, Encoder::k4X);
