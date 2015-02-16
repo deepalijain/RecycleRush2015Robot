@@ -26,15 +26,15 @@ DrivePid::DrivePid(int _ticks) {
 void DrivePid::Initialize() {
 	firstTime=true;
 	SetTimeout(15000);  // set 15 second timeout. Good enough?
-	double p = 10.0;
-	double i = 0.1;
-	double d = 50.0;
-	double f = 0.0;
+	double driveP = 10.0;
+	double driveI = 0.1;
+	double driveD = 50.0;
+	double driveF = 0.0;
 
 	//SO MANY API CALLS AAAAARGH
     RobotMap::driveFrontLeft->SetControlMode(CANSpeedController::kPosition);
-    RobotMap::driveFrontLeft->SetPID(p,i,d);
-    RobotMap::driveFrontLeft->SetF(f);
+    RobotMap::driveFrontLeft->SetPID(driveP,driveI,driveD);
+    RobotMap::driveFrontLeft->SetF(driveF);
     RobotMap::driveFrontLeft->ClearIaccum();
     RobotMap::driveFrontLeft->SetPosition(0.0);
     RobotMap::driveFrontLeft->SetFeedbackDevice(CANTalon::QuadEncoder);
@@ -42,8 +42,8 @@ void DrivePid::Initialize() {
     //RobotMap::driveFrontLeft->
 
     RobotMap::driveFrontRight->SetControlMode(CANSpeedController::kPosition);
-    RobotMap::driveFrontRight->SetPID(p,i,d);
-    RobotMap::driveFrontRight->SetF(f);
+    RobotMap::driveFrontRight->SetPID(driveP,driveI,driveD);
+    RobotMap::driveFrontRight->SetF(driveF);
     RobotMap::driveFrontRight->ClearIaccum();
     RobotMap::driveFrontRight->SetPosition(0.0);
     RobotMap::driveFrontRight->SetFeedbackDevice(CANTalon::QuadEncoder);
@@ -54,22 +54,15 @@ void DrivePid::Initialize() {
 // Called repeatedly when this Command is scheduled to run
 void DrivePid::Execute(){
 
-	if (firstTime){
-		Initialize();
-		firstTime=false;
-	}
-	RobotMap::driveFrontRight->SetControlMode(CANSpeedController::kFollower);
-	RobotMap::driveFrontRight->Set(4);
-	RobotMap::driveFrontRight->EnableControl();
 	RobotMap::driveFrontLeft->Set(-ticks);
-//	RobotMap::driveFrontRight->Set(ticks);
+	RobotMap::driveFrontRight->Set(ticks);
 
 	SmartDashboard::PutNumber("PID Initial Ticks", ticks);
 
 	double currPos = -(RobotMap::driveFrontLeft->GetEncPosition());
 	double toGo = ticks-currPos;
 	double currPosR = -(RobotMap::driveFrontRight->GetEncPosition());
-//	if(fabs(toGo) < 0.02) isFinished=true;
+	if(fabs(toGo) < 0.02) isFinished=true;
 	SmartDashboard::PutNumber("Drive PID", currPos);
 	SmartDashboard::PutNumber("Drive PID r", currPosR);
 
@@ -84,7 +77,7 @@ bool DrivePid::IsFinished() {
 // Called once after isFinished returns true
 void DrivePid::End() {
 	Robot::driveSubsystem->robotDrive->ArcadeDrive(0, 0, true);
-	((DriveCommand *)Robot::driveCommand)->Start();
+	Robot::driveCommand->Start();
 }
 
 // Called when another command which requires one or more of the same
