@@ -29,7 +29,6 @@ void PushTote::Initialize() {
 void PushTote::Execute() {
 	if (count == 0) {
 		Robot::totePusher->ExtendPusher();
-		finish = false;
 	}
 	else if(count <= limit) {
 		printf("totePusher stay extended");
@@ -43,13 +42,13 @@ void PushTote::Execute() {
 
 // Make this return true when this Command no longer needs to run execute()
 bool PushTote::IsFinished() {
-	count = 0;
 	return finish;
 }
 
 // Called once after isFinished returns true
 void PushTote::End() {
-	
+	count = 0;
+	finish = false;
 }
 
 // Called when another command which requires one or more of the same

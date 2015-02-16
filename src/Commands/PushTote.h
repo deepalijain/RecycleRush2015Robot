@@ -32,8 +32,8 @@ public:
 
 private:
 	int count = 0;
-	int limit = 10;
 	bool finish = false;
+	int limit = 25;
 };
 
 #endif
