@@ -20,7 +20,7 @@
  *
  * @author ExampleAuthor
  */
-class PickupSubsystem: public Subsystem {
+class Elevator: public Subsystem {
 private:
 	// It's desirable that everything possible under private except
 	// for methods that implement subsystem capabilities
@@ -35,7 +35,7 @@ public:
 	// See Software Reference Manual 21.15
 	CanTalonSRX* pickupMotor2;
 
-	PickupSubsystem();
+	Elevator();
 	void InitDefaultCommand();
 	void ArmFlapUp();
 	void ArmFlapDown();

@@ -9,8 +9,8 @@
 // it from being updated in the future.
 
 
-#ifndef PICKUPCANCOMMAND_H
-#define PICKUPCANCOMMAND_H
+#ifndef TOGGLEARMCOMMAND_H
+#define TOGGLEARMCOMMAND_H
 
 
 #include "Commands/Subsystem.h"
@@ -21,14 +21,17 @@
  *
  * @author ExampleAuthor
  */
-class PickUpCanCommand: public Command {
+class ToggleFlapsCommand: public Command {
 public:
-	PickUpCanCommand();
+	ToggleFlapsCommand();
 	virtual void Initialize();
 	virtual void Execute();
 	virtual bool IsFinished();
 	virtual void End();
 	virtual void Interrupted();
+
+private:
+	bool armFlapUp = true;
 };
 
 #endif
