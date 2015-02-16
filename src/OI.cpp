@@ -38,6 +38,7 @@ OI::OI() {
 	pickupToteCommand = new PickUpToteCommand();
 	driveCommand = new DriveCommand();
 	toggleArmFlap = new ToggleFlapsCommand();
+
 	
 	joystickButton5 = new JoystickButton(joystick1, 5);
 	joystickButton5->WhenPressed(driveDistanceCommand);
