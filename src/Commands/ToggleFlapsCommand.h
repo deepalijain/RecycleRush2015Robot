@@ -21,9 +21,9 @@
  *
  * @author ExampleAuthor
  */
-class ToggleArmCommand: public Command {
+class ToggleFlapsCommand: public Command {
 public:
-	ToggleArmCommand();
+	ToggleFlapsCommand();
 	virtual void Initialize();
 	virtual void Execute();
 	virtual bool IsFinished();
