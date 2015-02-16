@@ -103,6 +103,7 @@ void Robot::TestPeriodic() {
 	lw->Run();
 }
 void Robot::UpdateDashboardPeriodic() {
+	SmartDashboard::PutNumber("Right Encoder Position", Robot::elevator->GetRightEncoderPosition());
 	// Do this every 1/10th of a second, not more often for efficiency
 	if (Ticks++%5==0) {
 //		Compressor* wC = RobotMap::workingCompressor;
