@@ -9,8 +9,7 @@
 // it from being updated in the future.
 
 
-#ifndef TOGGLEARMCOMMAND_H
-#define TOGGLEARMCOMMAND_H
+#pragma once
 
 
 #include "Commands/Subsystem.h"
@@ -21,17 +20,12 @@
  *
  * @author ExampleAuthor
  */
-class ToggleFlapsCommand: public Command {
+class DriveElevator: public Command {
 public:
-	ToggleFlapsCommand();
+	DriveElevator();
 	virtual void Initialize();
 	virtual void Execute();
 	virtual bool IsFinished();
 	virtual void End();
 	virtual void Interrupted();
-
-private:
-	bool armFlapUp = true;
 };
-
-#endif
