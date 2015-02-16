@@ -51,5 +51,6 @@ public:
 	virtual void TeleopPeriodic();
 	virtual void TestPeriodic();
 	virtual void UpdateDashboardPeriodic();
+
 };
 #endif
