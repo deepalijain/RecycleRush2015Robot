@@ -15,7 +15,6 @@
 #include "SmartDashboard/SmartDashboard.h"
 
 #include "Commands/ApplyBreakCommand.h"
-#include "Commands/AutonomousCommand.h"
 #include "Commands/DriveCommand.h"
 #include "Commands/DriveDistanceCommand.h"
 #include "Commands/GoDownCommand.h"
@@ -37,7 +36,6 @@ OI::OI() {
 	goDownCommand = new GoDownCommand();
 	pickupCanCommand = new PickUpCanCommand();
 	pickupToteCommand = new PickUpToteCommand();
-	autonomousCommand = new AutonomousCommand();
 	driveCommand = new DriveCommand();
 	toggleArmFlap = new ToggleFlapsCommand();
 	
