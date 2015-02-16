@@ -18,6 +18,7 @@
 DriveSubsystem* Robot::driveSubsystem = 0;
 PickupSubsystem* Robot::pickupSubsystem = 0;
 ArmFlaps* Robot::armFlaps = 0;
+TotePusher* Robot::totePusher = 0;
 OI* Robot::oi = 0;
 Command* Robot::driveCommand = 0;
 Command* Robot::pickupDriveCommand = 0;

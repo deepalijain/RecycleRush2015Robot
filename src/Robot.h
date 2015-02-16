@@ -21,6 +21,7 @@
 #include "Subsystems/DriveSubsystem.h"
 #include "Subsystems/PickupSubsystem.h"
 #include "Subsystems/ArmFlaps.h"
+#include "Subsystems/TotePusher.h"
 #include "Commands/DriveCommand.h"
 #include "Commands/PickupDriveCommand.h"
 

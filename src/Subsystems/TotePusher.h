@@ -23,7 +23,7 @@ class TotePusher: public Subsystem {
 private:
 
 public:
-	DoubleSolenoid* totePusherSolenoid;
+	DoubleSolenoid* TotePusherSolenoid;
 
 	TotePusher();
 	void InitDefaultCommand();
