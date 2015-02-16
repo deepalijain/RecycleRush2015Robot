@@ -29,10 +29,14 @@ void ToggleArmCommand::Initialize() {
 void ToggleArmCommand::Execute() {
 	if (armFlapUp) {
 		Robot::armFlaps->ArmFlapDown();
+		printf("Arm Flap Down");
 	}
 	else {
 		Robot::armFlaps->ArmFlapUp();
+		printf("ArmFlapUp");
 	}
+	armFlapUp = !armFlapUp;
+	SmartDashboard::PutBoolean("armFlapUp",armFlapUp);
 }
 
 // Make this return true when this Command no longer needs to run execute()
