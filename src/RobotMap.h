@@ -43,7 +43,7 @@ public:
 	// Double solenoids
 	static DoubleSolenoid* armFlapSolenoid;
 	static DoubleSolenoid* shifterSolenoid;
-	static DoubleSolenoid* otherSolenoid;
+	static DoubleSolenoid* totePusherSolenoid;
 
 
 	static void init();
