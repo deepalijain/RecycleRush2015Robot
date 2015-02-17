@@ -30,9 +30,6 @@ DriveSubsystem::DriveSubsystem() : Subsystem("DriveSubsystem") {
 	robotDrive = RobotMap::driveSubsystem;
 	backLeftMotor = RobotMap::driveBackLeft;
 	backRightMotor = RobotMap::driveBackRight;
-	lEncoder = RobotMap::driveLeftEncoder;
-	rEncoder = RobotMap::driveRightEncoder;
-
 
 	RobotMap::driveBackLeft->SetPosition(0.0);
 	RobotMap::driveBackLeft->SetFeedbackDevice(CANTalon::QuadEncoder);
@@ -49,24 +46,29 @@ DriveSubsystem::DriveSubsystem() : Subsystem("DriveSubsystem") {
     
 void DriveSubsystem::SetPIDDistance( double left, double right)
 {
-	SmartDashboard::GetNumber("driveP", driveP);
-	SmartDashboard::GetNumber("driveI", driveI);
-	SmartDashboard::GetNumber("driveD", driveD);
-	SmartDashboard::GetNumber("driveF", driveF);
+	driveP = SmartDashboard::GetNumber("driveP");
+	driveI = SmartDashboard::GetNumber("driveI");
+	driveD = SmartDashboard::GetNumber("driveD");
+	driveF = SmartDashboard::GetNumber("driveF");
 
 	RobotMap::driveBackLeft->SetControlMode(CANSpeedController::kPosition);
-	RobotMap::driveBackLeft->SetPID(driveP,driveI,driveD);
-	RobotMap::driveBackLeft->SetF(driveF);
+	RobotMap::driveBackLeft->SetPID(driveP,driveI,driveD,driveF);
 	RobotMap::driveBackLeft->ClearIaccum();
+
+	printf("PID Left params distance=%1.2f, driveP=%1.3f, driveI=%1.3f, driveD=%1.3f, driveF=%1.3f.\n",
+			-left, driveP, driveI, driveD, driveF);
+
+	RobotMap::driveBackRight->SetControlMode(CANSpeedController::kPosition);
+	RobotMap::driveBackRight->SetPID(driveP,driveI,driveD,driveF);
+	RobotMap::driveBackRight->ClearIaccum();
+
+	printf("PID Right params distance=%1.2f, driveP=%1.3f, driveI=%1.3f, driveD=%1.3f, driveF=%1.3f.\n",
+			right, driveP, driveI, driveD, driveF);
 
 	RobotMap::driveBackLeft->Set(-left);
 
-	RobotMap::driveBackRight->SetControlMode(CANSpeedController::kPosition);
-	RobotMap::driveBackRight->SetPID(driveP,driveI,driveD);
-	RobotMap::driveBackRight->SetF(driveF);
-	RobotMap::driveBackRight->ClearIaccum();
-
 	RobotMap::driveBackRight->Set(right);
+
 }
 
 void DriveSubsystem::DriveJoysticks(double y, double x)

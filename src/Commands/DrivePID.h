@@ -25,7 +25,7 @@
 
 class DrivePID: public Command {
 public:
-	DrivePID(int _ticks);
+	DrivePID();
 	virtual void Initialize();
 	virtual void Execute();
 	virtual bool IsFinished();

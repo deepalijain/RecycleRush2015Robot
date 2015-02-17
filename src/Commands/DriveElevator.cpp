@@ -31,7 +31,7 @@ void DriveElevator::Execute() {
 	float down = Robot::oi->joystick1->GetRawAxis(2);
 	//pickupMotor1 is upside down and not invertable, not being in a drive,
 	//so we simply take the negative of what would be expected here
-	Robot::elevator->pickupMotor1->Set(down - up);
+	Robot::elevator->elevatorMotor1->Set(down - up);
 	SmartDashboard::PutNumber("pickupMotor set to", down-up);
 	
 }

@@ -37,7 +37,7 @@ bool GoDownCommand::IsFinished() {
 
 // Called once after isFinished returns true
 void GoDownCommand::End() {
-	Robot::elevator->pickupMotor1->Set(0);
+	Robot::elevator->elevatorMotor1->Set(0);
 	//comment ((PickupDriveCommand *)Robot::pickupDriveCommand)->Start();
 	
 }
