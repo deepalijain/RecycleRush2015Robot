@@ -13,7 +13,7 @@
 		<location x="280" y="9"/>
 	</widget>
 	<widget field="driveF" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="0" y="147"/>
+		<location x="1157" y="144"/>
 	</widget>
 	<widget field="pickupMotor set to" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
 		<location x="0" y="525"/>
