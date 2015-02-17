@@ -16,7 +16,9 @@ public:
 	static double wheelDiameter;
 
 private:
+	bool firstTime;
 	int m_n;		// number of positions to move (can be negative)
+	int ticks;
 	static double m_startPos;
 	static double m_curPos;		// our position in tote counts
 	static double m_targetPos;
