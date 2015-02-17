@@ -39,10 +39,8 @@ void RobotMap::init() {
 	driveFrontRight = Ct->Init(3, (char *)"FrontRight");
 
 	driveBackLeft = Ct->Init(4, (char *)"BackLeft");
-	//driveBackLeft = new TalonSRX(2);
 
 	driveBackRight = Ct->Init(2, (char *)"BackRight");
-	//driveBackRight = new TalonSRX(4);
 	
 	driveSubsystem = new RobotDrive(driveBackLeft, driveBackRight);
 	
@@ -74,9 +72,17 @@ void RobotMap::init() {
     driveFrontLeft->Set(4);
     driveFrontLeft->EnableControl();
     driveFrontRight->SetControlMode(CANSpeedController::kFollower);
-    driveFrontRight->Set(3);
+    driveFrontRight->Set(2);
     driveFrontRight->EnableControl();
+
+    //Set the Left Encoder reversed.
+    driveBackRight->SetSensorDirection(false);
+    driveBackLeft->SetSensorDirection(false);
+
+
     elevatorMotor2->SetModeSelect(CanTalonSRX::kMode_SlaveFollower);
     elevatorMotor2->SetDemand(1);
     elevatorMotor2->SetRevMotDuringCloseLoopEn(1);
+
+
 }
