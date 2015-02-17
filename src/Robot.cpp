@@ -22,7 +22,7 @@ ArmFlaps* Robot::armFlaps = 0;
 TotePusher* Robot::totePusher = 0;
 OI* Robot::oi = 0;
 Command* Robot::driveCommand = 0;
-Command* Robot::pickupDriveCommand = 0;
+Command* Robot::driveElevatorCommand = 0;
 int Ticks = 0;
 
 static double driveP;
@@ -48,7 +48,7 @@ void Robot::RobotInit() {
 	// news. Don't move it.
 	oi = new OI();
 	driveCommand = new DriveCommand();
-	pickupDriveCommand = new DriveElevator();
+	driveElevatorCommand = new DriveElevator();
 	lw = LiveWindow::GetInstance();
 
 	RobotMap::pickupMotor1->SetControlMode(CANSpeedController::kPercentVbus);
@@ -114,7 +114,7 @@ void Robot::TestPeriodic() {
 	lw->Run();
 }
 void Robot::UpdateDashboardPeriodic() {
-	SmartDashboard::PutNumber("Right Encoder Position", Robot::elevator->GetEncoderPosition());
+	SmartDashboard::PutNumber("Elevator Encoder Position", Robot::elevator->GetEncoderPosition());
 	// Do this every 1/10th of a second, not more often for efficiency
 	if (Ticks++%5==0) {
 //		Compressor* wC = RobotMap::workingCompressor;

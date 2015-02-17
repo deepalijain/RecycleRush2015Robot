@@ -13,7 +13,7 @@
 
 // These parameters should be adjustable at runtime
 double MoveElevatorIntegral::wheelDiameter = 2.0; // starting guess
-double MoveElevatorIntegral::elevatorSpeed = 0.1;
+double MoveElevatorIntegral::elevatorSpeed = 0.25;
 
 // these aren't
 double MoveElevatorIntegral::ticksPerRotation = 1024.0;
@@ -24,6 +24,7 @@ double MoveElevatorIntegral::ticksPerTote = ticksPerInch * inchesPerTote;
 double MoveElevatorIntegral::m_curPos = 0.0;
 double MoveElevatorIntegral::m_startPos = 0.0;
 double MoveElevatorIntegral::m_targetPos = 0.0;
+
 
 
 MoveElevatorIntegral::MoveElevatorIntegral(int n) {
@@ -45,14 +46,18 @@ MoveElevatorIntegral::MoveElevatorIntegral(int n) {
 
 // Called just before this Command runs the first time
 void MoveElevatorIntegral::Initialize() {
-	m_startPos = m_curPos = Robot::elevator->GetEncoderPosition();
-	m_targetPos = m_n * ticksPerTote;
+	firstTime=true;
+	ticks = 0;
 }
 
 // Called repeatedly when this Command is scheduled to run
 void MoveElevatorIntegral::Execute() {
+	if (firstTime) {
+		m_startPos = m_curPos = Robot::elevator->GetEncoderPosition();
+		m_targetPos = (m_n * ticksPerTote) + m_startPos;
+		firstTime = false;
+	}
 	Robot::elevator->pickupMotor1->Set(m_n > 0.0 ? elevatorSpeed : -elevatorSpeed);
-
 }
 
 // Make this return true when this Command no longer needs to run execute()
@@ -61,12 +66,15 @@ bool MoveElevatorIntegral::IsFinished() {
 	SmartDashboard::PutNumber("Elevator Encoder Position", m_curPos);
 	SmartDashboard::PutNumber("Elevator target ticks:", m_targetPos);
 	SmartDashboard::PutNumber("Elevator start ticks:", m_startPos);
-	return (m_targetPos == m_curPos);
+	// encoder positions are always negative, which is why the test
+	// below is <= not =>. Also note the 2.5 second timeout
+	return (m_targetPos <= m_curPos || ++ticks>150);
 }
 
 // Called once after isFinished returns true
 void MoveElevatorIntegral::End() {
 	Robot::elevator->pickupMotor1->Set(0.0);
+	((DriveElevator *)Robot::driveElevatorCommand)->Start();
 }
 
 // Called when another command which requires one or more of the same
