@@ -22,18 +22,17 @@
  *
  * @author ExampleAuthor
  */
-class DrivePid: public Command {
+
+
+
+class DrivePID: public Command {
 public:
-	DrivePid(int _ticks);
+	DrivePID(int _ticks);
 	virtual void Initialize();
 	virtual void Execute();
 	virtual bool IsFinished();
 	virtual void End();
 	virtual void Interrupted();
-	static double driveP;
-	static double driveI;
-	static double driveD;
-	static double driveF;
 private:
 	int ticks, currentTime;
 	bool isFinished,firstTime;

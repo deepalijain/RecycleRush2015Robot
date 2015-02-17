@@ -55,6 +55,9 @@ OI::OI() {
 	toggleArmFlapButton = new JoystickButton(joystick1,7);
 	toggleArmFlapButton->WhenPressed(toggleArmFlap);
 
+	buttonPID = new JoystickButton(joystick1, 8);
+	buttonPID->WhenPressed(DrivePID);
+
         // SmartDashboard Buttons
 	SmartDashboard::PutData("AutonomousCommand", autonomousCommand);
 
