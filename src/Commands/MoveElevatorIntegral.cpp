@@ -47,7 +47,6 @@ MoveElevatorIntegral::MoveElevatorIntegral(int n) {
 // Called just before this Command runs the first time
 void MoveElevatorIntegral::Initialize() {
 	firstTime=true;
-	ticks = 0;
 }
 
 // Called repeatedly when this Command is scheduled to run
@@ -56,6 +55,7 @@ void MoveElevatorIntegral::Execute() {
 		m_startPos = m_curPos = Robot::elevator->GetEncoderPosition();
 		m_targetPos = (m_n * ticksPerTote) + m_startPos;
 		firstTime = false;
+		ticks = 0;
 	}
 	Robot::elevator->pickupMotor1->Set(m_n > 0.0 ? elevatorSpeed : -elevatorSpeed);
 }
@@ -68,7 +68,7 @@ bool MoveElevatorIntegral::IsFinished() {
 	SmartDashboard::PutNumber("Elevator start ticks:", m_startPos);
 	// encoder positions are always negative, which is why the test
 	// below is <= not =>. Also note the 2.5 second timeout
-	return (m_targetPos <= m_curPos || ++ticks>150);
+	return ((m_n < 0 ? m_targetPos >= m_curPos : m_targetPos<= m_curPos) || ++ticks>100);
 }
 
 // Called once after isFinished returns true
