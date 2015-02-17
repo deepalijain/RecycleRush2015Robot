@@ -40,6 +40,7 @@ public:
 	void ArmFlapUp();
 	void ArmFlapDown();
 	double GetEncoderPosition();
+	void SetHeight(double height);
 };
 
 #endif

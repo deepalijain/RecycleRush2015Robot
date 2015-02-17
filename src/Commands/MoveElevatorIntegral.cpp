@@ -25,7 +25,7 @@ double MoveElevatorIntegral::m_curPos = 0.0;
 double MoveElevatorIntegral::m_startPos = 0.0;
 double MoveElevatorIntegral::m_targetPos = 0.0;
 
-
+static double elevatorPIDDistance;
 
 MoveElevatorIntegral::MoveElevatorIntegral(int n) {
 	// Use requires() here to declare subsystem dependencies
@@ -48,38 +48,25 @@ MoveElevatorIntegral::MoveElevatorIntegral(int n) {
 
 // Called just before this Command runs the first time
 void MoveElevatorIntegral::Initialize() {
-	firstTime=true;
 	printf("MoveElevatorIntegral initialized for n=%d\n", (int)m_n);
+	elevatorPIDDistance = SmartDashboard::GetNumber("elevatorPIDDistance");
+	Robot::elevator->SetHeight(elevatorPIDDistance);
+
 }
 
 // Called repeatedly when this Command is scheduled to run
 void MoveElevatorIntegral::Execute() {
-	if (firstTime) {
-		m_startPos = m_curPos = Robot::elevator->GetEncoderPosition();
-		m_targetPos = (m_n * ticksPerTote) + m_startPos;
-		firstTime = false;
-		ticks = 0;
-		printf("MoveElevatorIntegral - Direction: %d, Start Pos: %f, Target Pos: %f\n",
-				(int)m_n, m_startPos, m_targetPos);
-	}
-	Robot::elevator->elevatorMotor1->Set(m_n > 0.0 ? elevatorSpeed : -elevatorSpeed);
+
 }
 
 // Make this return true when this Command no longer needs to run execute()
 bool MoveElevatorIntegral::IsFinished() {
-	m_curPos = Robot::elevator->GetEncoderPosition();
-	SmartDashboard::PutNumber("Elevator Encoder Position", m_curPos);
-	SmartDashboard::PutNumber("Elevator target ticks:", m_targetPos);
-	SmartDashboard::PutNumber("Elevator start ticks:", m_startPos);
-	// encoder positions are always negative, which is why the test
-	// below is <= not =>. Also note the 2.5 second timeout
-	return ((m_n < 0 ? m_targetPos >= m_curPos : m_targetPos<= m_curPos) || ++ticks>100);
+
 }
 
 // Called once after isFinished returns true
 void MoveElevatorIntegral::End() {
-	Robot::elevator->elevatorMotor1->Set(0.0);
-	((DriveElevator *)Robot::driveElevatorCommand)->Start();
+
 }
 
 // Called when another command which requires one or more of the same

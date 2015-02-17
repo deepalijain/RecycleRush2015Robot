@@ -49,23 +49,22 @@ void RobotMap::init() {
     driveSubsystem->SetSensitivity(0.5);
     driveSubsystem->SetMaxOutput(1.0);
 	
-	shifterSolenoid = new DoubleSolenoid(5, 4, 5);
+	shifterSolenoid = new DoubleSolenoid(7, 4, 5);
 
 	elevatorMotor1 = Ct->Init(1, (char *)"Elevator Lead");
-	elevatorMotor1->SetControlMode(CANSpeedController::kPercentVbus);
 	
 //	elevatorMotor2 = Ct->Init(1, (char *)"Pickup Follow");
 	// Need to use CanTalonSRX for elevatorMotor2 so we can invert the following Talon
 	// See Software Reference Manual 21.15
 	elevatorMotor2 = new CanTalonSRX(6);
 
-	armFlapSolenoid = new DoubleSolenoid(5, 0, 1);
-	totePusherSolenoid = new DoubleSolenoid(5, 2, 3);
+	armFlapSolenoid = new DoubleSolenoid(7, 0, 1);
+	totePusherSolenoid = new DoubleSolenoid(7, 2, 3);
 
 
     driveBackLeft->SetControlMode(CANSpeedController::kPercentVbus);
     driveBackRight->SetControlMode(CANSpeedController::kPercentVbus);
-    elevatorMotor1->SetControlMode(CANSpeedController::kPercentVbus);
+
 
     // Set the FRONT talons to follow the BACK talons
     driveFrontLeft->SetControlMode(CANSpeedController::kFollower);
@@ -75,13 +74,14 @@ void RobotMap::init() {
     driveFrontRight->Set(2);
     driveFrontRight->EnableControl();
 
-    //Set the Left Encoder reversed.
+    //Set the sensor directions to normal
     driveBackRight->SetSensorDirection(false);
     driveBackLeft->SetSensorDirection(false);
 
-
+    //Configure one elevator motor a follower and the other one a closed loop master
+    elevatorMotor1->SetControlMode(CANSpeedController::kPosition);
     elevatorMotor2->SetModeSelect(CanTalonSRX::kMode_SlaveFollower);
-    elevatorMotor2->SetDemand(1);
+    //elevatorMotor2->SetDemand(1);
     elevatorMotor2->SetRevMotDuringCloseLoopEn(1);
 
 

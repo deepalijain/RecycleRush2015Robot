@@ -12,7 +12,7 @@
 #include "DrivePID.h"
 #include "../Robot.h"
 
-static double drivePIDDistance = 0;
+static double drivePIDDistance;
 
 DrivePID::DrivePID() {
 	// Use requires() here to declare subsystem dependencies
