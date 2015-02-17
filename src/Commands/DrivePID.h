@@ -9,8 +9,8 @@
 // it from being updated in the future.
 
 
-#ifndef DRIVECOMMAND_H
-#define DRIVECOMMAND_H
+#ifndef DRIVEPID_H
+#define DRIVEPID_H
 
 
 #include "Commands/Subsystem.h"
@@ -22,8 +22,6 @@
  *
  * @author ExampleAuthor
  */
-
-
 
 class DrivePID: public Command {
 public:

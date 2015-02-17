@@ -64,11 +64,15 @@ void DriveSubsystem::SetPIDDistance( double left, double right)
 	RobotMap::driveBackRight->SetControlMode(CANSpeedController::kPosition);
 	RobotMap::driveBackRight->SetPID(driveP,driveI,driveD);
 	RobotMap::driveBackRight->SetF(driveF);
-	RobotMap::driveBackRight->ClearIaccum()
+	RobotMap::driveBackRight->ClearIaccum();
 
 	RobotMap::driveBackRight->Set(right);
 }
 
+void DriveSubsystem::DriveJoysticks(double y, double x)
+{
+	robotDrive->ArcadeDrive(y,x);
+}
 
 void DriveSubsystem::InitDefaultCommand() {
 	// Set the default command for a subsystem here.

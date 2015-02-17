@@ -10,11 +10,7 @@
 
 
 #include "DrivePID.h"
-static double driveP;
-static double driveI;
-static double driveD;
-static double driveF;
-static double DrivePID Distance
+#include "../Robot.h"
 
 DrivePID::DrivePID(int _ticks) {
 	// Use requires() here to declare subsystem dependencies
@@ -25,7 +21,7 @@ DrivePID::DrivePID(int _ticks) {
 	ticks = _ticks;
 	currentTime=0;
 	isFinished=false;
-
+	firstTime = true;
 }
 
 // Called just before this Command runs the first time
@@ -36,18 +32,26 @@ void DrivePID::Initialize() {
 // Called repeatedly when this Command is scheduled to run
 void DrivePID::Execute(){
 
+	Robot::driveSubsystem->SetPIDDistance( double(ticks), double(ticks));
 
 }
 
 // Make this return true when this Command no longer needs to run execute()
 bool DrivePID::IsFinished() {
-	return isFinished;
+	if(Robot::oi->joystick1->GetY() != 0.0 || Robot::oi->joystick1->GetRawAxis(4) != 0.0)
+		{
+			return true;
+		}
+	return false;
 }
 
 // Called once after isFinished returns true
 void DrivePID::End() {
-	Robot::driveSubsystem->robotDrive->ArcadeDrive(0, 0, true);
+	RobotMap::driveBackLeft->SetControlMode(CANSpeedController::kPercentVbus);
+	RobotMap::driveBackRight->SetControlMode(CANSpeedController::kPercentVbus);
+
 	Robot::driveCommand->Start();
+
 }
 
 // Called when another command which requires one or more of the same

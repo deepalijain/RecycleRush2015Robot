@@ -40,7 +40,7 @@ void DriveCommand::Execute() {
 	//if (x<-turnMax){
 	//	x =  -turnMax;
 	//}
-	Robot::driveSubsystem->robotDrive->ArcadeDrive(y,x);
+	Robot::driveSubsystem->DriveJoysticks(y,x);
 	SmartDashboard::PutNumber("Drive Command Y", y);
 	SmartDashboard::PutNumber("Drive Command X", x);
 

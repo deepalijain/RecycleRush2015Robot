@@ -26,7 +26,7 @@ private:
 	Command* toggleArmFlap;
 	Command* toteUp;
 	Command* toteDown;
-	Command* DrivePID;
+	Command* drivePID;
 
 	JoystickButton* joystickButton5;
 	JoystickButton* joystickButton4;
