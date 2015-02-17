@@ -27,7 +27,7 @@ DrivePID::DrivePID() {
 
 // Called just before this Command runs the first time
 void DrivePID::Initialize() {
-	printf("Drive PID Initialized, ticks=%f.\n", ticks);
+	printf("Drive PID Initialized, ticks=%f.\n", drivePIDDistance);
 	SetTimeout(15000);  // set 15 second timeout. Good enough?
 	drivePIDDistance = SmartDashboard::GetNumber("drivePIDDistance");
 	Robot::driveSubsystem->SetPIDDistance( double(drivePIDDistance), double(drivePIDDistance));
@@ -39,8 +39,8 @@ void DrivePID::Execute(){
 
 // Make this return true when this Command no longer needs to run execute()
 bool DrivePID::IsFinished() {
-	int y = Robot::oi->joystick1->GetY();
-	int x = Robot::oi->joystick1->GetRawAxis(4);
+	double y = Robot::oi->joystick1->GetY();
+	double x = Robot::oi->joystick1->GetRawAxis(4);
 	if(fabs(y) > 0.1 || fabs(x) > 0.1)
 	{
 		printf("Drive PID terminated y=%f, x=%f.\n", y, x);
