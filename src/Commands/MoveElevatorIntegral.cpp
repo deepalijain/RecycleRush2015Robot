@@ -51,7 +51,7 @@ void MoveElevatorIntegral::Initialize() {
 
 // Called repeatedly when this Command is scheduled to run
 void MoveElevatorIntegral::Execute() {
-	Robot::elevator->pickupMotor1->Set(m_n > 0.0 ? elevatorSpeed : -elevatorSpeed);
+	Robot::elevator->pickupMotor1->Set(m_n < 0.0 ? elevatorSpeed : -elevatorSpeed);
 
 }
 
@@ -67,6 +67,7 @@ bool MoveElevatorIntegral::IsFinished() {
 // Called once after isFinished returns true
 void MoveElevatorIntegral::End() {
 	Robot::elevator->pickupMotor1->Set(0.0);
+	((DriveElevator *)Robot::driveElevatorCommand)->Start();
 }
 
 // Called when another command which requires one or more of the same
