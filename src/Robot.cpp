@@ -75,6 +75,11 @@ void Robot::DisabledPeriodic() {
 }
 
 void Robot::AutonomousInit() {
+	SmartDashboard::PutNumber("driveP", driveP);
+	SmartDashboard::PutNumber("driveI", driveI);
+	SmartDashboard::PutNumber("driveD", driveD);
+	SmartDashboard::PutNumber("driveF", driveF);
+
 	if (autonomousCommand != NULL)
 		autonomousCommand->Start();
 
@@ -105,7 +110,6 @@ void Robot::TeleopInit() {
 	SmartDashboard::PutNumber("driveF", driveF);
 	SmartDashboard::PutNumber("drivePIDDistance", drivePIDDistance);
 
-
 }
 
 void Robot::TeleopPeriodic() {
@@ -133,6 +137,17 @@ void Robot::UpdateDashboardPeriodic() {
 		SmartDashboard::PutNumber("Left Encoder Position", Robot::driveSubsystem->GetLeftEncoderPosition());
 		SmartDashboard::PutNumber("Right Encoder Position", Robot::driveSubsystem->GetRightEncoderPosition());
 
+		//PID Params
+		SmartDashboard::GetNumber("driveP", driveP);
+		SmartDashboard::GetNumber("driveI", driveI);
+		SmartDashboard::GetNumber("driveD", driveD);
+		SmartDashboard::GetNumber("driveF", driveF);
+
+		// More PID Params
+		SmartDashboard::PutNumber("DrivePID Left  Error",
+				RobotMap::driveBackLeft->GetClosedLoopError());
+		SmartDashboard::PutNumber("DrivePID Right Error",
+					RobotMap::driveBackRight->GetClosedLoopError());
 
 
 		RobotMap::Ct->UpdateDashboard();
