@@ -22,8 +22,6 @@ double MoveElevatorIntegral::inchesPerRotation = wheelDiameter * 3.14159;
 double MoveElevatorIntegral::ticksPerInch = ticksPerRotation / inchesPerRotation;
 double MoveElevatorIntegral::ticksPerTote = ticksPerInch * inchesPerTote;
 double MoveElevatorIntegral::m_curPos = 0.0;
-double MoveElevatorIntegral::m_startPos = 0.0;
-double MoveElevatorIntegral::m_targetPos = 0.0;
 
 static double elevatorPIDDistance;
 
@@ -49,7 +47,12 @@ MoveElevatorIntegral::MoveElevatorIntegral(int n) {
 // Called just before this Command runs the first time
 void MoveElevatorIntegral::Initialize() {
 	printf("MoveElevatorIntegral initialized for n=%d\n", (int)m_n);
-	elevatorPIDDistance = SmartDashboard::GetNumber("elevatorPIDDistance");
+	//elevatorPIDDistance = SmartDashboard::GetNumber("elevatorPIDDistance");
+	m_curPos = Robot::elevator->GetPosition();
+	int curPos = (m_curPos/ticksPerTote);	// current position as an integer
+	elevatorPIDDistance = (curPos*ticksPerTote) + (m_n*ticksPerTote);
+	printf("Move Elevator to Pos: current position=%d, curPosition=%1.0f, targetPosition=%1.0f\n.",
+			curPos, m_curPos, elevatorPIDDistance);
 	Robot::elevator->SetHeight(elevatorPIDDistance);
 }
 

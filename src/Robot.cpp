@@ -157,9 +157,8 @@ void Robot::UpdateDashboardPeriodic() {
 		SmartDashboard::PutNumber("DrivePID Right Error",RobotMap::driveBackRight->GetClosedLoopError());
 
 		SmartDashboard::PutNumber("Elevator Encoder Position", Robot::elevator->GetEncoderPosition());
-		SmartDashboard::PutNumber("Elevator PID Error",RobotMap::elevatorMotor1->GetClosedLoopError());
-
-
+		SmartDashboard::PutNumber("Elevator PID Error", RobotMap::elevatorMotor1->GetClosedLoopError());
+		SmartDashboard::PutNumber("Elevator Position", Robot::elevator->GetPosition());
 
 		RobotMap::Ct->UpdateDashboard();
 

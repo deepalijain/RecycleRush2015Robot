@@ -1,19 +1,19 @@
 <xml version="1.0">
 <dashboard>
 	<widget field="Left Encoder Position" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.LinePlot">
-		<location x="281" y="315"/>
+		<location x="230" y="318"/>
 	</widget>
 	<widget field="Right Encoder Position" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.LinePlot">
-		<location x="698" y="309"/>
+		<location x="644" y="306"/>
 	</widget>
 	<widget field="DrivePID Right Error" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.LinePlot">
-		<location x="692" y="2"/>
+		<location x="643" y="2"/>
 	</widget>
 	<widget field="DrivePID Left  Error" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.LinePlot">
-		<location x="280" y="9"/>
+		<location x="233" y="9"/>
 	</widget>
 	<widget field="driveF" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="1157" y="144"/>
+		<location x="1106" y="129"/>
 	</widget>
 	<widget field="pickupMotor set to" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
 		<location x="0" y="525"/>
@@ -25,18 +25,18 @@
 		<location x="0" y="483"/>
 	</widget>
 	<widget field="drivePIDDistance" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="1108" y="103"/>
+		<location x="1058" y="105"/>
 		<width>165</width>
 		<height>20</height>
 	</widget>
 	<widget field="driveD" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="1156" y="81"/>
+		<location x="1108" y="81"/>
 	</widget>
 	<widget field="driveI" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="1158" y="59"/>
+		<location x="1109" y="58"/>
 	</widget>
 	<widget field="driveP" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="1156" y="37"/>
+		<location x="1107" y="36"/>
 		<height>20</height>
 	</widget>
 	<widget field="PID Error R" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
