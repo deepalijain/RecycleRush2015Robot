@@ -46,12 +46,15 @@ MoveElevatorIntegral::MoveElevatorIntegral(int n) {
 
 // Called just before this Command runs the first time
 void MoveElevatorIntegral::Initialize() {
-	printf("MoveElevatorIntegral initialized for n=%d\n", (int)m_n);
-	//elevatorPIDDistance = SmartDashboard::GetNumber("elevatorPIDDistance");
 	m_curPos = Robot::elevator->GetPosition();
-	int curPos = (m_curPos/ticksPerTote);	// current position as an integer
-	elevatorPIDDistance = (curPos*ticksPerTote) + (m_n*ticksPerTote);
-	printf("Move Elevator to Pos: current position=%d, curPosition=%1.0f, targetPosition=%1.0f\n.",
+	int curPos = ((m_curPos+5.0*m_n)/ticksPerTote);	// current position as an integer
+	printf("MoveElevatorIntegral initialized for n=%d\n", (int)m_n);
+	RobotMap::elevatorMotor1->SetControlMode(CANSpeedController::kPosition);
+	elevatorPIDDistance = SmartDashboard::GetNumber("elevatorPIDDistance");
+	if (elevatorPIDDistance==0.0) {
+		elevatorPIDDistance = (curPos*ticksPerTote) + (m_n*ticksPerTote);
+	}
+	printf("Move Elevator to Pos: current position=%d, curPosition=%1.0f, targetPosition=%1.0f.\n",
 			curPos, m_curPos, elevatorPIDDistance);
 	Robot::elevator->SetHeight(elevatorPIDDistance);
 }
@@ -75,7 +78,7 @@ bool MoveElevatorIntegral::IsFinished() {
 
 // Called once after isFinished returns true
 void MoveElevatorIntegral::End() {
-	RobotMap::elevatorMotor1->SetControlMode(CANSpeedController::kPosition);
+	RobotMap::elevatorMotor1->SetControlMode(CANSpeedController::kPercentVbus);
 	Robot::driveElevatorCommand->Start();
 }
 

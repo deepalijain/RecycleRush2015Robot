@@ -68,9 +68,11 @@ void RobotMap::init() {
 
     // Set the FRONT talons to follow the BACK talons
     driveFrontLeft->SetControlMode(CANSpeedController::kFollower);
+    driveFrontLeft->SetVoltageRampRate(0.0);
     driveFrontLeft->Set(4);
     driveFrontLeft->EnableControl();
     driveFrontRight->SetControlMode(CANSpeedController::kFollower);
+    driveFrontRight->SetVoltageRampRate(20.0);
     driveFrontRight->Set(2);
     driveFrontRight->EnableControl();
 
@@ -78,7 +80,7 @@ void RobotMap::init() {
     driveBackRight->SetSensorDirection(false);
     driveBackLeft->SetSensorDirection(false);
 
-    elevatorMotor1->SetControlMode(CANSpeedController::kPercentVbus);
+    //elevatorMotor1->SetControlMode(CANSpeedController::kPercentVbus);
 
     //Configure one elevator motor a follower and the other one a closed loop master
     elevatorMotor2->SetModeSelect(CanTalonSRX::kMode_SlaveFollower);

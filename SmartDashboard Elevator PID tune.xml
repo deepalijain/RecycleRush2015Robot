@@ -1,25 +1,25 @@
 <xml version="1.0">
 <dashboard>
 	<widget field="ElClosedLoopRR" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="1248" y="175"/>
+		<location x="743" y="4"/>
 	</widget>
 	<widget field="Elevator Lead-Amps" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.LinePlot">
-		<location x="797" y="372"/>
+		<location x="632" y="442"/>
 	</widget>
 	<widget field="Elevator PID Error" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.LinePlot">
-		<location x="371" y="367"/>
+		<location x="217" y="439"/>
 	</widget>
 	<widget field="Elevator Encoder Position" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.LinePlot">
-		<location x="367" y="54"/>
+		<location x="218" y="138"/>
 	</widget>
 	<widget field="Elevator Lead-Volts" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.LinePlot">
-		<location x="805" y="58"/>
+		<location x="636" y="138"/>
 	</widget>
 	<widget field="armFlapUp" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
 		<location x="11" y="91"/>
 	</widget>
 	<widget field="elevatorPIDDistance" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="1239" y="124"/>
+		<location x="573" y="97"/>
 		<width>149</width>
 	</widget>
 	<widget field="DrivePID Left  Error" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
@@ -89,14 +89,14 @@
 		<location x="27" y="273"/>
 	</widget>
 	<widget field="elevatorD" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="1262" y="96"/>
+		<location x="576" y="73"/>
 	</widget>
 	<widget field="elevatorF" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="1263" y="69"/>
+		<location x="578" y="48"/>
 		<height>20</height>
 	</widget>
 	<widget field="elevatorI" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="1259" y="42"/>
+		<location x="581" y="24"/>
 	</widget>
 	<widget field="BackRight-Volts" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
 		<location x="24" y="171"/>
@@ -105,7 +105,7 @@
 		<location x="8" y="146"/>
 	</widget>
 	<widget field="elevatorP" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="1250" y="15"/>
+		<location x="579" y="0"/>
 	</widget>
 	<widget field="FrontRight-Volts" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
 		<location x="0" y="63"/>
@@ -118,6 +118,9 @@
 	</widget>
 	<widget field="FrontRight-Status" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
 		<location x="0" y="0"/>
+	</widget>
+	<widget field="Elevator Position" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="672"/>
 	</widget>
 </dashboard>
 <live-window>
