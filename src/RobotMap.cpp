@@ -81,7 +81,7 @@ void RobotMap::init() {
     //Configure one elevator motor a follower and the other one a closed loop master
     elevatorMotor1->SetControlMode(CANSpeedController::kPosition);
     elevatorMotor2->SetModeSelect(CanTalonSRX::kMode_SlaveFollower);
-    //elevatorMotor2->SetDemand(1);
+    elevatorMotor2->SetDemand(1);
     elevatorMotor2->SetRevMotDuringCloseLoopEn(1);
 
 
