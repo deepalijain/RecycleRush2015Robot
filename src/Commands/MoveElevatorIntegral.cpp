@@ -51,7 +51,6 @@ void MoveElevatorIntegral::Initialize() {
 	printf("MoveElevatorIntegral initialized for n=%d\n", (int)m_n);
 	elevatorPIDDistance = SmartDashboard::GetNumber("elevatorPIDDistance");
 	Robot::elevator->SetHeight(elevatorPIDDistance);
-
 }
 
 // Called repeatedly when this Command is scheduled to run
@@ -61,12 +60,20 @@ void MoveElevatorIntegral::Execute() {
 
 // Make this return true when this Command no longer needs to run execute()
 bool MoveElevatorIntegral::IsFinished() {
-
+	float up = Robot::oi->joystick1->GetRawAxis(3);
+	float down = Robot::oi->joystick1->GetRawAxis(2);
+	if (fabs(up) > 0.1 || fabs(down) > 0.1)
+	{
+		printf("Elevator PID terminated y=%f, x=%f.\n", up, down);
+		return true;
+	}
+	return false;
 }
 
 // Called once after isFinished returns true
 void MoveElevatorIntegral::End() {
-
+	RobotMap::elevatorMotor1->SetControlMode(CANSpeedController::kPosition);
+	Robot::driveElevatorCommand->Start();
 }
 
 // Called when another command which requires one or more of the same

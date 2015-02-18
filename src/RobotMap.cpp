@@ -78,11 +78,12 @@ void RobotMap::init() {
     driveBackRight->SetSensorDirection(false);
     driveBackLeft->SetSensorDirection(false);
 
+    elevatorMotor1->SetControlMode(CANSpeedController::kPercentVbus);
+
     //Configure one elevator motor a follower and the other one a closed loop master
-    elevatorMotor1->SetControlMode(CANSpeedController::kPosition);
     elevatorMotor2->SetModeSelect(CanTalonSRX::kMode_SlaveFollower);
+    // SetDemand is how you set the leader in CanTalonSRX
     elevatorMotor2->SetDemand(1);
     elevatorMotor2->SetRevMotDuringCloseLoopEn(1);
-
 
 }
