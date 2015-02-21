@@ -27,23 +27,29 @@ void DriveElevator::Initialize() {
 
 // Called repeatedly when this Command is scheduled to run
 void DriveElevator::Execute() {
-	float up = Robot::oi->joystick1->GetRawAxis(3);
-	float down = Robot::oi->joystick1->GetRawAxis(2);
-	//pickupMotor1 is upside down and not invertable, not being in a drive,
-	//so we simply take the negative of what would be expected here
-	Robot::elevator->elevatorMotor1->Set(down - up);
-	SmartDashboard::PutNumber("pickupMotor set to", down-up);
-	
+	joystickup = Robot::oi->joystick1->GetRawAxis(3);
+	joystickdown = Robot::oi->joystick1->GetRawAxis(2);
+	// elevatorMotor1 is upside down and not invertable, not being a drive,
+	// so we simply take the negative of what would be expected here
+	Robot::elevator->elevatorMotor1->Set(joystickdown - joystickup);
 }
 
 // Make this return true when this Command no longer needs to run execute()
 bool DriveElevator::IsFinished() {
+	// when our joystick inputs are close enough to zero, this command is done
+	if (fabs(joystickup) < 0.1 && fabs(joystickdown) < 0.1)
+	{
+		printf("Elevator drive joystick input ended y=%f, x=%f.\n", joystickup, joystickdown);
+		return true;
+	}
 	return false;
 }
 
 // Called once after isFinished returns true
 void DriveElevator::End() {
-
+	// If the driver isn't actively moving the elevator, then use
+	// the holdElevatorCommand to keep it in place.
+	Robot::holdElevatorCommand->Start();
  }
 
 // Called when another command which requires one or more of the same

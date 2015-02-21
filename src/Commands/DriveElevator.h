@@ -21,6 +21,8 @@
  * @author ExampleAuthor
  */
 class DriveElevator: public Command {
+private:
+	float joystickup, joystickdown;
 public:
 	DriveElevator();
 	virtual void Initialize();
@@ -28,4 +30,5 @@ public:
 	virtual bool IsFinished();
 	virtual void End();
 	virtual void Interrupted();
+
 };

@@ -36,8 +36,8 @@ OI::OI() {
 	driveCommand = new DriveCommand();
 	drivePID = new DrivePID();
 	toggleArmFlap = new ToggleFlapsCommand();
-	toteUp = new PositionElevator(1.0);
-	toteDown = new PositionElevator(-1.0);
+	toteUp = new PositionElevator(1);
+	toteDown = new PositionElevator(-1);
 	
 	joystickButton5 = new JoystickButton(joystick1, 5);
 	joystickButton5->WhenPressed(toteUp);
