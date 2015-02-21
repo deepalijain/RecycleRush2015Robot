@@ -4,9 +4,9 @@
 #include "Commands/Subsystem.h"
 #include "../Robot.h"
 
-class MoveElevatorIntegral: public Command {
+class PositionElevator: public Command {
 public:
-	MoveElevatorIntegral(int);
+	PositionElevator(int);
 	virtual void Initialize();
 	virtual void Execute();
 	virtual bool IsFinished();
