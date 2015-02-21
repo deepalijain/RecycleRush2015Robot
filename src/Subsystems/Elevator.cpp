@@ -12,7 +12,7 @@ static double elevatorP;
 static double elevatorI;
 static double elevatorD;
 static double elevatorF;
-static double elevatorRampRateCloseLoop;
+static double elevatorRampRateVolatage;
 
 #include "Elevator.h"
 
@@ -35,9 +35,9 @@ void Elevator::SetHeight(double height)
 	elevatorI = SmartDashboard::GetNumber("elevatorI");
 	elevatorD = SmartDashboard::GetNumber("elevatorD");
 	elevatorF = SmartDashboard::GetNumber("elevatorF");
-	elevatorRampRateCloseLoop = SmartDashboard::GetNumber("ElClosedLoopRR");
+	elevatorRampRateVolatage = SmartDashboard::GetNumber("ElVoltageRR");
 
-	RobotMap::elevatorMotor1->SetVoltageRampRate(elevatorRampRateCloseLoop);
+	RobotMap::elevatorMotor1->SetVoltageRampRate(elevatorRampRateVolatage);
 	RobotMap::elevatorMotor1->SetPID(elevatorP,elevatorI,elevatorD,elevatorF);
 	RobotMap::elevatorMotor1->ClearIaccum();
 
