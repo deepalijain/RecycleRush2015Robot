@@ -170,7 +170,7 @@ void Parameters::SaveParams() {
 		fprintf(pFile, "%f\t%s\n", driveD, comments[3].c_str());
 		fprintf(pFile, "%f\t%s\n", driveF, comments[5].c_str());
 
-		fprintf(pFile, "%f\t%s\n", elevatorD, comments[5].c_str());
+		fprintf(pFile, "%f\t%s\n", elevatorP, comments[5].c_str());
 		fprintf(pFile, "%f\t%s\n", elevatorI, comments[6].c_str());
 		fprintf(pFile, "%f\t%s\n", elevatorD, comments[7].c_str());
 		fprintf(pFile, "%f\t%s\n", elevatorF, comments[8].c_str());
