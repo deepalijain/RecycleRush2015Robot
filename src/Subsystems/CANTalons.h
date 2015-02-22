@@ -60,6 +60,7 @@ private:
 public:
 		Talon m_talons[MAX_TALONS];
 		CANTalon* Init(int device_number, char *description);
+		bool Status(int i);
 		void UpdateDashboard();
 };
 

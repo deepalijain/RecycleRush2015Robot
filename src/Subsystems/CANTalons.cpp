@@ -16,36 +16,46 @@ CANTalon* CANTalons::Init(int dN, char* description) {
 	CANTalon *t = new CANTalon(dN);
 	float busvoltage = 0.0;
 	if (NULL != t) {
+		m_talons[dN].status = true;
 		m_talons[dN].talon = t;
-		if (t->GetBusVoltage() > 8.0) {
-			m_talons[dN].status = true;
-		}
 		m_talons[dN].voltage = t->GetOutputVoltage();
+		Error& error = t->GetError();
+		//printf("Talon GetOutputVoltage error: %d\n", error.GetCode());
+		if (0==error.GetCode())
+		{
+			sprintf(m_talons[dN].stat_label, "%s-Status", description);
+			sprintf(m_talons[dN].volt_label, "%s-Volts", description);
+			sprintf(m_talons[dN].amp_label, "%s-Amps", description);
+			printf("Talon %d, %s initialized, Error: %d, Bus Voltage: %f, Output Voltage %f\n",
+					dN, description, error.GetCode(),
+					busvoltage,  m_talons[dN].voltage);
+		}
+		else {
+			m_talons[dN].status = false;
+			printf("Talon %d, %s NOT PRESENT! (error %d)\n", dN, description, error.GetCode());
+		}
 		m_talons[dN].current = t->GetOutputCurrent();
-		sprintf(m_talons[dN].stat_label, "%s-Status", description);
-		sprintf(m_talons[dN].volt_label, "%s-Volts", description);
-		sprintf(m_talons[dN].amp_label, "%s-Amps", description);
-		printf("Talon %d, %s initialized, Bus Voltage: %f, Output Voltage %f\n", dN, description,
-				busvoltage,  m_talons[dN].voltage);
 	}
 	else printf("Talon %d, %s failed initialization, new returned NULL.\n", dN, description);
 	return t;
+}
+
+// tells us if a Talon is present
+bool CANTalons::Status(int i) {
+	return m_talons[i].status;
 }
 
 void CANTalons::UpdateDashboard() {
 	for (int i=0; i!=MAX_TALONS; i++) {
 		Talon &t = m_talons[i];
 		if (NULL != t.talon) {
-			Error& e = ((ErrorBase *)t.talon)->GetError();
-			if (e.GetCode() > 0) {
-				t.status = false;
-				t.lasterror = e.GetMessage();
+			if (t.status) {
+				t.voltage = t.talon->GetOutputVoltage();
+				t.current = t.talon->GetOutputCurrent();
+				SmartDashboard::PutBoolean(t.stat_label,t.status);
+				SmartDashboard::PutNumber(t.volt_label, (double)t.voltage);
+				SmartDashboard::PutNumber(t.amp_label, (double)t.current);
 			}
-			t.voltage = t.talon->GetOutputVoltage();
-			t.current = t.talon->GetOutputCurrent();
-			SmartDashboard::PutBoolean(t.stat_label,t.status);
-			SmartDashboard::PutNumber(t.volt_label, (double)t.voltage);
-			SmartDashboard::PutNumber(t.amp_label, (double)t.current);
 		}
 	}
 }

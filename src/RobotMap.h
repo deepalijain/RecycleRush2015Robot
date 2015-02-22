@@ -45,7 +45,7 @@ public:
 	static DoubleSolenoid* shifterSolenoid;
 	static DoubleSolenoid* totePusherSolenoid;
 
-
+	static bool testBot;
 	static void init();
 };
 #endif

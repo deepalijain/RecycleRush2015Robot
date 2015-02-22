@@ -36,13 +36,16 @@ OI::OI() {
 	driveCommand = new DriveCommand();
 	drivePID = new DrivePID();
 	toggleArmFlap = new ToggleFlapsCommand();
-	toteUp = new PositionElevator(1);
-	toteDown = new PositionElevator(-1);
+
 	
-	joystickButton5 = new JoystickButton(joystick1, 5);
-	joystickButton5->WhenPressed(toteUp);
-	joystickButton5 = new JoystickButton(joystick1, 6);
-	joystickButton5->WhenPressed(toteDown);
+	if (!RobotMap::testBot) {
+		toteUp = new PositionElevator(1);
+		toteDown = new PositionElevator(-1);
+		joystickButton5 = new JoystickButton(joystick1, 5);
+		joystickButton5->WhenPressed(toteUp);
+		joystickButton5 = new JoystickButton(joystick1, 6);
+		joystickButton5->WhenPressed(toteDown);
+	}
 	joystickButton4 = new JoystickButton(joystick1, 4);
 	joystickButton4->WhenPressed(drivePID);
 
