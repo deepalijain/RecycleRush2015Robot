@@ -3,6 +3,7 @@
 	<name>RecycleRush2015Robot</name>
 	<comment></comment>
 	<projects>
+		<project>wpilib</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
