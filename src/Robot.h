@@ -12,7 +12,6 @@
 #ifndef _ROBOT_H
 #define _ROBOT_H
 
-#include <stdio.h>
 #include "WPILib.h"
 #include "Commands/Command.h"
 #include "RobotMap.h"
@@ -27,15 +26,14 @@
 #include "OI.h"
 #include "Subsystems/Elevator.h"
 #include "Commands/DrivePID.h"
+#include "Subsystems/Parameters.h"
 
 class Robot : public IterativeRobot {
 private:
-	int getInt(FILE *pFile);
-	double getDouble(FILE *pFile);
-	void GetParams();
-	void SaveParams();
+
 public:
 	Command *autonomousCommand;
+	static Parameters *parameters;
 	static Command *driveCommand;
 	static Command *driveElevatorCommand;
 	static Command *holdElevatorCommand;

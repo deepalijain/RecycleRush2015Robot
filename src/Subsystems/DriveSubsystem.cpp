@@ -46,11 +46,7 @@ DriveSubsystem::DriveSubsystem() : Subsystem("DriveSubsystem") {
     
 void DriveSubsystem::SetPIDDistance( double left, double right)
 {
-	driveP = SmartDashboard::GetNumber("driveP");
-	driveI = SmartDashboard::GetNumber("driveI");
-	driveD = SmartDashboard::GetNumber("driveD");
-	driveF = SmartDashboard::GetNumber("driveF");
-
+	Robot::parameters->UpdateDrivePIDParams();
 	RobotMap::driveBackLeft->SetControlMode(CANSpeedController::kPosition);
 	RobotMap::driveBackLeft->SetPID(driveP,driveI,driveD,driveF);
 	RobotMap::driveBackLeft->ClearIaccum();

@@ -31,6 +31,7 @@ Elevator::Elevator() : Subsystem("PickupSubsystem") {
     
 void Elevator::SetHeight(double height)
 {
+	Robot::parameters->UpdateElevatorPIDParams();
 	elevatorP = SmartDashboard::GetNumber("elevatorP");
 	elevatorI = SmartDashboard::GetNumber("elevatorI");
 	elevatorD = SmartDashboard::GetNumber("elevatorD");
