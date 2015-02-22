@@ -9,8 +9,8 @@
 // it from being updated in the future.
 
 
-#ifndef PICKUPSUBSYSTEM_H
-#define PICKUPSUBSYSTEM_H
+#ifndef ELEVATOR_H
+#define ELEVATOR_H
 #include "Commands/Subsystem.h"
 #include "WPILib.h"
 #include "ctre/CanTalonSRX.h"
