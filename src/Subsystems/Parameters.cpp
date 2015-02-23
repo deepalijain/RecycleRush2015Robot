@@ -25,7 +25,6 @@ static double elevatorF = 0;
 static double elevatorPIDDistance = 0;
 
 Parameters::Parameters() {
-	// TODO Auto-generated constructor stub
 
 }
 
