@@ -31,18 +31,22 @@ Parameters::Parameters() {
 
 void Parameters::ShowPIDParams()
 {
+	try {
+		SmartDashboard::PutNumber("driveP", driveP);
+		SmartDashboard::PutNumber("driveI", driveI);
+		SmartDashboard::PutNumber("driveD", driveD);
+		SmartDashboard::PutNumber("driveF", driveF);
+		SmartDashboard::PutNumber("drivePIDDistance", drivePIDDistance);
 
-	SmartDashboard::PutNumber("driveP", driveP);
-	SmartDashboard::PutNumber("driveI", driveI);
-	SmartDashboard::PutNumber("driveD", driveD);
-	SmartDashboard::PutNumber("driveF", driveF);
-	SmartDashboard::PutNumber("drivePIDDistance", drivePIDDistance);
-
-	SmartDashboard::PutNumber("elevatorP", elevatorP);
-	SmartDashboard::PutNumber("elevatorI", elevatorI);
-	SmartDashboard::PutNumber("elevatorD", elevatorD);
-	SmartDashboard::PutNumber("elevatorF", elevatorF);
-	SmartDashboard::PutNumber("elevatorPIDDistance", elevatorPIDDistance);
+		SmartDashboard::PutNumber("elevatorP", elevatorP);
+		SmartDashboard::PutNumber("elevatorI", elevatorI);
+		SmartDashboard::PutNumber("elevatorD", elevatorD);
+		SmartDashboard::PutNumber("elevatorF", elevatorF);
+		SmartDashboard::PutNumber("elevatorPIDDistance", elevatorPIDDistance);
+	}
+	catch (int e) {
+		printf("ShowPIDParams threw exception\n");
+	}
 }
 
 void Parameters::UpdateDrivePIDParams()

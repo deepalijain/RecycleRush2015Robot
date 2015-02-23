@@ -33,6 +33,7 @@ private:
 
 public:
 	Command *autonomousCommand;
+	static PowerDistributionPanel* pdp;
 	static Parameters *parameters;
 	static Command *driveCommand;
 	static Command *driveElevatorCommand;
