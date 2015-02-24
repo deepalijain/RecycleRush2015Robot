@@ -9,12 +9,14 @@
 // it from being updated in the future.
 
 #include "Robot.h"
+#include <DriverStation.h>
 #include <iostream>
 #include <exception>
 #include "Commands/DriveCommand.h"
 #include "Commands/DriveElevator.h"
 #include "Commands/PositionElevator.h"
 #include "Commands/DrivePID.h"
+
 
 DriveSubsystem *Robot::driveSubsystem = 0;
 Elevator *Robot::elevator = 0;
@@ -26,6 +28,8 @@ Command *Robot::driveElevatorCommand = 0;
 Command *Robot::holdElevatorCommand = 0;
 Parameters *Robot::parameters = 0;
 PowerDistributionPanel *Robot::pdp = 0;
+
+
 
 int Ticks = 0;
 
@@ -152,6 +156,8 @@ void Robot::UpdateDashboardPeriodic() {
 				printf("SmartDashboard exception, post ShowPIDParams.\n");
 			}
 			SmartDashboard::PutNumber("PDP Temperature", pdp->GetTemperature());
+			float batteryVoltage=DriverStation::GetInstance()->GetBatteryVoltage();
+			SmartDashboard::PutNumber("Battery Voltage", batteryVoltage);
 			RobotMap::Ct->UpdateDashboard();
 		}
 	}
