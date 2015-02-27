@@ -48,6 +48,7 @@ PositionElevator::PositionElevator(int n) {
 // Called just before this Command runs the first time
 void PositionElevator::Initialize() {
 	// always make sure we're back in position control mode.
+	Robot::parameters->UpdateElevatorPIDParams();
 	RobotMap::elevatorMotor1->SetControlMode(CANSpeedController::kPosition);
 	m_curPos = Robot::elevator->GetPosition();
 

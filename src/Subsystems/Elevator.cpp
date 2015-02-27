@@ -8,11 +8,11 @@
 // update. Deleting the comments indicating the section will prevent
 // it from being updated in the future.
 
-static double elevatorP;
-static double elevatorI;
-static double elevatorD;
-static double elevatorF;
-static double elevatorRampRateCloseLoop;
+double elevatorP;
+double elevatorI;
+double elevatorD;
+double elevatorF;
+double elevatorRampRateCloseLoop;
 
 #include "Elevator.h"
 

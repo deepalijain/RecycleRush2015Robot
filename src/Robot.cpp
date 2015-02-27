@@ -134,7 +134,6 @@ void Robot::UpdateDashboardPeriodic() {
 			//			SmartDashboard::PutNumber("CompCurrent", wC->GetCompressorCurrent());
 			//		}
 
-			parameters->ShowPIDParams();
 			try {
 				SmartDashboard::PutNumber("CAN Front Left Fault", RobotMap::driveFrontLeft->GetFaults());
 				SmartDashboard::PutNumber("Left Encoder Position", Robot::driveSubsystem->GetLeftEncoderPosition());

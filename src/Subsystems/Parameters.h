@@ -15,6 +15,17 @@ private:
 	void SaveParams();
 	std::vector<std::string> comments;
 public:
+	static double driveP;
+	static double driveI;
+	static double driveD;
+	static double driveF;
+	static double drivePIDDistance;
+
+	static double elevatorP;
+	static double elevatorI;
+	static double elevatorD;
+	static double elevatorF;
+	static double elevatorPIDDistance;
 	Parameters();
 	void GetParams();
 	void ShowPIDParams();

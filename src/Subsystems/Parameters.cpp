@@ -12,17 +12,17 @@
 #include "Parameters.h"
 #include "WPILib.h"
 
-static double driveP = 0;
-static double driveI = 0;
-static double driveD = 0;
-static double driveF = 0;
-static double drivePIDDistance = 0;
+double Parameters::driveP;
+double Parameters::driveI;
+double Parameters::driveD;
+double Parameters::driveF;
+double Parameters::drivePIDDistance;
 
-static double elevatorP = 0;
-static double elevatorI = 0;
-static double elevatorD = 0;
-static double elevatorF = 0;
-static double elevatorPIDDistance = 0;
+double Parameters::elevatorP;
+double Parameters::elevatorI;
+double Parameters::elevatorD;
+double Parameters::elevatorF;
+double Parameters::elevatorPIDDistance;
 
 Parameters::Parameters() {
 
@@ -57,7 +57,7 @@ void Parameters::UpdateDrivePIDParams()
 	ldriveI = SmartDashboard::GetNumber("driveI");
 	ldriveD = SmartDashboard::GetNumber("driveD");
 	ldriveF = SmartDashboard::GetNumber("driveF");
-	drivePIDDistance = SmartDashboard::GetNumber("driveF");
+	drivePIDDistance = SmartDashboard::GetNumber("drivePIDDistance");
 
 	needsUpdate |= (ldriveP != driveP);
 	needsUpdate |= (ldriveP != driveP);
@@ -67,7 +67,10 @@ void Parameters::UpdateDrivePIDParams()
 	driveI = ldriveI;
 	driveD = ldriveD;
 	driveF = ldriveF;
-	if (needsUpdate) SaveParams();
+	if (needsUpdate) {
+		SaveParams();
+		ShowPIDParams();
+	}
 }
 
 void Parameters::UpdateElevatorPIDParams()
@@ -79,7 +82,7 @@ void Parameters::UpdateElevatorPIDParams()
 	lelevatorI = SmartDashboard::GetNumber("elevatorI");
 	lelevatorD = SmartDashboard::GetNumber("elevatorD");
 	lelevatorF = SmartDashboard::GetNumber("elevatorF");
-	elevatorPIDDistance = SmartDashboard::GetNumber("elevatorF");
+	elevatorPIDDistance = SmartDashboard::GetNumber("elevatorPIDDistance");
 
 	needsUpdate |= (lelevatorP != elevatorP);
 	needsUpdate |= (lelevatorP != elevatorP);
@@ -89,7 +92,10 @@ void Parameters::UpdateElevatorPIDParams()
 	elevatorI = lelevatorI;
 	elevatorD = lelevatorD;
 	elevatorF = lelevatorF;
-	if (needsUpdate) SaveParams();
+	if (needsUpdate) {
+		SaveParams();
+		ShowPIDParams();
+	}
 }
 
 
@@ -137,7 +143,7 @@ double Parameters::getDouble(FILE *pFile)
 }
 
 void Parameters::GetParams() {
-	FILE *pFile = fopen("params2015.txt", "r");
+	FILE *pFile = fopen("/home/lvuser/params2015.txt", "r");
 	if (NULL != pFile){
 		int version = getInt(pFile);
 
@@ -157,14 +163,14 @@ void Parameters::GetParams() {
 		fclose(pFile);
 		printf("Loaded params\n  %f %f %f %f\n  %f %f %f %f\n",
 			driveP, driveI, driveD, driveF,
-			elevatorD, elevatorI, elevatorD, elevatorF);
+			elevatorP, elevatorI, elevatorD, elevatorF);
 	}
 }
 
 void Parameters::SaveParams() {
 	// make a backup copy just in case we get interrupted
-	system("cp params2015.txt params2015.txt~");
-	FILE *pFile = fopen("params2015.txt", "w");
+	system("cp /home/lvuser/params2015.txt /home/lvuser/params2015.txt~");
+	FILE *pFile = fopen("/home/lvuser/params2015.txt", "w");
 	if (NULL != pFile)
 	{
 		fprintf(pFile, "%d\t%s\n", 1, comments[0].c_str());
@@ -181,7 +187,7 @@ void Parameters::SaveParams() {
 		fclose(pFile);
 		printf("Saved params\n  %f %f %f %f\n  %f %f %f %f\n",
 			driveP, driveI, driveD, driveF,
-			elevatorD, elevatorI, elevatorD, elevatorF);
+			elevatorP, elevatorI, elevatorD, elevatorF);
 	}
 	else printf("Couldn't open params2015.txt for write.\n");
 }

@@ -11,8 +11,7 @@
 
 #include "DrivePID.h"
 #include "../Robot.h"
-
-static double drivePIDDistance;
+#include "../Subsystems/Parameters.h"
 
 DrivePID::DrivePID() {
 	// Use requires() here to declare subsystem dependencies
@@ -27,10 +26,11 @@ DrivePID::DrivePID() {
 
 // Called just before this Command runs the first time
 void DrivePID::Initialize() {
-	printf("Drive PID Initialized, ticks=%f.\n", drivePIDDistance);
 	SetTimeout(15000);  // set 15 second timeout. Good enough?
-	drivePIDDistance = SmartDashboard::GetNumber("drivePIDDistance");
-	Robot::driveSubsystem->SetPIDDistance( double(drivePIDDistance), double(drivePIDDistance));
+	Robot::parameters->UpdateDrivePIDParams();
+	double distance = Parameters::drivePIDDistance;
+	Robot::driveSubsystem->SetPIDDistance( double(distance), double(distance));
+	printf("Drive PID Initialized, ticks=%f.\n", distance);
 }
 
 // Called repeatedly when this Command is scheduled to run
