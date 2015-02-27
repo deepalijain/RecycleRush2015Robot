@@ -36,6 +36,7 @@ void Elevator::SetHeight(double height)
 	elevatorI = SmartDashboard::GetNumber("elevatorI");
 	elevatorD = SmartDashboard::GetNumber("elevatorD");
 	elevatorF = SmartDashboard::GetNumber("elevatorF");
+// TODO put in some suggested P,I,D values
 	elevatorRampRateCloseLoop = SmartDashboard::GetNumber("ElClosedLoopRR");
 
 	RobotMap::elevatorMotor1->SetVoltageRampRate(elevatorRampRateCloseLoop);
