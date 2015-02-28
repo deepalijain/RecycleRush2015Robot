@@ -143,8 +143,8 @@ void Robot::UpdateDashboardPeriodic() {
 				SmartDashboard::PutNumber("DrivePID Left  Error",RobotMap::driveBackLeft->GetClosedLoopError());
 				SmartDashboard::PutNumber("DrivePID Right Error",RobotMap::driveBackRight->GetClosedLoopError());
 
-				SmartDashboard::PutNumber("DriveDistanceCmd distL",DriveDistanceCommand::distanceTravelledL);
-				SmartDashboard::PutNumber("DriveDistanceCmd distR",DriveDistanceCommand::distanceTravelledR);
+				SmartDashboard::PutNumber("DriveDistanceCmd distL",((DriveDistanceCommand *)Robot::oi->driveDistanceCommand)->distanceTravelledL);
+				SmartDashboard::PutNumber("DriveDistanceCmd distR",((DriveDistanceCommand *)Robot::oi->driveDistanceCommand)->distanceTravelledR);
 				// CANTalon 1, which is the Elevator lead Talon, isn't present on the kit bot
 				if (!RobotMap::testBot) {
 					SmartDashboard::PutNumber("Elevator Encoder Position", Robot::elevator->GetEncoderPosition());

@@ -61,8 +61,8 @@ public:
 	virtual bool IsFinished();
 	virtual void End();
 	virtual void Interrupted();
-	static float distanceTravelledL;
-	static float distanceTravelledR;
+	float distanceTravelledL;
+	float distanceTravelledR;
 };
 
 #endif
