@@ -43,7 +43,7 @@ void DriveDistanceCommand::Execute() {
 	{
 		voltageLeft = std::max(voltageLeft - voltageStep, float(0.0));
 	}
-	// Now let's check to see how far each side has travelled
+	// Now let's check to see how far each side has traveled
 	// and scale the right side accordingly
 	distanceError = distanceTravelledL - distanceTravelledR;
 

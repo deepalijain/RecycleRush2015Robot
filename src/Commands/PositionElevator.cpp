@@ -76,7 +76,14 @@ void PositionElevator::Initialize() {
 
 // Called repeatedly when this Command is scheduled to run
 void PositionElevator::Execute() {
-	// Nothing here. The Talon's PID loop is doing all the work!
+	// On the production bot, nothing's here. The Talon's PID loop is doing all the work!
+	if(RobotMap::testBot){
+		//add something based on m_n and the ticks in between each execute
+		m_curPos += 5400/60*ticksPerRotation *.02*m_n;//5400 rpm
+
+		if(m_curPos<0)m_curPos=0;
+		if(m_curPos>1024*10)m_curPos=1024*10; // 10 revolutions
+	}
 }
 
 // Make this return true when this Command no longer needs to run execute()
