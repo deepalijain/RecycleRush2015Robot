@@ -44,6 +44,8 @@ public:
 	static DoubleSolenoid* armFlapSolenoid;
 	static DoubleSolenoid* shifterSolenoid;
 	static DoubleSolenoid* totePusherSolenoid;
+	static DoubleSolenoid* pneumaticSubsystemSolenoid;
+	static Compressor* workingCompressor;
 
 	static bool testBot;
 	static void init();

@@ -20,12 +20,14 @@ DriveSubsystem *Robot::driveSubsystem = 0;
 Elevator *Robot::elevator = 0;
 ArmFlaps *Robot::armFlaps = 0;
 TotePusher *Robot::totePusher = 0;
+PneumaticSubsystem *Robot::pneumaticSubsystem = NULL;
 OI *Robot::oi = 0;
 Command *Robot::driveCommand = 0;
 Command *Robot::driveElevatorCommand = 0;
 Command *Robot::holdElevatorCommand = 0;
 Parameters *Robot::parameters = 0;
 PowerDistributionPanel *Robot::pdp = 0;
+
 
 int Ticks = 0;
 
@@ -40,6 +42,7 @@ void Robot::RobotInit() {
 		printf("PDP Temperature: %f\n", pdp->GetTemperature());
 		driveSubsystem = new DriveSubsystem();
 		elevator = new Elevator();
+		pneumaticSubsystem = new PneumaticSubsystem();
 		armFlaps = new ArmFlaps;
 		totePusher = new TotePusher;
 

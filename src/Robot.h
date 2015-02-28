@@ -25,8 +25,10 @@
 #include "Commands/DriveElevator.h"
 #include "OI.h"
 #include "Subsystems/Elevator.h"
+#include "Subsystems/PneumaticSubsystem.h"
 #include "Commands/DrivePID.h"
 #include "Subsystems/Parameters.h"
+
 
 class Robot : public IterativeRobot {
 private:
@@ -45,6 +47,7 @@ public:
 	static Elevator* elevator;
 	static ArmFlaps* armFlaps;
 	static TotePusher* totePusher;
+	static PneumaticSubsystem* pneumaticSubsystem;
 
 //	static double drivePIDDistance;
 
