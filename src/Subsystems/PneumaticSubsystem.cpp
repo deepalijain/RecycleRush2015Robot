@@ -46,6 +46,8 @@ void PneumaticSubsystem::InitDefaultCommand() {
 
 void PneumaticSubsystem::Toggle() {
 	SetSolenoidState(!solenoidState);
+	if (solenoidState) RobotMap::workingCompressor->Start();
+	else RobotMap::workingCompressor->Stop();
 	printf("Pneumatic Subsystem solenoid state set to %s\n", solenoidState ? "on" : "off");
 }
 
@@ -70,7 +72,6 @@ bool PneumaticSubsystem::GetSolenoidState() {
 void PneumaticSubsystem::SetSolenoidState(bool state) {
 	printf("Inside SetSolenoidState = %d \n", state);
 	solenoidState = state;
-	printf("after setting solenoidState\n");
 	//testSolenoid->Set(DoubleSolenoid::Value.kOff);
 }
 

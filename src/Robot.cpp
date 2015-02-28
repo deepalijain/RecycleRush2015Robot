@@ -150,6 +150,18 @@ void Robot::UpdateDashboardPeriodic() {
 					SmartDashboard::PutNumber("Elevator PID Error", RobotMap::elevatorMotor1->GetClosedLoopError());
 					SmartDashboard::PutNumber("Elevator Position", Robot::elevator->GetPosition());
 				}
+				#ifdef sensors
+					if (NULL!=RobotMap::distanceSensor) {
+						SmartDashboard::PutNumber("DistanceSensorVoltage", RobotMap::distanceSensor->GetVoltage());  // THIS IS THE LINE THAT IS FAILING!!
+					} else {
+						printf("distanceSensor pointer NULL\n");
+					}
+					if (NULL!=RobotMap::colorSensor) {
+						SmartDashboard::PutNumber("ColorSensorVoltage", RobotMap::colorSensor->Get());  // THIS IS THE LINE THAT IS FAILING!!
+					} else {
+						printf("colorSensor pointer NULL\n");
+					}
+				#endif
 			} catch(int e) {
 				printf("SmartDashboard exception, post ShowPIDParams.\n");
 			}
