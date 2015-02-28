@@ -31,7 +31,7 @@ OI::OI() {
 	joystick1 = new Joystick(0);
 	joystick2 = new Joystick(1);
 
-	driveDistanceCommand = new DriveDistanceCommand(1000);
+	driveDistanceCommand = new DriveDistanceCommand(12*1);
 	//applyBreakCommand = new ApplyBreakCommand();
 	driveCommand = new DriveCommand();
 	drivePID = new DrivePID();
