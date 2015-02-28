@@ -42,8 +42,6 @@ private:
 	float distance; // requested distance in inches
 	bool isCommandDone;
 	float distanceError;
-	float distanceTravelledL = 0.0;
-	float distanceTravelledR = 0.0;
 	float voltageLeft = 0.0;
 	float voltageRight = 0.0;
 	float maxVoltage = 0.9;
@@ -63,6 +61,8 @@ public:
 	virtual bool IsFinished();
 	virtual void End();
 	virtual void Interrupted();
+	static float distanceTravelledL = 0.0;
+	static float distanceTravelledR = 0.0;
 };
 
 #endif
