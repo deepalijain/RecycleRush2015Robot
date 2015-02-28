@@ -26,7 +26,9 @@ DriveDistanceCommand::DriveDistanceCommand(int f) {
 void DriveDistanceCommand::Initialize() {
 	// reset the encoders to 0
 	RobotMap::driveBackLeft->SetPosition(0);
+	distanceTravelledL = 0.0;
 	RobotMap::driveBackRight->SetPosition(0);
+	distanceTravelledR = 0.0;
 }
 
 // Called repeatedly when this Command is scheduled to run
