@@ -29,7 +29,6 @@ DoubleSolenoid *RobotMap::armFlapSolenoid = NULL;
 DoubleSolenoid *RobotMap::shifterSolenoid = NULL;
 DoubleSolenoid *RobotMap::totePusherSolenoid = NULL;
 DoubleSolenoid *RobotMap::pneumaticSubsystemSolenoid = NULL;
-Compressor *RobotMap::workingCompressor = NULL;
 
 void RobotMap::init() {
 
@@ -67,12 +66,6 @@ void RobotMap::init() {
 	armFlapSolenoid = new DoubleSolenoid(7, 0, 1);
 	totePusherSolenoid = new DoubleSolenoid(7, 2, 3);
     pneumaticSubsystemSolenoid = new DoubleSolenoid(7, 0, 1);
-
-    printf("Compressor %d closed loop set to true, compressor is %s, compressor switch is %s, current=%f.\n", 7,
-    		(workingCompressor->Enabled() ? "enabled" : "disabled"),
-    		(workingCompressor->GetPressureSwitchValue() ? "on" : "off"), workingCompressor->GetCompressorCurrent());
-
-
 
     driveBackLeft->SetControlMode(CANSpeedController::kPercentVbus);
     driveBackRight->SetControlMode(CANSpeedController::kPercentVbus);
