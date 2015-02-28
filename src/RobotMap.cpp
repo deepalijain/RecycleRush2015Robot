@@ -67,9 +67,7 @@ void RobotMap::init() {
 	armFlapSolenoid = new DoubleSolenoid(7, 0, 1);
 	totePusherSolenoid = new DoubleSolenoid(7, 2, 3);
     pneumaticSubsystemSolenoid = new DoubleSolenoid(7, 0, 1);
-	workingCompressor = new Compressor(7);
-    workingCompressor->SetClosedLoopControl(true);
-    workingCompressor->Start();
+
     printf("Compressor %d closed loop set to true, compressor is %s, compressor switch is %s, current=%f.\n", 7,
     		(workingCompressor->Enabled() ? "enabled" : "disabled"),
     		(workingCompressor->GetPressureSwitchValue() ? "on" : "off"), workingCompressor->GetCompressorCurrent());

@@ -20,7 +20,7 @@ DriveSubsystem *Robot::driveSubsystem = 0;
 Elevator *Robot::elevator = 0;
 ArmFlaps *Robot::armFlaps = 0;
 TotePusher *Robot::totePusher = 0;
-PneumaticSubsystem *Robot::pneumaticSubsystem = NULL;
+CompressorSubsystem *Robot::compressorSubsystem = NULL;
 OI *Robot::oi = 0;
 Command *Robot::driveCommand = 0;
 Command *Robot::driveElevatorCommand = 0;
@@ -42,7 +42,7 @@ void Robot::RobotInit() {
 		printf("PDP Temperature: %f\n", pdp->GetTemperature());
 		driveSubsystem = new DriveSubsystem();
 		elevator = new Elevator();
-		pneumaticSubsystem = new PneumaticSubsystem();
+		compressorSubsystem = new CompressorSubsystem(7);			// CAN channel 7
 		armFlaps = new ArmFlaps;
 		totePusher = new TotePusher;
 
