@@ -161,6 +161,7 @@ void Parameters::GetParams() {
 			elevatorF = getDouble(pFile);
 		}
 		fclose(pFile);
+		ShowPIDParams();	// show on Dashboard when loaded
 		printf("Loaded params\n  %f %f %f %f\n  %f %f %f %f\n",
 			driveP, driveI, driveD, driveF,
 			elevatorP, elevatorI, elevatorD, elevatorF);

@@ -130,41 +130,25 @@ void Robot::UpdateDashboardPeriodic() {
 	try {
 		// Do this every 1/10th of a second, not more often for efficiency
 		if (Ticks++%5==0) {
-			//		Compressor* wC = RobotMap::workingCompressor;
-			//		if (NULL!=wC) {
-			//			SmartDashboard::PutBoolean("CompEnabled", wC->Enabled());
-			//			SmartDashboard::PutBoolean("CompSwitch", wC->GetPressureSwitchValue());
-			//			SmartDashboard::PutNumber("CompCurrent", wC->GetCompressorCurrent());
-			//		}
-
-			try {
-				SmartDashboard::PutNumber("CAN Front Left Fault", RobotMap::driveFrontLeft->GetFaults());
-				SmartDashboard::PutNumber("Left Encoder Position", Robot::driveSubsystem->GetLeftEncoderPosition());
-				SmartDashboard::PutNumber("Right Encoder Position", Robot::driveSubsystem->GetRightEncoderPosition());
-				SmartDashboard::PutNumber("DrivePID Left  Error",RobotMap::driveBackLeft->GetClosedLoopError());
-				SmartDashboard::PutNumber("DrivePID Right Error",RobotMap::driveBackRight->GetClosedLoopError());
-
-				// CANTalon 1, which is the Elevator lead Talon, isn't present on the kit bot
-				if (!RobotMap::testBot) {
-					SmartDashboard::PutNumber("Elevator Encoder Position", Robot::elevator->GetEncoderPosition());
-					SmartDashboard::PutNumber("Elevator PID Error", RobotMap::elevatorMotor1->GetClosedLoopError());
-					SmartDashboard::PutNumber("Elevator Position", Robot::elevator->GetPosition());
-				}
-				#ifdef sensors
-					if (NULL!=RobotMap::distanceSensor) {
-						SmartDashboard::PutNumber("DistanceSensorVoltage", RobotMap::distanceSensor->GetVoltage());  // THIS IS THE LINE THAT IS FAILING!!
-					} else {
-						printf("distanceSensor pointer NULL\n");
-					}
-					if (NULL!=RobotMap::colorSensor) {
-						SmartDashboard::PutNumber("ColorSensorVoltage", RobotMap::colorSensor->Get());  // THIS IS THE LINE THAT IS FAILING!!
-					} else {
-						printf("colorSensor pointer NULL\n");
-					}
-				#endif
-			} catch(int e) {
-				printf("SmartDashboard exception, post ShowPIDParams.\n");
+			Compressor* wC = compressorSubsystem->workingCompressor;
+			if (NULL!=wC) {
+				SmartDashboard::PutBoolean("CompEnabled", wC->Enabled());
+				SmartDashboard::PutNumber("CompCurrent", wC->GetCompressorCurrent());
 			}
+
+			SmartDashboard::PutNumber("CAN Front Left Fault", RobotMap::driveFrontLeft->GetFaults());
+			SmartDashboard::PutNumber("Left Encoder Position", Robot::driveSubsystem->GetLeftEncoderPosition());
+			SmartDashboard::PutNumber("Right Encoder Position", Robot::driveSubsystem->GetRightEncoderPosition());
+			SmartDashboard::PutNumber("DrivePID Left  Error",RobotMap::driveBackLeft->GetClosedLoopError());
+			SmartDashboard::PutNumber("DrivePID Right Error",RobotMap::driveBackRight->GetClosedLoopError());
+
+			// CANTalon 1, which is the Elevator lead Talon, isn't present on the kit bot
+			if (!RobotMap::testBot) {
+				SmartDashboard::PutNumber("Elevator Encoder Position", Robot::elevator->GetEncoderPosition());
+				SmartDashboard::PutNumber("Elevator PID Error", RobotMap::elevatorMotor1->GetClosedLoopError());
+				SmartDashboard::PutNumber("Elevator Position", Robot::elevator->GetPosition());
+			}
+
 			SmartDashboard::PutNumber("PDP Temperature", pdp->GetTemperature());
 			RobotMap::Ct->UpdateDashboard();
 		}
@@ -172,6 +156,21 @@ void Robot::UpdateDashboardPeriodic() {
 	catch (std::exception& e) {
 		printf("SmartDashboard Exception: %s\n",  e.what());
 	}
+}
+
+void Robot::DisplaySensorData() {
+#ifdef sensors
+	if (NULL!=RobotMap::distanceSensor) {
+		SmartDashboard::PutNumber("DistanceSensorVoltage", RobotMap::distanceSensor->GetVoltage());  // THIS IS THE LINE THAT IS FAILING!!
+	} else {
+		printf("distanceSensor pointer NULL\n");
+	}
+	if (NULL!=RobotMap::colorSensor) {
+		SmartDashboard::PutNumber("ColorSensorVoltage", RobotMap::colorSensor->Get());  // THIS IS THE LINE THAT IS FAILING!!
+	} else {
+		printf("colorSensor pointer NULL\n");
+	}
+#endif
 }
 
 
