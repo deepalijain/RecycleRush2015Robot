@@ -30,7 +30,7 @@ void DrivePID::Initialize() {
 	Robot::parameters->UpdateDrivePIDParams();
 	double distance = Parameters::drivePIDDistance;
 	Robot::driveSubsystem->SetPIDDistance(double(distance), double(distance));
-	printf("Drive PID Initialized, ticks=%f.\n", distance);
+	printf("Drive PID Initialized, ticks=%1.0f.\n", distance);
 }
 
 // Called repeatedly when this Command is scheduled to run

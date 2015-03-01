@@ -115,6 +115,8 @@ void Robot::TeleopInit() {
 	RobotMap::shifterSolenoid->Set(DoubleSolenoid::kOff);
 	RobotMap::totePusherSolenoid->Set(DoubleSolenoid::kOff);
 	// It seems that we need a Set to confirm the control mode or else it reverts
+	parameters->UpdateDrivePIDParams();
+	parameters->UpdateElevatorPIDParams();
 }
 
 
