@@ -60,8 +60,9 @@ void Parameters::UpdateDrivePIDParams()
 	drivePIDDistance = SmartDashboard::GetNumber("drivePIDDistance");
 
 	needsUpdate |= (ldriveP != driveP);
-	needsUpdate |= (ldriveP != driveP);
-	needsUpdate |= (ldriveP != driveP);
+	needsUpdate |= (ldriveI != driveI);
+	needsUpdate |= (ldriveD != driveD);
+	needsUpdate |= (ldriveF != driveF);
 
 	driveP = ldriveP;
 	driveI = ldriveI;
@@ -85,8 +86,9 @@ void Parameters::UpdateElevatorPIDParams()
 	elevatorPIDDistance = SmartDashboard::GetNumber("elevatorPIDDistance");
 
 	needsUpdate |= (lelevatorP != elevatorP);
-	needsUpdate |= (lelevatorP != elevatorP);
-	needsUpdate |= (lelevatorP != elevatorP);
+	needsUpdate |= (lelevatorI != elevatorI);
+	needsUpdate |= (lelevatorD != elevatorD);
+	needsUpdate |= (lelevatorF != elevatorF);
 
 	elevatorP = lelevatorP;
 	elevatorI = lelevatorI;

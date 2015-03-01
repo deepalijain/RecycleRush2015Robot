@@ -28,7 +28,6 @@ bool RobotMap::testBot = false;
 DoubleSolenoid *RobotMap::armFlapSolenoid = NULL;
 DoubleSolenoid *RobotMap::shifterSolenoid = NULL;
 DoubleSolenoid *RobotMap::totePusherSolenoid = NULL;
-DoubleSolenoid *RobotMap::pneumaticSubsystemSolenoid = NULL;
 
 void RobotMap::init() {
 
@@ -65,7 +64,6 @@ void RobotMap::init() {
 
 	armFlapSolenoid = new DoubleSolenoid(7, 0, 1);
 	totePusherSolenoid = new DoubleSolenoid(7, 2, 3);
-    pneumaticSubsystemSolenoid = new DoubleSolenoid(7, 0, 1);
 
     driveBackLeft->SetControlMode(CANSpeedController::kPercentVbus);
     driveBackRight->SetControlMode(CANSpeedController::kPercentVbus);
@@ -73,11 +71,13 @@ void RobotMap::init() {
 
     // Set the FRONT talons to follow the BACK talons
     driveFrontLeft->SetControlMode(CANSpeedController::kFollower);
-    driveFrontLeft->SetVoltageRampRate(0.0);
+    // Don't mess with ramp rate and PID control at the same time
+    // driveFrontLeft->SetVoltageRampRate(20.0);
     driveFrontLeft->Set(4);
     driveFrontLeft->EnableControl();
     driveFrontRight->SetControlMode(CANSpeedController::kFollower);
-    driveFrontRight->SetVoltageRampRate(20.0);
+    // Don't mess with ramp rate and PID control at the same time
+    // driveFrontRight->SetVoltageRampRate(20.0);
     driveFrontRight->Set(2);
     driveFrontRight->EnableControl();
 

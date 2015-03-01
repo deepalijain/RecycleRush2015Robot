@@ -139,6 +139,8 @@ void Robot::UpdateDashboardPeriodic() {
 			SmartDashboard::PutNumber("CAN Front Left Fault", RobotMap::driveFrontLeft->GetFaults());
 			SmartDashboard::PutNumber("Left Encoder Position", Robot::driveSubsystem->GetLeftEncoderPosition());
 			SmartDashboard::PutNumber("Right Encoder Position", Robot::driveSubsystem->GetRightEncoderPosition());
+			SmartDashboard::PutNumber("Right Talon Get", Robot::driveSubsystem->RightTalonGet());
+			SmartDashboard::PutNumber("Left Talon Get", Robot::driveSubsystem->LeftTalonGet());
 			SmartDashboard::PutNumber("DrivePID Left  Error",RobotMap::driveBackLeft->GetClosedLoopError());
 			SmartDashboard::PutNumber("DrivePID Right Error",RobotMap::driveBackRight->GetClosedLoopError());
 
