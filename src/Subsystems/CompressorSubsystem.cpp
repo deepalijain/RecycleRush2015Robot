@@ -19,7 +19,9 @@ CompressorSubsystem::CompressorSubsystem(int channel) : Subsystem("PneumaticSubs
 	printf("Compressor Subsystem Constructor called.\n");
 	workingCompressor = new Compressor(7);
     workingCompressor->SetClosedLoopControl(true);
-    workingCompressor->Start();
+    // on the testBot, keep the compressor off until we need it
+    if (!RobotMap::testBot) workingCompressor->Start();
+    else workingCompressor->Stop();
 }
 
 void CompressorSubsystem::InitDefaultCommand() {

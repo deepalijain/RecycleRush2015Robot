@@ -15,10 +15,13 @@ private:
 	void SaveParams();
 	std::vector<std::string> comments;
 public:
+	static int version;
 	static double driveP;
 	static double driveI;
 	static double driveD;
 	static double driveF;
+	static int driveIZone;
+	static double driveRampRate;
 	static double drivePIDDistance;
 
 	static double elevatorP;

@@ -16,6 +16,8 @@ double Parameters::driveP;
 double Parameters::driveI;
 double Parameters::driveD;
 double Parameters::driveF;
+int Parameters::driveIZone;			// ticks
+double Parameters::driveRampRate;	// volts per second
 double Parameters::drivePIDDistance;
 
 double Parameters::elevatorP;
@@ -23,6 +25,8 @@ double Parameters::elevatorI;
 double Parameters::elevatorD;
 double Parameters::elevatorF;
 double Parameters::elevatorPIDDistance;
+
+int Parameters::version;
 
 Parameters::Parameters() {
 
@@ -35,7 +39,10 @@ void Parameters::ShowPIDParams()
 		SmartDashboard::PutNumber("driveI", driveI);
 		SmartDashboard::PutNumber("driveD", driveD);
 		SmartDashboard::PutNumber("driveF", driveF);
+		SmartDashboard::PutNumber("driveIZone", driveIZone);
+		SmartDashboard::PutNumber("driveRampRate", driveRampRate);
 		SmartDashboard::PutNumber("drivePIDDistance", drivePIDDistance);
+
 
 		SmartDashboard::PutNumber("elevatorP", elevatorP);
 		SmartDashboard::PutNumber("elevatorI", elevatorI);
@@ -51,26 +58,40 @@ void Parameters::ShowPIDParams()
 void Parameters::UpdateDrivePIDParams()
 {
 	bool needsUpdate = false;
-	double ldriveP, ldriveI, ldriveD, ldriveF;
+	double ldriveP, ldriveI, ldriveD, ldriveF, ldriveIZone, ldriveRampRate,
+		   ldrivePIDDistance;
 
-	ldriveP = SmartDashboard::GetNumber("driveP");
-	ldriveI = SmartDashboard::GetNumber("driveI");
-	ldriveD = SmartDashboard::GetNumber("driveD");
-	ldriveF = SmartDashboard::GetNumber("driveF");
-	drivePIDDistance = SmartDashboard::GetNumber("drivePIDDistance");
+	try {
+		ldriveP = SmartDashboard::GetNumber("driveP");
+		ldriveI = SmartDashboard::GetNumber("driveI");
+		ldriveD = SmartDashboard::GetNumber("driveD");
+		ldriveF = SmartDashboard::GetNumber("driveF");
+		ldriveIZone = SmartDashboard::GetNumber("driveIZone");
+		ldriveRampRate = SmartDashboard::GetNumber("driveRampRate");
+		ldrivePIDDistance = SmartDashboard::GetNumber("drivePIDDistance");
 
-	needsUpdate |= (ldriveP != driveP);
-	needsUpdate |= (ldriveI != driveI);
-	needsUpdate |= (ldriveD != driveD);
-	needsUpdate |= (ldriveF != driveF);
+		needsUpdate |= (ldriveP != driveP);
+		needsUpdate |= (ldriveI != driveI);
+		needsUpdate |= (ldriveD != driveD);
+		needsUpdate |= (ldriveF != driveF);
+		needsUpdate |= ((int)ldriveIZone != driveIZone);
+		needsUpdate |= (ldriveRampRate != driveRampRate);
+		needsUpdate |= (ldrivePIDDistance != drivePIDDistance);
 
-	driveP = ldriveP;
-	driveI = ldriveI;
-	driveD = ldriveD;
-	driveF = ldriveF;
-	if (needsUpdate) {
-		SaveParams();
-		ShowPIDParams();
+		driveP = ldriveP;
+		driveI = ldriveI;
+		driveD = ldriveD;
+		driveF = ldriveF;
+		driveIZone = ldriveIZone;
+		driveRampRate = ldriveRampRate;
+		drivePIDDistance = ldrivePIDDistance;
+		if (needsUpdate) {
+			SaveParams();
+			ShowPIDParams();
+		}
+	}
+	catch (int e) {
+		printf("UpdateDrivePIDParams threw an exception\n");
 	}
 }
 
@@ -141,20 +162,22 @@ double Parameters::getDouble(FILE *pFile)
 	*Comment = comment;
 	comments.push_back(*Comment);
 	return val;
-	return val;
 }
 
 void Parameters::GetParams() {
 	FILE *pFile = fopen("/home/lvuser/params2015.txt", "r");
 	if (NULL != pFile){
-		int version = getInt(pFile);
+		version = getInt(pFile);
 
-		if (1 == version) {
+		if (version < 4) {
 			// drive PID params
 			driveP = getDouble(pFile);
 			driveI = getDouble(pFile);
 			driveD = getDouble(pFile);
 			driveF = getDouble(pFile);
+			driveIZone = getInt(pFile);
+			driveRampRate = getDouble(pFile);
+			drivePIDDistance = getDouble(pFile);
 
 			// elevator PID params
 			elevatorP = getDouble(pFile);
@@ -164,8 +187,8 @@ void Parameters::GetParams() {
 		}
 		fclose(pFile);
 		ShowPIDParams();	// show on Dashboard when loaded
-		printf("Loaded params\n  %f %f %f %f\n  %f %f %f %f\n",
-			driveP, driveI, driveD, driveF,
+		printf("Loaded params\n    %f %f %f %f %d %f %f \n  %f %f %f %f\n",
+			driveP, driveI, driveD, driveF, driveIZone, driveRampRate, drivePIDDistance,
 			elevatorP, elevatorI, elevatorD, elevatorF);
 	}
 }
@@ -176,20 +199,24 @@ void Parameters::SaveParams() {
 	FILE *pFile = fopen("/home/lvuser/params2015.txt", "w");
 	if (NULL != pFile)
 	{
-		fprintf(pFile, "%d\t%s\n", 1, comments[0].c_str());
-		fprintf(pFile, "%f\t%s\n", driveP, comments[1].c_str());
-		fprintf(pFile, "%f\t%s\n", driveI, comments[2].c_str());
-		fprintf(pFile, "%f\t%s\n", driveD, comments[3].c_str());
-		fprintf(pFile, "%f\t%s\n", driveF, comments[5].c_str());
+		int i = 0;
+		fprintf(pFile, "%d\t%s\n", 3, comments[i++].c_str());
+		fprintf(pFile, "%f\t%s\n", driveP, comments[i++].c_str());
+		fprintf(pFile, "%f\t%s\n", driveI, comments[i++].c_str());
+		fprintf(pFile, "%f\t%s\n", driveD, comments[i++].c_str());
+		fprintf(pFile, "%f\t%s\n", driveF, comments[i++].c_str());
+		fprintf(pFile, "%d\t%s\n", driveIZone, (version > 2) ? "" : comments[i++].c_str());
+		fprintf(pFile, "%f\t%s\n", driveRampRate, (version > 2) ? "" : comments[i++].c_str());
+		fprintf(pFile, "%f\t%s\n", drivePIDDistance, comments[i++].c_str());
 
-		fprintf(pFile, "%f\t%s\n", elevatorP, comments[5].c_str());
-		fprintf(pFile, "%f\t%s\n", elevatorI, comments[6].c_str());
-		fprintf(pFile, "%f\t%s\n", elevatorD, comments[7].c_str());
-		fprintf(pFile, "%f\t%s\n", elevatorF, comments[8].c_str());
+		fprintf(pFile, "%f\t%s\n", elevatorP, comments[i++].c_str());
+		fprintf(pFile, "%f\t%s\n", elevatorI, comments[i++].c_str());
+		fprintf(pFile, "%f\t%s\n", elevatorD, comments[i++].c_str());
+		fprintf(pFile, "%f\t%s\n", elevatorF, comments[i++].c_str());
 
 		fclose(pFile);
-		printf("Saved params\n  %f %f %f %f\n  %f %f %f %f\n",
-			driveP, driveI, driveD, driveF,
+		printf("Saved params\n  %f %f %f %f %d %f %f \n  %f %f %f %f\n",
+			driveP, driveI, driveD, driveF, driveIZone, driveRampRate, drivePIDDistance,
 			elevatorP, elevatorI, elevatorD, elevatorF);
 	}
 	else printf("Couldn't open params2015.txt for write.\n");
