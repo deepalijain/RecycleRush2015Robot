@@ -82,12 +82,8 @@ void DriveSubsystem::SetPIDDistance(double left, double right)
 // if the last five closed loop errors (where each error is the sum of left + right)
 // didn't change, then we can consider the PID loop to have completed its task
 bool DriveSubsystem::IsFinished() {
-	int left = backLeftMotor->GetClosedLoopError();
-	int right = backRightMotor->GetClosedLoopError();
-	//int leftsign = left < 0 ? -1 : 1;
-	//int rightsign = right < 0 ? -1 : 1;
-	left = abs(left);
-	right = abs(right);
+	int left = abs(backLeftMotor->GetClosedLoopError());
+	int right = abs(backRightMotor->GetClosedLoopError());
 
 	int closedLoopError = left + right;
 	if (previousClosedLoopError - closedLoopError < 3) {
@@ -97,7 +93,6 @@ bool DriveSubsystem::IsFinished() {
 	previousClosedLoopError = closedLoopError;
 	return false;
 }
-
 
 void DriveSubsystem::DriveJoysticks(double y, double x)
 {
