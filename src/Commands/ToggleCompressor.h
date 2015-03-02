@@ -8,8 +8,7 @@
 // update. Deleting the comments indicating the section will prevent
 // it from being updated in the future.
 
-#ifndef TOGGLESOLENOIDCOMMAND_H
-#define TOGGLESOLENOIDCOMMAND_H
+#pragma once
 
 #include "Commands/Subsystem.h"
 #include "../Robot.h"
@@ -29,4 +28,5 @@ public:
 	virtual void Interrupted();
 };
 
-#endif
+
+

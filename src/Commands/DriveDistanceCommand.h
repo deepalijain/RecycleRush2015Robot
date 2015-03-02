@@ -39,10 +39,21 @@
  */
 class DriveDistanceCommand: public Command {
 private:
-	int distance;
+	float distance; // requested distance in inches
 	bool isCommandDone;
-	float prevLeftEnc,prevRightEnc;
-	float distanceTraveledL;
+	float distanceError;
+	float voltageLeft = 0.0;
+	float voltageRight = 0.0;
+	float maxVoltage = 0.9;
+	float timeStep = 0.02;
+	float secondsToMax = 1.5;
+	float voltageStep = maxVoltage/(secondsToMax/timeStep);
+	// To do: change wheelDiam to 6.0 for production robot
+	float wheelDiam = 4.0;
+	float distancePerRev = 3.1416*wheelDiam;
+	float inchesPerTick = distancePerRev/1024;
+	// If we're off by 1 inch, increase the voltage by 0.05
+	float voltageScale = 0.05;
 public:
 	DriveDistanceCommand(int dist);
 	virtual void Initialize();
@@ -50,6 +61,8 @@ public:
 	virtual bool IsFinished();
 	virtual void End();
 	virtual void Interrupted();
+	float distanceTravelledL;
+	float distanceTravelledR;
 };
 
 #endif

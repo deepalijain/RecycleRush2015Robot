@@ -13,6 +13,7 @@
 #include <exception>
 #include "Commands/DriveCommand.h"
 #include "Commands/DriveElevator.h"
+#include "Commands/DriveDistanceCommand.h"
 #include "Commands/PositionElevator.h"
 #include "Commands/DrivePID.h"
 
@@ -130,25 +131,31 @@ void Robot::UpdateDashboardPeriodic() {
 	try {
 		// Do this every 1/10th of a second, not more often for efficiency
 		if (Ticks++%5==0) {
-			Compressor* wC = compressorSubsystem->workingCompressor;
-			if (NULL!=wC) {
-				SmartDashboard::PutBoolean("CompEnabled", wC->Enabled());
-				SmartDashboard::PutNumber("CompCurrent", wC->GetCompressorCurrent());
-			}
 
-			SmartDashboard::PutNumber("CAN Front Left Fault", RobotMap::driveFrontLeft->GetFaults());
-			SmartDashboard::PutNumber("Left Encoder Position", Robot::driveSubsystem->GetLeftEncoderPosition());
-			SmartDashboard::PutNumber("Right Encoder Position", Robot::driveSubsystem->GetRightEncoderPosition());
-			SmartDashboard::PutNumber("Right Talon Get", Robot::driveSubsystem->RightTalonGet());
-			SmartDashboard::PutNumber("Left Talon Get", Robot::driveSubsystem->LeftTalonGet());
-			SmartDashboard::PutNumber("DrivePID Left  Error",RobotMap::driveBackLeft->GetClosedLoopError());
-			SmartDashboard::PutNumber("DrivePID Right Error",RobotMap::driveBackRight->GetClosedLoopError());
+		Compressor* wC = compressorSubsystem->workingCompressor;
+		if (NULL!=wC) {
+			SmartDashboard::PutBoolean("CompEnabled", wC->Enabled());
+			SmartDashboard::PutNumber("CompCurrent", wC->GetCompressorCurrent());
+		}
 
-			// CANTalon 1, which is the Elevator lead Talon, isn't present on the kit bot
-			if (!RobotMap::testBot) {
-				SmartDashboard::PutNumber("Elevator Encoder Position", Robot::elevator->GetEncoderPosition());
-				SmartDashboard::PutNumber("Elevator PID Error", RobotMap::elevatorMotor1->GetClosedLoopError());
-				SmartDashboard::PutNumber("Elevator Position", Robot::elevator->GetPosition());
+			parameters->ShowPIDParams();
+			try {
+				SmartDashboard::PutNumber("CAN Front Left Fault", RobotMap::driveFrontLeft->GetFaults());
+				SmartDashboard::PutNumber("Left Encoder Position", Robot::driveSubsystem->GetLeftEncoderPosition());
+				SmartDashboard::PutNumber("Right Encoder Position", Robot::driveSubsystem->GetRightEncoderPosition());
+				SmartDashboard::PutNumber("DrivePID Left  Error",RobotMap::driveBackLeft->GetClosedLoopError());
+				SmartDashboard::PutNumber("DrivePID Right Error",RobotMap::driveBackRight->GetClosedLoopError());
+
+				SmartDashboard::PutNumber("DriveDistanceCmd distL",((DriveDistanceCommand *)Robot::oi->driveDistanceCommand)->distanceTravelledL);
+				SmartDashboard::PutNumber("DriveDistanceCmd distR",((DriveDistanceCommand *)Robot::oi->driveDistanceCommand)->distanceTravelledR);
+				// CANTalon 1, which is the Elevator lead Talon, isn't present on the kit bot
+				if (!RobotMap::testBot) {
+					SmartDashboard::PutNumber("Elevator Encoder Position", Robot::elevator->GetEncoderPosition());
+					SmartDashboard::PutNumber("Elevator PID Error", RobotMap::elevatorMotor1->GetClosedLoopError());
+					SmartDashboard::PutNumber("Elevator Position", Robot::elevator->GetPosition());
+				}
+			} catch(int e) {
+				printf("SmartDashboard exception, post ShowPIDParams.\n");
 			}
 
 			SmartDashboard::PutNumber("PDP Temperature", pdp->GetTemperature());
