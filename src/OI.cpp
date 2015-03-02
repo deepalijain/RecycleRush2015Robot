@@ -42,18 +42,19 @@ OI::OI() {
 	if (!RobotMap::testBot) {
 		toteUp = new PositionElevator(1);
 		toteDown = new PositionElevator(-1);
-		joystickButton5 = new JoystickButton(joystick1, 5);
+		joystickButton5 = new JoystickButton(joystick1, 5); // Right bumper
 		joystickButton5->WhenPressed(toteUp);
-		joystickButton5 = new JoystickButton(joystick1, 6);
+		joystickButton5 = new JoystickButton(joystick1, 6); // Left bumper
 		joystickButton5->WhenPressed(toteDown);
 	}
-	joystickButton4 = new JoystickButton(joystick1, 4);
+
+	joystickButton4 = new JoystickButton(joystick1, 4);	// Y button
 	joystickButton4->WhenPressed(drivePID);
 
-	toggleArmFlapButton = new JoystickButton(joystick1, 7);
+	toggleArmFlapButton = new JoystickButton(joystick1, 7);  // back (old XBox)
 	toggleArmFlapButton->WhenPressed(toggleArmFlap);
 
-	toggleCompressorButton = new JoystickButton(joystick1, 8);
+	toggleCompressorButton = new JoystickButton(joystick1, 8); // Start button
 	toggleCompressorButton->WhenPressed(toggleCompressor);
 
 
