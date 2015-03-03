@@ -14,6 +14,9 @@ public:
 	virtual void Interrupted();
 	static void MoveElevatorUpdateParams();
 
+	static double ticksPerRotation;
+	static double m_curPos; //our position in tote counts
+
 private:
 	bool firstTime;
 
@@ -28,10 +31,8 @@ private:
 	static int targetFloor;
 
 	static double m_startPos;
-	static double m_curPos;		// our position in tote counts
 	static double m_targetPos;
 	static double encoderPos;
-	static double ticksPerRotation;
 	static double inchesPerTote;
 
 	static double wheelDiameter;

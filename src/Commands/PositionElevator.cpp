@@ -50,8 +50,12 @@ void PositionElevator::Initialize() {
 	SetInterruptible(true);
 	Robot::parameters->UpdateElevatorPIDParams();
 	// always make sure we're back in position control mode.
-	RobotMap::elevatorMotor1->SetControlMode(CANSpeedController::kPosition);
-	m_curPos = Robot::elevator->GetPosition();
+	if(!RobotMap::testBot){
+		RobotMap::elevatorMotor1->SetControlMode(CANSpeedController::kPosition);
+		m_curPos = Robot::elevator->GetPosition();
+	}else{
+		m_curPos = 0.0;
+	}
 
 	if (m_n == 0) {
 		elevatorPIDDistance = m_curPos;	// hold mode
@@ -73,18 +77,20 @@ void PositionElevator::Initialize() {
 	}
 	printf("PositionElevator current position=%1.0f, target position=%1.0f.\n",
 			m_curPos, elevatorPIDDistance);
-	Robot::elevator->SetHeight(elevatorPIDDistance);
+	if(!RobotMap::testBot)Robot::elevator->SetHeight(elevatorPIDDistance);
 }
+
+const int oneSimulatorTick = (5400/60) * PositionElevator::ticksPerRotation * (20/1000) ; //5400 rpm, 20 milliseconds in between Execute()s.
 
 // Called repeatedly when this Command is scheduled to run
 void PositionElevator::Execute() {
 	// On the production bot, nothing's here. The Talon's PID loop is doing all the work!
 	if(RobotMap::testBot){
-		//add something based on m_n and the ticks in between each execute
-		m_curPos += 5400/60*ticksPerRotation *.02*m_n;//5400 rpm
+		//If we're not at the target position, move there!
+		if( !( fabs( m_curPos - (targetFloor*ticksPerTote)) < oneSimulatorTick) ) m_curPos += oneSimulatorTick * m_n;
 
-		if(m_curPos<0)m_curPos=0;
-		if(m_curPos>1024*10)m_curPos=1024*10; // 10 revolutions
+		if (m_curPos<0) m_curPos=0;
+		if (m_curPos>1024*10) m_curPos=1024*10; // 10 revolutions
 	}
 }
 
@@ -102,7 +108,7 @@ bool PositionElevator::IsFinished() {
 
 // Called once after isFinished returns true
 void PositionElevator::End() {
-	RobotMap::elevatorMotor1->SetControlMode(CANSpeedController::kPercentVbus);
+	if (!RobotMap::testBot)RobotMap::elevatorMotor1->SetControlMode(CANSpeedController::kPercentVbus);
 	Robot::driveElevatorCommand->Start();
 }
 

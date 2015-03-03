@@ -36,14 +36,14 @@ OI::OI() {
 	toggleArmFlap = new ToggleFlapsCommand();
 	toggleCompressor = new ToggleCompressor();
 
-	if (!RobotMap::testBot) {
+	//if (!RobotMap::testBot) {
 		toteUp = new PositionElevator(1);
 		toteDown = new PositionElevator(-1);
 		joystickButton5 = new JoystickButton(joystick1, 5);		// Right bumper
 		joystickButton5->WhenPressed(toteUp);
 		joystickButton5 = new JoystickButton(joystick1, 6);		// Left bumpter
 		joystickButton5->WhenPressed(toteDown);
-	}
+	//}
 	joystickButton4 = new JoystickButton(joystick1, 4);			// Y button
 	joystickButton4->WhenPressed(drivePID);
 
