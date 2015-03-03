@@ -81,7 +81,7 @@ void PositionElevator::Initialize() {
 // Called repeatedly when this Command is scheduled to run
 void PositionElevator::Execute() {
 	// On the production bot, nothing's here. The Talon's PID loop is doing all the work!
-	if(RobotMap::testBot) {
+	if (RobotMap::testBot) {
 		// Zach's version. I don't get where the 5400 rpm came from -cbf
 		// 5400 rpm, 20 milliseconds in between Execute() = about 1843 ticks per
 		//const int oneSimulatorTick = (5400/60) * PositionElevator::ticksPerRotation * (20/1000);
