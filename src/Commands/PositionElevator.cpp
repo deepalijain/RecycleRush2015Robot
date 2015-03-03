@@ -50,11 +50,9 @@ void PositionElevator::Initialize() {
 	SetInterruptible(true);
 	Robot::parameters->UpdateElevatorPIDParams();
 	// always make sure we're back in position control mode.
-	if(!RobotMap::testBot){
+	if (!RobotMap::testBot) {
 		RobotMap::elevatorMotor1->SetControlMode(CANSpeedController::kPosition);
 		m_curPos = Robot::elevator->GetPosition();
-	}else{
-		m_curPos = 0.0;
 	}
 
 	if (m_n == 0) {
@@ -63,9 +61,9 @@ void PositionElevator::Initialize() {
 	else {
 		// if we consider tote positions like floors, then we compute which
 		// floor the elevator might be just above. In case we're at an exact
-		// floor, the +0.5 below biases us up. (So if we're within 5 ticks of
+		// floor, the -3.0 ticks biases us up. (So if we're within 3 ticks of
 		// floor 1, we act like we're at floor 1, not floor 0).
-		int curFloor = ((m_curPos+5.0*m_n)/ticksPerTote);
+		int curFloor = ((m_curPos-3.0*m_n)/ticksPerTote);
 		targetFloor = curFloor += m_n;
 
 		printf("PositionElevator %d, at %d, moving to %d\n", (int)m_n, curFloor, targetFloor);
@@ -80,17 +78,24 @@ void PositionElevator::Initialize() {
 	if(!RobotMap::testBot)Robot::elevator->SetHeight(elevatorPIDDistance);
 }
 
-const int oneSimulatorTick = (5400/60) * PositionElevator::ticksPerRotation * (20/1000) ; //5400 rpm, 20 milliseconds in between Execute()s.
-
 // Called repeatedly when this Command is scheduled to run
 void PositionElevator::Execute() {
 	// On the production bot, nothing's here. The Talon's PID loop is doing all the work!
-	if(RobotMap::testBot){
+	if(RobotMap::testBot) {
+		// Zach's version. I don't get where the 5400 rpm came from -cbf
+		// 5400 rpm, 20 milliseconds in between Execute() = about 1843 ticks per
+		//const int oneSimulatorTick = (5400/60) * PositionElevator::ticksPerRotation * (20/1000);
 		//If we're not at the target position, move there!
-		if( !( fabs( m_curPos - (targetFloor*ticksPerTote)) < oneSimulatorTick) ) m_curPos += oneSimulatorTick * m_n;
+		// if( !(fabs(m_curPos-(targetFloor*ticksPerTote)) < oneSimulatorTick) ) m_curPos += oneSimulatorTick * m_n;
 
-		if (m_curPos<0) m_curPos=0;
-		if (m_curPos>1024*10) m_curPos=1024*10; // 10 revolutions
+		// calculate how much we should move per clock cycle (every 1/50 second)
+		// to move a tote's distance in two seconds
+		const int ticksPerCycle = ((ticksPerInch * inchesPerTote) / 50) / 2;
+		// only continue moving if we're more than two cycles away from our goal
+		if (fabs(m_curPos - elevatorPIDDistance) > 2*ticksPerCycle) {
+			m_curPos += ticksPerCycle * m_n;
+			if (m_curPos < 0) m_curPos = 0;
+		}
 	}
 }
 
