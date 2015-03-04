@@ -48,6 +48,9 @@ public:
 	static ArmFlaps* armFlaps;
 	static TotePusher* totePusher;
 	static CompressorSubsystem* compressorSubsystem;
+	static IMAQdxSession session;
+	static Image *frame;
+	static IMAQdxError imaqError;
 
 //	static double drivePIDDistance;
 
@@ -60,7 +63,10 @@ public:
 	virtual void TeleopInit();
 	virtual void TeleopPeriodic();
 	virtual void TestPeriodic();
-	virtual void UpdateDashboardPeriodic();
-	virtual void DisplaySensorData();
+	void UpdateDashboardPeriodic();
+	void DisplaySensorData();
+	void CameraStart();
+	void CameraFeed();
+	void CameraStop();
 };
 #endif
