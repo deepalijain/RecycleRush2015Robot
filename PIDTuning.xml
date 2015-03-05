@@ -1,7 +1,7 @@
 <xml version="1.0">
 <dashboard>
 	<widget field="armFlapUp" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="236" y="399"/>
+		<location x="251" y="82"/>
 	</widget>
 	<widget field="ElevatorSim Pos" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
 		<location x="368" y="376"/>
@@ -19,7 +19,9 @@
 		<location x="375" y="23"/>
 	</widget>
 	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.WebcamViewerExtension">
-		<location x="260" y="66"/>
+		<location x="659" y="7"/>
+		<width>563</width>
+		<height>445</height>
 	</static-widget>
 	<widget field="elevatorPIDDistance" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
 		<location x="368" y="0"/>

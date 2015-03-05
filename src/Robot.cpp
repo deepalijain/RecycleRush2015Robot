@@ -214,7 +214,7 @@ void Robot::CameraFeed() {
 	// let's only do this every 1/10 second to avoid excess cpu & network traffic
 	// Ticks+2 to avoid doing it on same cycle as SmartDashBoard updates
 	if (session!=0 && (Ticks+2)%5==0) {
-		IMAQdxGrab(session, frame, true, NULL);
+		IMAQdxGrab(session, frame, false, NULL);
 		if(imaqError != IMAQdxErrorSuccess) {
 			imaqErrorString = std::to_string((long)imaqError);
 			DriverStation::ReportError("IMAQdxGrab error: " + imaqErrorString + "\n");
@@ -229,13 +229,19 @@ void Robot::CameraFeed() {
 
 void Robot::CameraStop() {
     // stop image acquisition
-	//const DrawTextOptions options = {"Arial", 12, 0, 0, 0, 0, IMAQ_CENTER, IMAQ_INVERT};
-	//int fontUsed;
-	//imaqDrawTextOnImage(frame, frame, {120, 80}, "X", &options, &fontUsed);
-	imaqDrawShapeOnImage(frame, frame, { 100, 100, 160, 160 }, DrawMode::IMAQ_DRAW_VALUE, ShapeMode::IMAQ_SHAPE_OVAL, 0.5f);
-	CameraServer::GetInstance()->SetImage(frame);
-	IMAQdxStopAcquisition(session);
-	IMAQdxCloseCamera(session);
+	if (0!=session) {
+		// Had trouble with imaqDrawTextOnImage
+		//const DrawTextOptions options = {"Arial", 12, 0, 0, 0, 0, IMAQ_CENTER, IMAQ_INVERT};
+		//int fontUsed;
+		//imaqDrawTextOnImage(frame, frame, {120, 80}, "X", &options, &fontUsed);
+		if (NULL!=frame) {
+			// Would really like to make this semi-transparent, but not apparent how.
+			imaqDrawShapeOnImage(frame, frame, { 100, 100, 160, 160 }, DrawMode::IMAQ_DRAW_VALUE, ShapeMode::IMAQ_SHAPE_OVAL,3.0f);
+			CameraServer::GetInstance()->SetImage(frame);
+		}
+		IMAQdxStopAcquisition(session);
+		IMAQdxCloseCamera(session);
+	}
 }
 
 void Robot::DisplaySensorData() {
