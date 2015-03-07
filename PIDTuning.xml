@@ -1,7 +1,31 @@
 <xml version="1.0">
 <dashboard>
+	<widget field="pickupMotor set to" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="368" y="138"/>
+	</widget>
+	<widget field="Elevator Position" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="368" y="115"/>
+	</widget>
+	<widget field="Elevator PID Error" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="430" y="92"/>
+	</widget>
+	<widget field="Elevator Lead-Volts" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="430" y="69"/>
+	</widget>
+	<widget field="Elevator Lead-Status" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="430" y="453"/>
+	</widget>
+	<widget field="Elevator Lead-Amps" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="368" y="46"/>
+	</widget>
+	<widget field="Elevator Encoder Position" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="736"/>
+	</widget>
+	<widget field="ElClosedLoopRR" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="713"/>
+	</widget>
 	<widget field="armFlapUp" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="236" y="399"/>
+		<location x="251" y="82"/>
 	</widget>
 	<widget field="ElevatorSim Pos" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
 		<location x="368" y="376"/>
@@ -19,7 +43,9 @@
 		<location x="375" y="23"/>
 	</widget>
 	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.WebcamViewerExtension">
-		<location x="260" y="66"/>
+		<location x="659" y="7"/>
+		<width>563</width>
+		<height>445</height>
 	</static-widget>
 	<widget field="elevatorPIDDistance" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
 		<location x="368" y="0"/>
