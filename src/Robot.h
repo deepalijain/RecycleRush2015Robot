@@ -48,9 +48,10 @@ public:
 	static ArmFlaps* armFlaps;
 	static TotePusher* totePusher;
 	static CompressorSubsystem* compressorSubsystem;
-	static IMAQdxSession session;
-	static Image *frame;
-	static IMAQdxError imaqError;
+	static IMAQdxSession session[2];
+	static Image *frame[2] ;
+	static IMAQdxError imaqError[2];
+	static uInt32 cameraCount;
 
 //	static double drivePIDDistance;
 
@@ -65,8 +66,9 @@ public:
 	virtual void TestPeriodic();
 	void UpdateDashboardPeriodic();
 	void DisplaySensorData();
-	void CameraStart();
-	void CameraFeed();
-	void CameraStop();
+	int CameraCount();
+	void CameraStart(int i);
+	void CameraFeed(int i);
+	void CameraStop(int i);
 };
 #endif
