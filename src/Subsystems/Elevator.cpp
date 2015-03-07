@@ -40,22 +40,22 @@ Elevator::Elevator() : Subsystem("Elevator") {
     
 void Elevator::SetHeight(double height)
 {
-	Robot::parameters->UpdateElevatorPIDParams();
-	elevatorP = SmartDashboard::GetNumber("elevatorP");
-	elevatorI = SmartDashboard::GetNumber("elevatorI");
-	elevatorD = SmartDashboard::GetNumber("elevatorD");
-	elevatorF = SmartDashboard::GetNumber("elevatorF");
-	elevatorRampRateCloseLoop = SmartDashboard::GetNumber("ElClosedLoopRR");
+	if (!RobotMap::testBot) {
+		Robot::parameters->UpdateElevatorPIDParams();
+		elevatorP = SmartDashboard::GetNumber("elevatorP");
+		elevatorI = SmartDashboard::GetNumber("elevatorI");
+		elevatorD = SmartDashboard::GetNumber("elevatorD");
+		elevatorF = SmartDashboard::GetNumber("elevatorF");
+		elevatorRampRateCloseLoop = SmartDashboard::GetNumber("ElClosedLoopRR");
 
-	RobotMap::elevatorMotor1->SetVoltageRampRate(elevatorRampRateCloseLoop);
-	RobotMap::elevatorMotor1->SetPID(elevatorP,elevatorI,elevatorD,elevatorF);
-	RobotMap::elevatorMotor1->ClearIaccum();
+		RobotMap::elevatorMotor1->SetVoltageRampRate(elevatorRampRateCloseLoop);
+		RobotMap::elevatorMotor1->SetPID(elevatorP,elevatorI,elevatorD,elevatorF);
+		RobotMap::elevatorMotor1->ClearIaccum();
 
-	printf("PID Elevator params distance=%1.2f, elevatorP=%1.3f, elevatorI=%1.3f, elevatorD=%1.3f, elevatorF=%1.3f.\n",
-			height, elevatorP, elevatorI, elevatorD, elevatorF);
-
+		printf("PID Elevator params distance=%1.2f, elevatorP=%1.3f, elevatorI=%1.3f, elevatorD=%1.3f, elevatorF=%1.3f.\n",
+				height, elevatorP, elevatorI, elevatorD, elevatorF);
+	}
 	RobotMap::elevatorMotor1->Set(height);
-
 }
 
 // Only valid on the test bot. On the real elevator, we actually move
