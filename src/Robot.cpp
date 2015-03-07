@@ -59,14 +59,11 @@ void Robot::RobotInit() {
 		oi = new OI();
 		driveCommand = new DriveCommand();
 
-		// Don't init Elevator commands on the kit bot
-		if (!RobotMap::testBot) {
-			// PositionElevator(0) means maintain current position, which is why we
-			// use the word "hold" here. Other instances of positionElevator have
-			// parameters of 1 or -1
-			holdElevatorCommand = new PositionElevator(0);
-			driveElevatorCommand = new DriveElevator();
-		}
+		// PositionElevator(0) means maintain current position, which is why we
+		// use the word "hold" here. Other instances of positionElevator have
+		// parameters of 1 or -1
+		holdElevatorCommand = new PositionElevator(0);
+		driveElevatorCommand = new DriveElevator();
 
 		lw = LiveWindow::GetInstance();
 
