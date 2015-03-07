@@ -159,12 +159,9 @@ void Robot::UpdateDashboardPeriodic() {
 				SmartDashboard::PutNumber("DriveDistanceCmd distR",((DriveDistanceCommand *)Robot::oi->driveDistanceCommand)->distanceTravelledR);
 				// CANTalon 1, which is the Elevator lead Talon, isn't present on the kit bot
 				if (!RobotMap::testBot) {
-					SmartDashboard::PutNumber("Elevator Encoder Position", Robot::elevator->GetEncoderPosition());
+					SmartDashboard::PutNumber("Elevator Encoder Position", Robot::elevator->GetPosition());
 					SmartDashboard::PutNumber("Elevator PID Error", RobotMap::elevatorMotor1->GetClosedLoopError());
 					SmartDashboard::PutNumber("Elevator Position", Robot::elevator->GetPosition());
-				}else{
-
-					SmartDashboard::PutNumber("ElevatorSim Pos",((PositionElevator *)Robot::oi->toteDown)->m_curPos);
 				}
 			} catch(int e) {
 				printf("SmartDashboard exception, post ShowPIDParams.\n");

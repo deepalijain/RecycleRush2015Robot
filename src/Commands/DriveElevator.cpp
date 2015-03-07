@@ -29,9 +29,14 @@ void DriveElevator::Initialize() {
 void DriveElevator::Execute() {
 	joystickup = Robot::oi->joystick1->GetRawAxis(3);
 	joystickdown = Robot::oi->joystick1->GetRawAxis(2);
-	// elevatorMotor1 is upside down and not invertable, not being a drive,
-	// so we simply take the negative of what would be expected here
-	Robot::elevator->elevatorMotor1->Set(joystickdown - joystickup);
+	if (RobotMap::testBot) {
+		Robot::elevator->Move((joystickdown - joystickup)*Robot::elevator->ticksPerCycle);
+	}
+	else {
+		// elevatorMotor1 is upside down and not invertable, not being a drive,
+		// so we simply take the negative of what would be expected here
+		Robot::elevator->elevatorMotor1->Set(joystickdown - joystickup);
+	}
 }
 
 // Make this return true when this Command no longer needs to run execute()

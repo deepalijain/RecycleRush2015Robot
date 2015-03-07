@@ -12,10 +12,11 @@ public:
 	virtual bool IsFinished();
 	virtual void End();
 	virtual void Interrupted();
-	static void MoveElevatorUpdateParams();
+	static void UpdateParams();
 
-	static double ticksPerRotation;
-	static double m_curPos; //our position in tote counts
+	double ticksPerRotation;
+	//static double m_curPos; //our position in tote counts
+	Elevator *elevator;
 
 private:
 	bool firstTime;
@@ -26,20 +27,10 @@ private:
 	// -1 - elevator down command (one floor per press)
 	int m_n;
 
-	// tergetFloor is how we keep track of multiple presses
-	// for each press targetFloor += m_n
+	// tergetFloor is how we keep track of multiple presses for each press targetFloor
+	// += m_n. This is legitimately a static, since all instances of PositionElevator
+	// need to share the floor
 	static int targetFloor;
-
-	static double m_startPos;
-	static double m_targetPos;
-	static double encoderPos;
-	static double inchesPerTote;
-
-	static double wheelDiameter;
-	static double inchesPerRotation;
-	static double ticksPerInch;
-	static double ticksPerTote;
-	static double elevatorSpeed;
 };
 
 
