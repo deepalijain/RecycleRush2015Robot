@@ -23,15 +23,16 @@
  */
 class ToggleFlapsCommand: public Command {
 public:
-	ToggleFlapsCommand();
+	ToggleFlapsCommand(int i);
 	virtual void Initialize();
 	virtual void Execute();
 	virtual bool IsFinished();
 	virtual void End();
 	virtual void Interrupted();
+	static bool armFlapUp;
 
 private:
-	bool armFlapUp = true;
+	int commandType;	// 0 = toggle, +1 open (widen), -1 close (narrow)
 };
 
 #endif

@@ -22,7 +22,7 @@ PushTote::PushTote() {
 
 // Called just before this Command runs the first time
 void PushTote::Initialize() {
-	
+	count = 0;
 }
 
 // Called repeatedly when this Command is scheduled to run
@@ -30,8 +30,8 @@ void PushTote::Execute() {
 	if (count == 0) {
 		Robot::totePusher->ExtendPusher();
 	}
-	else if(count <= limit) {
-		printf("totePusher stay extended");
+	else if (count <= limit) {
+		printf("totePusher extend");
 	}
 	else {
 		Robot::totePusher->RetractPusher();
@@ -47,7 +47,7 @@ bool PushTote::IsFinished() {
 
 // Called once after isFinished returns true
 void PushTote::End() {
-	count = 0;
+	printf("totePusher retracted");
 	finish = false;
 }
 

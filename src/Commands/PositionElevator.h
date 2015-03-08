@@ -6,7 +6,7 @@
 
 class PositionElevator: public Command {
 public:
-	PositionElevator(int n);
+	PositionElevator(int n, bool trashcan);
 	virtual void Initialize();
 	virtual void Execute();
 	virtual bool IsFinished();
@@ -19,18 +19,20 @@ public:
 	Elevator *elevator;
 
 private:
-	bool firstTime;
-
 	// m_n tells us which variant of PositionElevator we are:
 	//  0 - hold position (using PID control)
 	//  1 - elevator up command (one floor per press)
 	// -1 - elevator down command (one floor per press)
-	int m_n;
+	int commandDirection;
+
+	// true if we're an instance for the trachcan buttons,
+	// false if we're the tote version
+	bool trashcan;
 
 	// tergetFloor is how we keep track of multiple presses for each press targetFloor
 	// += m_n. This is legitimately a static, since all instances of PositionElevator
 	// need to share the floor
-	static int targetFloor;
+	static int targetIndex;
 };
 
 

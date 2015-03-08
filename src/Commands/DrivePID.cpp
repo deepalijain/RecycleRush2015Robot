@@ -43,9 +43,9 @@ void DrivePID::Execute() {
 bool DrivePID::IsFinished() {
 	double y = Robot::oi->joystick1->GetY();
 	double x = Robot::oi->joystick1->GetRawAxis(4);
-	if(fabs(y) > 0.1 || fabs(x) > 0.1)
+	if(fabs(y) > 0.15 || fabs(x) > 0.15)
 	{
-		printf("Drive PID terminated y=%f, x=%f.\n", y, x);
+		printf("Drive PID terminated by joystick y=%f, x=%f.\n", y, x);
 		return true;
 	}
 	if (Robot::driveSubsystem->IsFinished()) {
@@ -65,9 +65,7 @@ bool DrivePID::IsFinished() {
 void DrivePID::End() {
 	RobotMap::driveBackLeft->SetControlMode(CANSpeedController::kPercentVbus);
 	RobotMap::driveBackRight->SetControlMode(CANSpeedController::kPercentVbus);
-
 	Robot::driveCommand->Start();
-
 }
 
 // Called when another command which requires one or more of the same

@@ -13,6 +13,7 @@
 #include "Commands/Subsystem.h"
 #include "WPILib.h"
 #include "ctre/CanTalonSRX.h"
+#define LENGTH(x) (sizeof(x)/sizeof(x[0]))
 
 /**
  *
@@ -41,18 +42,33 @@ public:
 	void ArmFlapDown();
 	double GetEncoderPosition();
 	double GetPosition();
+	void MoveByTote(int commandDirection);
+	void MoveCan(int commandDirection);
+
 	void SetHeight(double height);
 	void Move(double n);
+
+	int elevatorIndex;
+
+	double elevatorHeightsTotes[7];
+	double elevatorHeightsCans[5];
 
 	double ticksPerRotation;
 	double m_startPos;
 	double m_targetPos;
+
 	double inchesPerTote;
+	double inchesPerCanOffset;
+
 	double wheelDiameter;
 	double inchesPerRotation;
 	double ticksPerInch;
+
 	double ticksPerTote;
+	double ticksPerCanOffset;
+
 	double ticksPerCycle;	// testBot only
+
 };
 
 

@@ -32,10 +32,15 @@ public:
 	Command *driveDistanceCommand;
 	Command *driveCommand;
 	Command *toggleArmFlap;
+	Command *armsUp;	// open, widen
+	Command *armsDown;	// close, narrow
 	Command *toteUp;
 	Command *toteDown;
+	Command *canUp;
+	Command *canDown;
 	Command *drivePID;
 	Command *toggleCompressor;
+	Command *pushTote;
 
 	OI();
  

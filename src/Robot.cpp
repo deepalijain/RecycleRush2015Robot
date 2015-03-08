@@ -62,7 +62,7 @@ void Robot::RobotInit() {
 		// PositionElevator(0) means maintain current position, which is why we
 		// use the word "hold" here. Other instances of positionElevator have
 		// parameters of 1 or -1
-		holdElevatorCommand = new PositionElevator(0);
+		holdElevatorCommand = new PositionElevator(0, false);
 		driveElevatorCommand = new DriveElevator();
 
 		lw = LiveWindow::GetInstance();
