@@ -30,29 +30,30 @@ Elevator::Elevator() : Subsystem("Elevator") {
 	ticksPerTote = ticksPerInch * inchesPerTote;
 
 	inchesPerCanOffset = 21.0;
-	ticksPerCanOffset = ticksPerInch * inchesPerCanOffset;
+	//ticksPerCanOffset = ticksPerInch * inchesPerCanOffset;
 
 	//Define elevator heights for lifting totes
+	printf("Elevator heights ----------------------------------------------------\n");
 	elevatorHeightsTotes[0] = 0.0;
-	elevatorHeightsTotes[1] = ticksPerInch * 4.0;
-	printf("elevatorHeightsTotes[0] = %f\nelevatorHeightsTotes[1] = %f\n",
+	elevatorHeightsTotes[1] = round(ticksPerInch * 4.0);
+	printf("   elevatorHeightsTotes[0] = %1.2f\n   elevatorHeightsTotes[1] = %1.2f\n",
 			elevatorHeightsTotes[0], elevatorHeightsTotes[1]);
 
 	for(int i=2; i!=LENGTH(elevatorHeightsTotes); i++) {
-		elevatorHeightsTotes[i] = (i - 1) * ticksPerTote + elevatorHeightsTotes[1];
-		printf("elevatorHeightsTotes[%d] = %f\n", i, elevatorHeightsTotes[i]);
+		elevatorHeightsTotes[i] = round((i - 1) * ticksPerTote + elevatorHeightsTotes[1]);
+		printf("   elevatorHeightsTotes[%d] = %1.2f\n", i, elevatorHeightsTotes[i]);
 	}
 
 	//Define elevator heights for lifting cans
 
 	elevatorHeightsCans[0] = 0.0;
-	elevatorHeightsCans[1] = ticksPerInch * (4.0 + inchesPerCanOffset);
-	printf("elevatorHeightsCans[0] = %f\elevatorHeightsCans[1] = %f\n",
+	elevatorHeightsCans[1] = round(ticksPerInch * (4.0 + inchesPerCanOffset));
+	printf("   elevatorHeightsCans[0] = %1.2f\n   elevatorHeightsCans[1] = %1.2f\n",
 			elevatorHeightsCans[0], elevatorHeightsCans[1]);
 
-	for(int i = 2; i != LENGTH(elevatorHeightsTotes); i++) {
-		elevatorHeightsCans[i] = (i - 1) * ticksPerTote + elevatorHeightsCans[1] + ticksPerCanOffset;
-		printf("elevatorHeightsCans[%d] = %f\n", i, elevatorHeightsCans[i]);
+	for(int i = 2; i != LENGTH(elevatorHeightsCans); i++) {
+		elevatorHeightsCans[i] = round((i - 1) * ticksPerTote + elevatorHeightsCans[1] /*+ ticksPerCanOffset*/);
+		printf("   elevatorHeightsCans[%d] = %1.2f\n", i, elevatorHeightsCans[i]);
 	}
 
 	// This is for testBot only:
@@ -99,11 +100,11 @@ void Elevator::MoveCan(int commandDirection) {
 }
 
 // Only valid on the test bot. On the real elevator, we actually move
-void Elevator::Move(double ticks) {
+void Elevator::Move(double ticksToMove) {
 	// On the production bot, nothing's here. The Talon's PID loop is doing all the work!
 	if (RobotMap::testBot) {
 		if (encoderPos >= 0) {
-			encoderPos += ticks;
+			encoderPos += ticksToMove;
 			if (encoderPos < 0) encoderPos = 0;
 		}
 	}

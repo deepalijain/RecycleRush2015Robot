@@ -27,6 +27,8 @@ void PositionElevator::Initialize() {
 	double curPos;
 	SetInterruptible(true);
 	Robot::parameters->UpdateElevatorPIDParams();
+	printf("PositionElevator initialized for commandDirection=%d, %s version\n",
+			commandDirection, trashcan ? "Trash Can" : "Tote");
 	// always make sure we're back in position control mode.
 	if (!RobotMap::testBot) {
 		RobotMap::elevatorMotor1->SetControlMode(CANSpeedController::kPosition);
@@ -80,7 +82,9 @@ bool PositionElevator::IsFinished() {
 
 // Called once after isFinished returns true
 void PositionElevator::End() {
-	if (!RobotMap::testBot)RobotMap::elevatorMotor1->SetControlMode(CANSpeedController::kPercentVbus);
+	if (!RobotMap::testBot) RobotMap::elevatorMotor1->SetControlMode(CANSpeedController::kPercentVbus);
+	printf("PositionElevator ended for commandDirection=%d, %s version\n",
+			commandDirection, trashcan ? "Trash Can" : "Tote");
 	Robot::driveElevatorCommand->Start();
 }
 
