@@ -81,6 +81,7 @@ bool PositionElevator::IsFinished() {
 		printf("Elevator PID terminated by joystick input y=%f, x=%f.\n", up, down);
 		return true;
 	}
+	if (RobotMap::testBot) return (fabs(elevator->GetPosition() - elevatorPIDDistance) > 2*elevator->ticksPerCycle);
 	return false;
 }
 
