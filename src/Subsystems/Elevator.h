@@ -47,8 +47,13 @@ public:
 
 	void SetHeight(double height);
 	void Move(double n);
+	bool IsAtTop();
+	bool IsAtBottom();
+	bool WasZeroed();
 
 	int elevatorIndex;
+	bool zeroed;
+	double targetHeight;
 
 	double elevatorHeightsTotes[7];
 	double elevatorHeightsCans[5];

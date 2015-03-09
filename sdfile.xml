@@ -1,6 +1,6 @@
 <xml version="1.0">
 <dashboard>
-	<widget field="Left Encoder Position" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.LinePlot">
+	<widget field="Left Encoder Position" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
 		<location x="863" y="397"/>
 	</widget>
 	<widget field="ElevatorSim Pos" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">

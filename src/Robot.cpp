@@ -16,6 +16,7 @@
 #include "Commands/DriveDistanceCommand.h"
 #include "Commands/PositionElevator.h"
 #include "Commands/DrivePID.h"
+#include "Commands/ZeroElevator.h"
 
 DriveSubsystem *Robot::driveSubsystem = 0;
 Elevator *Robot::elevator = 0;
@@ -26,12 +27,14 @@ OI *Robot::oi = 0;
 Command *Robot::driveCommand = 0;
 Command *Robot::driveElevatorCommand = 0;
 Command *Robot::holdElevatorCommand = 0;
+Command *Robot::zeroElevator = 0;
 Parameters *Robot::parameters = 0;
 PowerDistributionPanel *Robot::pdp = 0;
 IMAQdxSession Robot::session[2];
 Image *Robot::frame[2];
 IMAQdxError Robot::imaqError[2];
 uInt32 Robot::cameraCount;
+;
 
 int Ticks = 0;
 
@@ -64,6 +67,7 @@ void Robot::RobotInit() {
 		// parameters of 1 or -1
 		holdElevatorCommand = new PositionElevator(0, false);
 		driveElevatorCommand = new DriveElevator();
+		zeroElevator = new ZeroElevator();
 
 		lw = LiveWindow::GetInstance();
 
@@ -115,7 +119,7 @@ void Robot::TeleopInit() {
 	// these lines or comment it out.
 	if (autonomousCommand != NULL)
 		autonomousCommand->Cancel();
-
+	if (!elevator->WasZeroed()) zeroElevator->Start();
 	RobotMap::armFlapSolenoid->Set(DoubleSolenoid::kOff);
 	RobotMap::shifterSolenoid->Set(DoubleSolenoid::kOff);
 	RobotMap::totePusherSolenoid->Set(DoubleSolenoid::kOff);
@@ -166,6 +170,7 @@ void Robot::UpdateDashboardPeriodic() {
 				SmartDashboard::PutNumber("Elevator PID Error", RobotMap::elevatorMotor1->GetClosedLoopError());
 			}
 			SmartDashboard::PutNumber("Elevator Position", Robot::elevator->GetPosition());
+			SmartDashboard::PutNumber("Elevator Target Position", Robot::elevator->targetHeight);
 		}
 		catch(int e) {
 			printf("SmartDashboard exception, post ShowPIDParams.\n");

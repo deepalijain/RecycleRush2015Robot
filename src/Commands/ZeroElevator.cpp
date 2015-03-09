@@ -22,24 +22,33 @@ ZeroElevator::ZeroElevator() {
 
 // Called just before this Command runs the first time
 void ZeroElevator::Initialize() {
-	
+	printf("Begin ZeroElevator, starting encoder value = %1.2f.\n", Robot::elevator->GetPosition());
 }
 
 // Called repeatedly when this Command is scheduled to run
 void ZeroElevator::Execute() {
-	
+	// our robot is currently wired so negative is up and positive is down
+	if (!(Robot::elevator->IsAtTop() || Robot::elevator->IsAtBottom())) {
+		if (RobotMap::testBot) {
+			Robot::elevator->Move(50);
+		}
+		else {
+			// elevatorMotor1 is upside down and not invertable, not being a drive,
+			// so we simply take the negative of what would be expected here
+			Robot::elevator->elevatorMotor1->Set(0.3);
+		}
+	}
 }
 
 // Make this return true when this Command no longer needs to run execute()
 bool ZeroElevator::IsFinished() {
-	return true;
+	return (Robot::elevator->IsAtTop() || Robot::elevator->IsAtBottom());
 }
 
 // Called once after isFinished returns true
 void ZeroElevator::End() {
-	Robot::elevator->elevatorMotor1->Set(0);
-	//comment ((PickupDriveCommand *)Robot::pickupDriveCommand)->Start();
-	
+	printf("Zero elevator ended due to %s\n", Robot::elevator->IsAtBottom() ? "At Bottom" : "At Top");
+	Robot::driveElevatorCommand->Start();
 }
 
 // Called when another command which requires one or more of the same

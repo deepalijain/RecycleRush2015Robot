@@ -40,14 +40,14 @@ OI::OI() {
 	toggleCompressor = new ToggleCompressor();
 	pushTote = new PushTote();
 
-	toteUp = new PositionElevator(1, false);				// Tote Up
-	toteDown = new PositionElevator(-1, false);				// Tote Down
-	canUp = new PositionElevator(1, true);					// Can Up
-	canDown = new PositionElevator(-1, true);				// Can Down
+	toteUp = new PositionElevator(-1, false);				// Tote Up
+	toteDown = new PositionElevator(1, false);				// Tote Down
+	canUp = new PositionElevator(-1, true);					// Can Up
+	canDown = new PositionElevator(1, true);				// Can Down
 
-	joystickButton5 = new JoystickButton(joystick1, 5);			// Right bumper
+	joystickButton5 = new JoystickButton(joystick1, 6);			// Right bumper
 	joystickButton5->WhenPressed(toteUp);
-	joystickButton5 = new JoystickButton(joystick1, 6);			// Left bumper
+	joystickButton5 = new JoystickButton(joystick1, 5);			// Left bumper
 	joystickButton5->WhenPressed(toteDown);
 
 	joystickButton4 = new JoystickButton(joystick1, 4);			// Y button

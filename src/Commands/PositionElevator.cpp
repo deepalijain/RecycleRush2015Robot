@@ -18,8 +18,8 @@ PositionElevator::PositionElevator(int commandDirection, bool trashcan) {
 	elevator = Robot::elevator;
 	this->commandDirection = commandDirection;	// +1 for up, -1 for down, 0 to hold
 	this->trashcan = trashcan;			// true if we're move trash cans, false for totes
-	printf("PositionElevator constructed for commandDirection=%d, %s version\n",
-			commandDirection, trashcan ? "Trash Can" : "Tote");
+	printf("PositionElevator constructed for commandDirection=%d, %s version, elevatorPIDDistance=%1.2f\n",
+			commandDirection, trashcan ? "Trash Can" : "Tote", elevatorPIDDistance);
 }
 
 // Called just before this Command runs the first time
@@ -50,12 +50,18 @@ void PositionElevator::Initialize() {
 
 // Called repeatedly when this Command is scheduled to run
 void PositionElevator::Execute() {
-	if (RobotMap::testBot) {
+	if (RobotMap::testBot && commandDirection!=0) {
 		// calculate how much we should move per clock cycle (every 1/50 second)
 		// to move a tote's distance in two seconds
 		// only continue moving if we're more than two cycles away from our goal
-		if (fabs(elevator->GetPosition() - elevatorPIDDistance) > 2*elevator->ticksPerCycle) {
-			elevator->Move(elevator->ticksPerCycle*commandDirection);
+		if (fabs(elevator->GetPosition() - elevator->targetHeight) > 2*elevator->ticksPerCycle) {
+			double direction = elevator->targetHeight < elevator->GetPosition() ? -1.0 : 1.0;
+			double movement = direction*elevator->ticksPerCycle;
+			/* printf("PositionElevator: is at %1.0f, moving to moving %1.0f, by %1.0f\n",
+				elevator->GetPosition(),
+				elevator->targetHeight,
+				movement); */
+			elevator->Move(movement);
 		}
 	}
 }
@@ -67,22 +73,26 @@ bool PositionElevator::IsFinished() {
 	float down = Robot::oi->joystick1->GetRawAxis(2);
 	if (fabs(up) > 0.1 || fabs(down) > 0.1)
 	{
-		printf("Elevator PID terminated by joystick input y=%f, x=%f.\n", up, down);
+		printf("Elevator PID terminated by joystick input up=%f, down=%f.\n", up, down);
 		return true;
 	}
 	// Test bot is different. Simulated elevator ends when it reaches set point
-	if (RobotMap::testBot) return (fabs(elevator->GetPosition() - elevatorPIDDistance) > 2*elevator->ticksPerCycle);
+	if (RobotMap::testBot && commandDirection!=0)
+		return (fabs(elevator->GetPosition() - elevator->targetHeight) < 2*elevator->ticksPerCycle);
 
 	// Otherwise, the PID directional move commands end immediately -- the PID loop
 	// will do the rest. Except the default command -- holdElevator, that maintains
 	// position.
-	if (commandDirection!=0) return true;
+	if (!RobotMap::testBot) {
+		if (commandDirection==0) return false;	// holdCommand never finishes
+		return false;
+	}
+	// on testBot, we only end when if we've reached the target
 	return false;
 }
 
 // Called once after isFinished returns true
 void PositionElevator::End() {
-	if (!RobotMap::testBot) RobotMap::elevatorMotor1->SetControlMode(CANSpeedController::kPercentVbus);
 	printf("PositionElevator ended for commandDirection=%d, %s version\n",
 			commandDirection, trashcan ? "Trash Can" : "Tote");
 	Robot::driveElevatorCommand->Start();

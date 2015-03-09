@@ -23,6 +23,7 @@ DriveElevator::DriveElevator() {
 // Called just before this Command runs the first time
 void DriveElevator::Initialize() {
 	printf("Drive elevator initialized.\n");
+	if (!RobotMap::testBot) RobotMap::elevatorMotor1->SetControlMode(CANSpeedController::kPercentVbus);
 }
 
 // Called repeatedly when this Command is scheduled to run
