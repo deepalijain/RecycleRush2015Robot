@@ -30,11 +30,7 @@ Command *Robot::holdElevatorCommand = 0;
 Command *Robot::zeroElevator = 0;
 Parameters *Robot::parameters = 0;
 PowerDistributionPanel *Robot::pdp = 0;
-IMAQdxSession Robot::session[2];
-Image *Robot::frame[2];
-IMAQdxError Robot::imaqError[2];
-uInt32 Robot::cameraCount;
-;
+Camera *Robot::cameras[2];
 
 int Ticks = 0;
 
@@ -68,6 +64,10 @@ void Robot::RobotInit() {
 		holdElevatorCommand = new PositionElevator(0, false);
 		driveElevatorCommand = new DriveElevator();
 		zeroElevator = new ZeroElevator();
+		if (Camera::EnumerateCameras() > 0) {
+			cameras[0] = new Camera(0);
+			// we'll think about two cameras when we can figure out how to stitch them..
+		}
 
 		lw = LiveWindow::GetInstance();
 
@@ -87,8 +87,7 @@ void Robot::RobotInit() {
  * You can use it to reset subsystems before shutting down.
  */
 void Robot::DisabledInit() {
-	if (cameraCount>0) CameraStop(1);
-	if (cameraCount>1) CameraStop(2);
+
 }
 
 void Robot::DisabledPeriodic() {
@@ -98,9 +97,7 @@ void Robot::DisabledPeriodic() {
 
 void Robot::AutonomousInit() {
 	RobotMap::driveBackLeft->SetPosition(0.0);
-	CameraCount();
-	if (cameraCount>0) CameraStart(1);
-	if (cameraCount>1) CameraStart(2);
+
 	if (autonomousCommand != NULL)
 		autonomousCommand->Start();
 }
@@ -108,8 +105,6 @@ void Robot::AutonomousInit() {
 void Robot::AutonomousPeriodic() {
 	Scheduler::GetInstance()->Run();
 	UpdateDashboardPeriodic();
-	if (cameraCount>0) CameraFeed(1);
-	if (cameraCount>1) CameraFeed(2);
 }
 
 void Robot::TeleopInit() {
@@ -126,23 +121,16 @@ void Robot::TeleopInit() {
 	// It seems that we need a Set to confirm the control mode or else it reverts
 	parameters->UpdateDrivePIDParams();
 	parameters->UpdateElevatorPIDParams();
-	CameraCount();
-	if (cameraCount>0) CameraStart(1);
-	if (cameraCount>1) CameraStart(2);
 }
 
 
 void Robot::TeleopPeriodic() {
 	Scheduler::GetInstance()->Run();
 	UpdateDashboardPeriodic();
-	if (cameraCount>0) CameraFeed(1);
-	if (cameraCount>1) CameraFeed(2);
 }
 
 void Robot::TestPeriodic() {
 	lw->Run();
-	if (cameraCount>0) CameraFeed(1);
-	if (cameraCount>1) CameraFeed(2);
 }
 
 void Robot::UpdateDashboardPeriodic() {
@@ -182,86 +170,6 @@ void Robot::UpdateDashboardPeriodic() {
 	}
 	catch (std::exception& e) {
 		printf("SmartDashboard Exception: %s\n",  e.what());
-	}
-}
-
-
-int Robot::CameraCount() {
-	IMAQdxCameraInformation camInfo[4]; 	// we crash if there are more than 6 cameras!
-	cameraCount = 4;
-	// last parameter is "connectedOnly". Why would we want to enumerate non-connected cameras?
-	IMAQdxEnumerateCameras(camInfo, &cameraCount, true);
-	printf("Cameras (%u):\n", (unsigned int)cameraCount);
-	for (uInt32 i=0; i!=cameraCount; i++) printf("  %s %s %s\n", camInfo[i].VendorName,
-											     camInfo[i].ModelName, camInfo[i].InterfaceName);
-	return cameraCount;
-}
-
-void Robot::CameraStart(int camNum) {
-	std::string imaqErrorString;
-    // create an image
-	frame[camNum] = imaqCreateImage(IMAQ_IMAGE_RGB, 0);
-	//the camera name (ex "cam0") can be found through the roborio web interface
-	char cam[5] = "cam0";
-	cam[3] = '0' + camNum;
-	printf("Opening camera %s\n", cam);
-	imaqError[camNum] = IMAQdxOpenCamera(cam, IMAQdxCameraControlModeController, &session[camNum]);
-	if(imaqError[camNum] != IMAQdxErrorSuccess) {
-		imaqErrorString = std::to_string((long)imaqError[camNum]);
-		DriverStation::ReportError("IMAQdxOpenCamera error: " + imaqErrorString + "\n");
-		printf("IMAQdxOpenCamera error (%s): %s\n", cam, imaqErrorString.c_str());
-	}
-	imaqError[camNum] = IMAQdxConfigureGrab(session[camNum]);
-	if(imaqError[camNum] != IMAQdxErrorSuccess) {
-		imaqErrorString = std::to_string((long)imaqError[camNum]);
-		DriverStation::ReportError("IMAQdxConfigureGrab error: " + imaqErrorString + "\n");
-		printf("IMAQdxConfigureGrab error(%s): %s\n", cam, imaqErrorString.c_str());
-	}
-    // start to acquire images
-	printf("Camera Session #: %lu\n", session[camNum]);
-	if (0!=session[camNum]) IMAQdxStartAcquisition(session[camNum]);
-
-}
-
-void Robot::CameraFeed(int camNum) {
-	std::string imaqErrorString;
-    // grab an image, draw the circle, and provide it for the camera server which will
-    // in turn send it to the dashboard.
-	// let's only do this every 1/10 second to avoid excess cpu & network traffic
-	// Ticks+2 to avoid doing it on same cycle as SmartDashBoard updates
-	if (session[camNum]!=0 && (Ticks+2)%5==0) {
-		char cam[5] = "cam0";
-		cam[3] = '0' + camNum;
-		IMAQdxGrab(session[camNum], frame[camNum], false, NULL);
-		if(imaqError[camNum] != IMAQdxErrorSuccess) {
-			imaqErrorString = std::to_string((long)imaqError);
-			DriverStation::ReportError("IMAQdxGrab error: " + imaqErrorString + "\n");
-			printf("IMAQdxConfigureGrab error (%s): %s\n", cam, imaqErrorString.c_str());
-		} else {
-			// we don't need the silly circle but might use this for something latter
-			// imaqDrawShapeOnImage(frame, frame, { 10, 10, 100, 100 }, DrawMode::IMAQ_DRAW_VALUE, ShapeMode::IMAQ_SHAPE_OVAL, 0.0f);
-			CameraServer::GetInstance()->SetImage(frame[camNum]);
-		}				// wait for a motor update time
-	}
-}
-
-void Robot::CameraStop(int camNum) {
-    // stop image acquisition
-	if (0!=session[camNum]) {
-		char cam[5] = "cam0";
-		cam[3] = '0' + camNum;
-		// Had trouble with imaqDrawTextOnImage
-		//const DrawTextOptions options = {"Arial", 12, 0, 0, 0, 0, IMAQ_CENTER, IMAQ_INVERT};
-		//int fontUsed;
-		//imaqDrawTextOnImage(frame, frame, {120, 80}, "X", &options, &fontUsed);
-		if (NULL!=frame[camNum]) {
-			// Would really like to make this semi-transparent, but not apparent how.
-			imaqDrawShapeOnImage(frame[camNum], frame[camNum], { 100, 100, 160, 160 }, DrawMode::IMAQ_DRAW_VALUE, ShapeMode::IMAQ_SHAPE_OVAL,3.0f);
-			CameraServer::GetInstance()->SetImage(frame[camNum]);
-		}
-		IMAQdxStopAcquisition(session[camNum]);
-		IMAQdxCloseCamera(session[camNum]);
-		printf("Camera %s closed.", cam);
 	}
 }
 

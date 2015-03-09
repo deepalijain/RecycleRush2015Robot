@@ -28,7 +28,7 @@
 #include "Subsystems/CompressorSubsystem.h"
 #include "Commands/DrivePID.h"
 #include "Subsystems/Parameters.h"
-
+#include "Subsystems/Camera.h"
 
 class Robot : public IterativeRobot {
 private:
@@ -49,10 +49,7 @@ public:
 	static ArmFlaps* armFlaps;
 	static TotePusher* totePusher;
 	static CompressorSubsystem* compressorSubsystem;
-	static IMAQdxSession session[2];
-	static Image *frame[2] ;
-	static IMAQdxError imaqError[2];
-	static uInt32 cameraCount;
+	static Camera *cameras[2];
 
 //	static double drivePIDDistance;
 
