@@ -87,7 +87,7 @@ void Robot::RobotInit() {
  * You can use it to reset subsystems before shutting down.
  */
 void Robot::DisabledInit() {
-
+	cameras[0]->CameraStop();
 }
 
 void Robot::DisabledPeriodic() {
@@ -97,7 +97,7 @@ void Robot::DisabledPeriodic() {
 
 void Robot::AutonomousInit() {
 	RobotMap::driveBackLeft->SetPosition(0.0);
-
+	cameras[0]->CameraStart();
 	if (autonomousCommand != NULL)
 		autonomousCommand->Start();
 }
@@ -105,9 +105,11 @@ void Robot::AutonomousInit() {
 void Robot::AutonomousPeriodic() {
 	Scheduler::GetInstance()->Run();
 	UpdateDashboardPeriodic();
+	cameras[0]->CameraFeed();
 }
 
 void Robot::TeleopInit() {
+	cameras[0]->CameraStart();
 	// This makes sure that the autonomous stops running when
 	// teleop starts running. If you want the autonomous to 
 	// continue until interrupted by another command, remove
@@ -127,10 +129,12 @@ void Robot::TeleopInit() {
 void Robot::TeleopPeriodic() {
 	Scheduler::GetInstance()->Run();
 	UpdateDashboardPeriodic();
+	cameras[0]->CameraFeed();
 }
 
 void Robot::TestPeriodic() {
 	lw->Run();
+	cameras[0]->CameraFeed();
 }
 
 void Robot::UpdateDashboardPeriodic() {
