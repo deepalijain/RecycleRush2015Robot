@@ -45,33 +45,25 @@ OI::OI() {
 	canUp = new PositionElevator(-1, true);					// Can Up
 	canDown = new PositionElevator(1, true);				// Can Down
 
-	joystickButton5 = new JoystickButton(joystick1, 6);			// Right bumper
-	joystickButton5->WhenPressed(toteUp);
-	joystickButton5 = new JoystickButton(joystick1, 5);			// Left bumper
-	joystickButton5->WhenPressed(toteDown);
+	Joystick1WhenPressed(toteUp, 6);			// Right bumper
+	Joystick1WhenPressed(toteUp, 5);			// Left bumper
+	Joystick1WhenPressed(canUp, 4);				// Y button
+	Joystick1WhenPressed(canDown, 1);			// A button
+	Joystick1WhenPressed(armsUp, 3);			// X button (open, widen arms)
+	Joystick1WhenPressed(armsDown, 2);			// B button (close, narrow arms)
+	Joystick1WhenPressed(toggleCompressor, 7);	// tiny back button (old XBox)
+	Joystick1WhenPressed(pushTote, 8);			// tiny start button
 
-	joystickButton4 = new JoystickButton(joystick1, 4);			// Y button
-	joystickButton4->WhenPressed(canUp);
-	joystickButton4 = new JoystickButton(joystick1, 1);			// A button
-	joystickButton4->WhenPressed(canDown);
+	// these next two commands are only for testing
+	Joystick1WhenPressed(driveDistanceCommand, 10);			// right axis click (
+	Joystick1WhenPressed(drivePID, 9);			// right axis click (
+}
 
-	joystickButton4 = new JoystickButton(joystick1, 3);			// X button
-	joystickButton4->WhenPressed(armsUp);						// open
-	joystickButton4 = new JoystickButton(joystick1, 2);			// B button
-	joystickButton4->WhenPressed(armsDown);						// close
-
-	toggleArmFlapButton = new JoystickButton(joystick1, 7);		// tiny back button (old XBox)
-	toggleArmFlapButton->WhenPressed(toggleCompressor);
-
-	toggleCompressorButton = new JoystickButton(joystick1, 8);	// tiny start button
-	toggleCompressorButton->WhenPressed(pushTote);
-
-	driveDistanceButton = new JoystickButton(joystick1, 10);	// right axis click
-	driveDistanceButton->WhenPressed(driveDistanceCommand);
-
-	driveDistanceButton = new JoystickButton(joystick1, 9);		// left axis click
-	driveDistanceButton->WhenPressed(drivePID);
-
+void OI::Joystick1WhenPressed(Command *command, int buttonNum) {
+	// Truthfully, we don't really need to remember these pointers.
+	// Once we assigned WhenPressed, we could throw them away
+	joystick1Buttons[buttonNum] = new JoystickButton(joystick1, buttonNum);
+	joystick1Buttons[buttonNum]->WhenPressed(command);
 }
 
 Joystick* OI::getJoystick2() {
