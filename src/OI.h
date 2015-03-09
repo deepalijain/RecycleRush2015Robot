@@ -15,7 +15,7 @@
 
 class OI {
 private:
-	JoystickButton *joystick1Buttons[10];	// we don't use zero!
+	JoystickButton *joystick1Buttons[12];	// we don't use zero!
 
 	// helper function for binding joystick buttons
 	void Joystick1WhenPressed(Command *command, int buttonNum);
