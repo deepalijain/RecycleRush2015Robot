@@ -10,7 +10,6 @@
 
 #include "PositionElevator.h"
 
-static double elevatorPIDDistance;
 int PositionElevator::targetIndex = 0;
 
 PositionElevator::PositionElevator(int commandDirection, bool trashcan) {
@@ -19,7 +18,7 @@ PositionElevator::PositionElevator(int commandDirection, bool trashcan) {
 	this->commandDirection = commandDirection;	// +1 for up, -1 for down, 0 to hold
 	this->trashcan = trashcan;			// true if we're move trash cans, false for totes
 	printf("PositionElevator constructed for commandDirection=%d, %s version, elevatorPIDDistance=%1.2f\n",
-			commandDirection, trashcan ? "Trash Can" : "Tote", elevatorPIDDistance);
+			commandDirection, trashcan ? "Trash Can" : "Tote", elevator->GetPosition());
 }
 
 // Called just before this Command runs the first time
@@ -36,7 +35,8 @@ void PositionElevator::Initialize() {
 	curPos = elevator->GetPosition();
 
 	if (commandDirection == 0) {
-		elevatorPIDDistance = curPos;	// hold mode
+		// if curPos is not accurate, stupid things happen here
+		elevator->SetHeight(curPos);	// hold mode
 	}
 	else {
 		if (!trashcan) {
@@ -79,13 +79,13 @@ bool PositionElevator::IsFinished() {
 	// Test bot is different. Simulated elevator ends when it reaches set point
 	if (RobotMap::testBot && commandDirection!=0)
 		return (fabs(elevator->GetPosition() - elevator->targetHeight) < 2*elevator->ticksPerCycle);
-
+	return false;
 	// Otherwise, the PID directional move commands end immediately -- the PID loop
 	// will do the rest. Except the default command -- holdElevator, that maintains
 	// position.
 	if (!RobotMap::testBot) {
 		if (commandDirection==0) return false;	// holdCommand never finishes
-		return false;
+		return true;
 	}
 	// on testBot, we only end when if we've reached the target
 	return false;

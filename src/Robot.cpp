@@ -64,10 +64,11 @@ void Robot::RobotInit() {
 		holdElevatorCommand = new PositionElevator(0, false);
 		driveElevatorCommand = new DriveElevator();
 		zeroElevator = new ZeroElevator();
-		if (Camera::EnumerateCameras() > 0) {
+
+		/*if (Camera::EnumerateCameras() > 0) {
 			cameras[0] = new Camera(0);
 			// we'll think about two cameras when we can figure out how to stitch them..
-		}
+		}*/
 
 		lw = LiveWindow::GetInstance();
 
@@ -87,7 +88,7 @@ void Robot::RobotInit() {
  * You can use it to reset subsystems before shutting down.
  */
 void Robot::DisabledInit() {
-	cameras[0]->CameraStop();
+
 }
 
 void Robot::DisabledPeriodic() {
@@ -97,7 +98,6 @@ void Robot::DisabledPeriodic() {
 
 void Robot::AutonomousInit() {
 	RobotMap::driveBackLeft->SetPosition(0.0);
-	cameras[0]->CameraStart();
 	if (autonomousCommand != NULL)
 		autonomousCommand->Start();
 }
@@ -105,11 +105,9 @@ void Robot::AutonomousInit() {
 void Robot::AutonomousPeriodic() {
 	Scheduler::GetInstance()->Run();
 	UpdateDashboardPeriodic();
-	cameras[0]->CameraFeed();
 }
 
 void Robot::TeleopInit() {
-	cameras[0]->CameraStart();
 	// This makes sure that the autonomous stops running when
 	// teleop starts running. If you want the autonomous to 
 	// continue until interrupted by another command, remove
@@ -129,12 +127,10 @@ void Robot::TeleopInit() {
 void Robot::TeleopPeriodic() {
 	Scheduler::GetInstance()->Run();
 	UpdateDashboardPeriodic();
-	cameras[0]->CameraFeed();
 }
 
 void Robot::TestPeriodic() {
 	lw->Run();
-	cameras[0]->CameraFeed();
 }
 
 void Robot::UpdateDashboardPeriodic() {
@@ -157,10 +153,10 @@ void Robot::UpdateDashboardPeriodic() {
 			SmartDashboard::PutNumber("DriveDistanceCmd distL",((DriveDistanceCommand *)Robot::oi->driveDistanceCommand)->distanceTravelledL);
 			SmartDashboard::PutNumber("DriveDistanceCmd distR",((DriveDistanceCommand *)Robot::oi->driveDistanceCommand)->distanceTravelledR);
 			// CANTalon 1, which is the Elevator lead Talon, isn't present on the kit bot
-			if (!RobotMap::testBot) {
+			/*if (!RobotMap::testBot) {
 				SmartDashboard::PutNumber("Elevator Encoder Position", RobotMap::elevatorMotor1->GetClosedLoopError());
 				SmartDashboard::PutNumber("Elevator PID Error", RobotMap::elevatorMotor1->GetClosedLoopError());
-			}
+			} */
 			SmartDashboard::PutNumber("Elevator Position", Robot::elevator->GetPosition());
 			SmartDashboard::PutNumber("Elevator Target Position", Robot::elevator->targetHeight);
 		}

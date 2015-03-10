@@ -30,33 +30,36 @@ OI::OI() {
 	joystick1 = new Joystick(0);
 	joystick2 = new Joystick(1);
 
-	driveDistanceCommand = new DriveDistanceCommand(12*1);
+
 	//applyBreakCommand = new ApplyBreakCommand();
 	driveCommand = new DriveCommand();
 	drivePID = new DrivePID();
+	driveDistanceCommand = new DriveDistanceCommand(12*1);
 	toggleArmFlap = new ToggleFlapsCommand(0);
 	armsUp = new ToggleFlapsCommand(-1);
 	armsDown = new ToggleFlapsCommand(1);
 	toggleCompressor = new ToggleCompressor();
 	pushTote = new PushTote();
 
-	toteUp = new PositionElevator(-1, false);				// Tote Up
-	toteDown = new PositionElevator(1, false);				// Tote Down
-	canUp = new PositionElevator(-1, true);					// Can Up
-	canDown = new PositionElevator(1, true);				// Can Down
+
+	toteUp = new PositionElevator(1, false);				// Tote Up
+	toteDown = new PositionElevator(-1, false);				// Tote Down
+	canUp = new PositionElevator(1, true);					// Can Up
+	canDown = new PositionElevator(-1, true);				// Can Down
 
 	Joystick1WhenPressed(toteUp, 6);			// Right bumper
-	Joystick1WhenPressed(toteUp, 5);			// Left bumper
+	Joystick1WhenPressed(toteDown, 5);			// Left bumper
 	Joystick1WhenPressed(canUp, 4);				// Y button
 	Joystick1WhenPressed(canDown, 1);			// A button
+
 	Joystick1WhenPressed(armsUp, 3);			// X button (open, widen arms)
 	Joystick1WhenPressed(armsDown, 2);			// B button (close, narrow arms)
 	Joystick1WhenPressed(toggleCompressor, 7);	// tiny back button (old XBox)
 	Joystick1WhenPressed(pushTote, 8);			// tiny start button
 
 	// these next two commands are only for testing
-	Joystick1WhenPressed(driveDistanceCommand, 10);			// right axis click (
-	Joystick1WhenPressed(drivePID, 9);			// right axis click (
+	Joystick1WhenPressed(driveDistanceCommand, 10);			// right axis click
+	Joystick1WhenPressed(drivePID, 9);			// right axis click
 }
 
 void OI::Joystick1WhenPressed(Command *command, int buttonNum) {

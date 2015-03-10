@@ -8,17 +8,14 @@
 // update. Deleting the comments indicating the section will prevent
 // it from being updated in the future.
 
-double elevatorP;
-double elevatorI;
-double elevatorD;
-double elevatorF;
-double elevatorRampRateCloseLoop;
-
 #include "Elevator.h"
 #include "../RobotMap.h"
 #include "../Robot.h"
+#include "Parameters.h"
 
 Elevator::Elevator() : Subsystem("Elevator") {
+	printf("Elevator constructor\n");
+
 	elevatorIndex = 0;		// assume for now, set properly later
 	zeroed = false;
 
@@ -69,21 +66,21 @@ Elevator::Elevator() : Subsystem("Elevator") {
     
 void Elevator::SetHeight(double height)
 {
-	targetHeight = -height;
 	if (!RobotMap::testBot) {
 		Robot::parameters->UpdateElevatorPIDParams();
-		elevatorP = SmartDashboard::GetNumber("elevatorP");
-		elevatorI = SmartDashboard::GetNumber("elevatorI");
-		elevatorD = SmartDashboard::GetNumber("elevatorD");
-		elevatorF = SmartDashboard::GetNumber("elevatorF");
-		elevatorRampRateCloseLoop = SmartDashboard::GetNumber("ElClosedLoopRR");
-
-		elevatorMotor1->SetVoltageRampRate(elevatorRampRateCloseLoop);
-		elevatorMotor1->SetPID(elevatorP,elevatorI,elevatorD,elevatorF);
+		if (false) {
+			Parameters::elevatorP = SmartDashboard::GetNumber("elevatorP");
+			Parameters::elevatorI = SmartDashboard::GetNumber("elevatorI");
+			Parameters::elevatorD = SmartDashboard::GetNumber("elevatorD");
+			Parameters::elevatorF = SmartDashboard::GetNumber("elevatorF");
+			//Parameters::elevatorRampRateCloseLoop = SmartDashboard::GetNumber("ElClosedLoopRR");
+		}
+		elevatorMotor1->SetVoltageRampRate(30.0);
+		elevatorMotor1->SetPID(Parameters::elevatorP,Parameters::elevatorI,Parameters::elevatorD,Parameters::elevatorF);
 		elevatorMotor1->ClearIaccum();
 
 		printf("PID Elevator params distance=%1.2f, elevatorP=%1.3f, elevatorI=%1.3f, elevatorD=%1.3f, elevatorF=%1.3f.\n",
-				height, elevatorP, elevatorI, elevatorD, elevatorF);
+				height, Parameters::elevatorP, Parameters::elevatorI, Parameters::elevatorD, Parameters::elevatorF);
 
 		elevatorMotor1->Set(targetHeight);
 	}
@@ -94,18 +91,20 @@ void Elevator::SetHeight(double height)
 
 void Elevator::MoveByTote(int commandDirection) {
 	// for better or worse, negative is up on our elevator
+	printf("MoveTote from %d to %d\n", elevatorIndex, elevatorIndex-commandDirection);
 	elevatorIndex -= commandDirection;
 	if (elevatorIndex < 0) elevatorIndex = 0;
-	if ((unsigned)elevatorIndex >= LENGTH(elevatorHeightsTotes)) elevatorIndex = LENGTH(elevatorHeightsTotes);
-	SetHeight(elevatorHeightsTotes[elevatorIndex]);
+	if (elevatorIndex >= (int)LENGTH(elevatorHeightsTotes)) elevatorIndex = LENGTH(elevatorHeightsTotes)-1;
+	SetHeight(-elevatorHeightsTotes[elevatorIndex]);
 }
 
 void Elevator::MoveCan(int commandDirection) {
 	// for better or worse, negative is up on our elevator
+	printf("MoveCan from %d to %d\n", elevatorIndex, elevatorIndex-commandDirection);
 	elevatorIndex -= commandDirection;
 	if (elevatorIndex < 0) elevatorIndex = 0;
-	if ((unsigned)elevatorIndex >= LENGTH(elevatorHeightsCans)) elevatorIndex = LENGTH(elevatorHeightsCans);
-	SetHeight(elevatorHeightsCans[elevatorIndex]);
+	if (elevatorIndex >= (int)LENGTH(elevatorHeightsCans)) elevatorIndex = LENGTH(elevatorHeightsCans)-1;
+	SetHeight(-elevatorHeightsCans[elevatorIndex]);
 }
 
 // Only valid on the test bot. On the real elevator, we actually move
@@ -138,20 +137,20 @@ double Elevator::GetPosition() {
 
 bool Elevator::IsAtTop() {
 	if (!RobotMap::testBot) {
-		if (!elevatorMotor1->GetForwardLimitOK()) printf("Elevator HIT TOP!\n");
-		return !elevatorMotor1->GetForwardLimitOK();
+		if (!elevatorMotor1->GetReverseLimitOK()) printf("Elevator HIT TOP!\n");
+		return !elevatorMotor1->GetReverseLimitOK();
 	}
 	else return false;
 }
 
 bool Elevator::IsAtBottom() {
 	if (!RobotMap::testBot)	{
-		if (!elevatorMotor1->GetReverseLimitOK()) {
+		if (!elevatorMotor1->GetForwardLimitOK()) {
 			printf("Elevator zeroed at bottom.\n");
 			zeroed = true;
 			elevatorMotor1->SetPosition(0.0);
 		}
-		return !elevatorMotor1->GetReverseLimitOK();
+		return !elevatorMotor1->GetForwardLimitOK();
 	}
 	else{
 		if (encoderPos==0) {

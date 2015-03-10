@@ -23,6 +23,7 @@ ZeroElevator::ZeroElevator() {
 // Called just before this Command runs the first time
 void ZeroElevator::Initialize() {
 	printf("Begin ZeroElevator, starting encoder value = %1.2f.\n", Robot::elevator->GetPosition());
+	if (!RobotMap::testBot) RobotMap::elevatorMotor1->SetControlMode(CANSpeedController::kPercentVbus);
 }
 
 // Called repeatedly when this Command is scheduled to run
@@ -47,7 +48,10 @@ bool ZeroElevator::IsFinished() {
 
 // Called once after isFinished returns true
 void ZeroElevator::End() {
-	printf("Zero elevator ended due to %s\n", Robot::elevator->IsAtBottom() ? "At Bottom" : "At Top");
+	double position = Robot::elevator->GetPosition();
+	printf("Zero elevator ended at position %1.2f due to %s\n",
+			position,
+			Robot::elevator->IsAtBottom() ? "At Bottom" : "At Top");
 	Robot::driveElevatorCommand->Start();
 }
 
