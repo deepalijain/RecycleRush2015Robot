@@ -1,130 +1,457 @@
+<?xml version="1.0"?>
+
 <xml version="1.0">
+
+
 <dashboard>
-	<widget field="Left Encoder Position" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.LinePlot">
-		<location x="230" y="318"/>
-	</widget>
-	<widget field="Right Encoder Position" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.LinePlot">
-		<location x="644" y="306"/>
-	</widget>
-	<widget field="DrivePID Right Error" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.LinePlot">
-		<location x="643" y="2"/>
-	</widget>
-	<widget field="DrivePID Left  Error" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.LinePlot">
-		<location x="233" y="9"/>
-	</widget>
-	<widget field="driveF" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="1106" y="129"/>
-	</widget>
-	<widget field="pickupMotor set to" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="0" y="525"/>
-	</widget>
-	<widget field="Drive Command X" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="0" y="504"/>
-	</widget>
-	<widget field="Drive Command Y" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="0" y="483"/>
-	</widget>
-	<widget field="drivePIDDistance" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="1058" y="105"/>
-		<width>165</width>
-		<height>20</height>
-	</widget>
-	<widget field="driveD" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="1108" y="81"/>
-	</widget>
-	<widget field="driveI" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="1109" y="58"/>
-	</widget>
-	<widget field="driveP" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="1107" y="36"/>
-		<height>20</height>
-	</widget>
-	<widget field="PID Error R" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="2" y="443"/>
-	</widget>
-	<widget field="PID Error L" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="5" y="419"/>
-		<height>20</height>
-	</widget>
-	<widget field="FrontRight-Volts" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="0" y="378"/>
-	</widget>
-	<widget field="FrontRight-Status" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="0" y="357"/>
-	</widget>
-	<widget field="FrontRight-Amps" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="0" y="336"/>
-	</widget>
-	<widget field="FrontLeft-Volts" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="0" y="315"/>
-	</widget>
-	<widget field="FrontLeft-Status" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="0" y="294"/>
-	</widget>
-	<widget field="FrontLeft-Amps" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="0" y="273"/>
-	</widget>
-	<widget field="Elevator Lead-Volts" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="0" y="252"/>
-	</widget>
-	<widget field="Elevator Lead-Status" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="0" y="231"/>
-	</widget>
-	<widget field="Elevator Lead-Amps" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="0" y="210"/>
-	</widget>
-	<widget field="Elevator Encoder Position" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="0" y="189"/>
-	</widget>
-	<widget field="CAN Front Left Fault" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="0" y="126"/>
-	</widget>
-	<widget field="BackRight-Volts" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="0" y="105"/>
-	</widget>
-	<widget field="BackRight-Status" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="0" y="84"/>
-	</widget>
-	<widget field="BackRight-Amps" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="0" y="63"/>
-	</widget>
-	<widget field="BackLeft-Volts" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="0" y="42"/>
-	</widget>
-	<widget field="BackLeft-Status" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="0" y="21"/>
-	</widget>
-	<widget field="BackLeft-Amps" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="0" y="0"/>
-	</widget>
-	<widget field="ElClosedLoopRR" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="0" y="756"/>
-	</widget>
-	<widget field="Elevator Position" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="0" y="357"/>
-	</widget>
-	<widget field="armFlapUp" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="0" y="315"/>
-	</widget>
-	<widget field="elevatorPIDDistance" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="0" y="252"/>
-	</widget>
-	<widget field="elevatorD" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="0" y="231"/>
-	</widget>
-	<widget field="elevatorF" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="0" y="210"/>
-	</widget>
-	<widget field="elevatorI" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="0" y="168"/>
-	</widget>
-	<widget field="elevatorP" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="0" y="105"/>
-	</widget>
-	<widget field="Elevator PID Error" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="0" y="84"/>
-	</widget>
+
+
+<widget class="edu.wpi.first.smartdashboard.gui.elements.ProgressBar" type="Number" field="ElevatorSim Pos">
+
+<location y="21" x="7"/>
+
+<property value="78.0" name="Maximum"/>
+
+</widget>
+
+
+<widget class="edu.wpi.first.smartdashboard.gui.elements.SimpleDial" type="Number" field="CompCurrent">
+
+<location y="252" x="-39"/>
+
+<property value="2.0" name="Upper Limit"/>
+
+<property value="0.1" name="Tick Interval"/>
+
+</widget>
+
+
+<widget class="edu.wpi.first.smartdashboard.gui.elements.SimpleDial" type="Number" field="PDP Temperature">
+
+<location y="85" x="-39"/>
+
+<property value="50.0" name="Upper Limit"/>
+
+<property value="2.5" name="Tick Interval"/>
+
+</widget>
+
+
+<widget class="edu.wpi.first.smartdashboard.gui.elements.TextBox" type="Number" field="Elevator Target Position">
+
+<location y="48" x="0"/>
+
+</widget>
+
+
+<widget class="edu.wpi.first.smartdashboard.gui.elements.TextBox" type="Number" field="Left Encoder Position">
+
+<location y="337" x="468"/>
+
+</widget>
+
+
+<widget class="edu.wpi.first.smartdashboard.gui.elements.TextBox" type="Number" field="Elevator Position">
+
+<location y="506" x="213"/>
+
+</widget>
+
+
+<widget class="edu.wpi.first.smartdashboard.gui.elements.ProgressBar" type="Number" field="FrontLeft-Amps">
+
+<location y="20" x="904"/>
+
+<property value="4.0" name="Maximum"/>
+
+</widget>
+
+
+<widget class="edu.wpi.first.smartdashboard.gui.elements.ProgressBar" type="Number" field="FrontRight-Amps">
+
+<location y="200" x="910"/>
+
+<property value="4.0" name="Maximum"/>
+
+</widget>
+
+
+<widget class="edu.wpi.first.smartdashboard.gui.elements.ProgressBar" type="Number" field="FrontRight-Volts">
+
+<location y="227" x="911"/>
+
+<property value="12.0" name="Maximum"/>
+
+<property value="-12.0" name="Minimum"/>
+
+</widget>
+
+
+<widget class="edu.wpi.first.smartdashboard.gui.elements.ProgressBar" type="Number" field="BackLeft-Volts">
+
+<location y="48" x="489"/>
+
+<property value="12.0" name="Maximum"/>
+
+<property value="-12.0" name="Minimum"/>
+
+</widget>
+
+
+<widget class="edu.wpi.first.smartdashboard.gui.elements.ProgressBar" type="Number" field="BackLeft-Amps">
+
+<location y="20" x="490"/>
+
+<property value="4.0" name="Maximum"/>
+
+</widget>
+
+
+<widget class="edu.wpi.first.smartdashboard.gui.elements.ProgressBar" type="Number" field="BackRight-Amps">
+
+<location y="200" x="488"/>
+
+<property value="4.0" name="Maximum"/>
+
+</widget>
+
+
+<widget class="edu.wpi.first.smartdashboard.gui.elements.ProgressBar" type="Number" field="BackRight-Volts">
+
+<location y="227" x="488"/>
+
+<property value="12.0" name="Maximum"/>
+
+<property value="-12.0" name="Minimum"/>
+
+</widget>
+
+
+<widget class="edu.wpi.first.smartdashboard.gui.elements.ProgressBar" type="Number" field="FrontLeft-Volts">
+
+<location y="48" x="905"/>
+
+<property value="12.0" name="Maximum"/>
+
+<property value="-12.0" name="Minimum"/>
+
+</widget>
+
+
+<widget class="edu.wpi.first.smartdashboard.gui.elements.BooleanBox" type="Boolean" field="armFlapUp">
+
+<location y="102" x="301"/>
+
+</widget>
+
+
+<static-widget class="edu.wpi.first.smartdashboard.gui.elements.Label">
+
+<location y="71" x="42"/>
+
+<property value="PDP Temperature" name="Text"/>
+
+</static-widget>
+
+
+<widget class="edu.wpi.first.smartdashboard.gui.elements.BooleanBox" type="Boolean" field="Elevator Lead-Status">
+
+<location y="410" x="41"/>
+
+</widget>
+
+
+<widget class="edu.wpi.first.smartdashboard.gui.elements.TextBox" type="Number" field="Drive Command X">
+
+<location y="123" x="680"/>
+
+</widget>
+
+
+<widget class="edu.wpi.first.smartdashboard.gui.elements.BooleanBox" type="Boolean" field="CompEnabled">
+
+<location y="237" x="47"/>
+
+</widget>
+
+
+<widget class="edu.wpi.first.smartdashboard.gui.elements.BooleanBox" type="Boolean" field="BackRight-Status">
+
+<location y="165" x="514"/>
+
+</widget>
+
+
+<widget class="edu.wpi.first.smartdashboard.gui.elements.BooleanBox" type="Boolean" field="BackLeft-Status">
+
+<location y="8" x="516"/>
+
+<height>14</height>
+
+</widget>
+
+
+<widget class="edu.wpi.first.smartdashboard.gui.elements.BooleanBox" type="Boolean" field="FrontRight-Status">
+
+<location y="165" x="932"/>
+
+</widget>
+
+
+<widget class="edu.wpi.first.smartdashboard.gui.elements.BooleanBox" type="Boolean" field="FrontLeft-Status">
+
+<location y="8" x="933"/>
+
+<height>14</height>
+
+</widget>
+
+
+<widget class="edu.wpi.first.smartdashboard.gui.elements.TextBox" type="Number" field="drivePIDDistance">
+
+<location y="261" x="669"/>
+
+</widget>
+
+
+<widget class="edu.wpi.first.smartdashboard.gui.elements.TextBox" type="Number" field="Right Encoder Position">
+
+<location y="337" x="885"/>
+
+<height>20</height>
+
+</widget>
+
+
+<widget class="edu.wpi.first.smartdashboard.gui.elements.TextBox" type="Number" field="DrivePID Right Error">
+
+<location y="359" x="892"/>
+
+</widget>
+
+
+<widget class="edu.wpi.first.smartdashboard.gui.elements.TextBox" type="Number" field="DrivePID Left Error">
+
+<location y="359" x="472"/>
+
+</widget>
+
+
+<widget class="edu.wpi.first.smartdashboard.gui.elements.TextBox" type="Number" field="driveRampRate">
+
+<location y="210" x="676"/>
+
+</widget>
+
+
+<widget class="edu.wpi.first.smartdashboard.gui.elements.TextBox" type="Number" field="driveIZone">
+
+<location y="230" x="688"/>
+
+</widget>
+
+
+<widget class="edu.wpi.first.smartdashboard.gui.elements.TextBox" type="Number" field="DriveDistanceCmd distR">
+
+<location y="379" x="233"/>
+
+</widget>
+
+
+<widget class="edu.wpi.first.smartdashboard.gui.elements.TextBox" type="Number" field="DriveDistanceCmd distL">
+
+<location y="463" x="286"/>
+
+<height>20</height>
+
+</widget>
+
+
+<widget class="edu.wpi.first.smartdashboard.gui.elements.TextBox" type="Number" field="driveF">
+
+<location y="358" x="707"/>
+
+<height>20</height>
+
+</widget>
+
+
+<widget class="edu.wpi.first.smartdashboard.gui.elements.TextBox" type="Number" field="Drive Command Y">
+
+<location y="142" x="680"/>
+
+<height>21</height>
+
+</widget>
+
+
+<widget class="edu.wpi.first.smartdashboard.gui.elements.TextBox" type="Number" field="driveD">
+
+<location y="322" x="706"/>
+
+<height>20</height>
+
+</widget>
+
+
+<widget class="edu.wpi.first.smartdashboard.gui.elements.TextBox" type="Number" field="driveI">
+
+<location y="304" x="709"/>
+
+<height>20</height>
+
+</widget>
+
+
+<widget class="edu.wpi.first.smartdashboard.gui.elements.TextBox" type="Number" field="driveP">
+
+<location y="285" x="707"/>
+
+<height>20</height>
+
+</widget>
+
+
+<widget class="edu.wpi.first.smartdashboard.gui.elements.TextBox" type="Number" field="PID Error R">
+
+<location y="315" x="912"/>
+
+<height>20</height>
+
+</widget>
+
+
+<widget class="edu.wpi.first.smartdashboard.gui.elements.TextBox" type="Number" field="PID Error L">
+
+<location y="315" x="494"/>
+
+<height>20</height>
+
+</widget>
+
+
+<widget class="edu.wpi.first.smartdashboard.gui.elements.TextBox" type="Number" field="Elevator Lead-Volts">
+
+<location y="449" x="7"/>
+
+<height>20</height>
+
+</widget>
+
+
+<widget class="edu.wpi.first.smartdashboard.gui.elements.TextBox" type="Number" field="Elevator Lead-Amps">
+
+<location y="430" x="4"/>
+
+</widget>
+
+
+<widget class="edu.wpi.first.smartdashboard.gui.elements.TextBox" type="Number" field="Elevator Encoder Position">
+
+<location y="536" x="164"/>
+
+</widget>
+
+
+<widget class="edu.wpi.first.smartdashboard.gui.elements.TextBox" type="Number" field="CAN Front Left Fault">
+
+<location y="4" x="3"/>
+
+</widget>
+
+
+<widget class="edu.wpi.first.smartdashboard.gui.elements.TextBox" type="Number" field="ElClosedLoopRR">
+
+<location y="343" x="264"/>
+
+<height>20</height>
+
+</widget>
+
+
+<widget class="edu.wpi.first.smartdashboard.gui.elements.TextBox" type="Number" field="elevatorPIDDistance">
+
+<location y="303" x="249"/>
+
+<height>20</height>
+
+</widget>
+
+
+<widget class="edu.wpi.first.smartdashboard.gui.elements.TextBox" type="Number" field="elevatorD">
+
+<location y="283" x="282"/>
+
+<height>20</height>
+
+</widget>
+
+
+<widget class="edu.wpi.first.smartdashboard.gui.elements.TextBox" type="Number" field="elevatorF">
+
+<location y="323" x="284"/>
+
+</widget>
+
+
+<widget class="edu.wpi.first.smartdashboard.gui.elements.TextBox" type="Number" field="elevatorI">
+
+<location y="262" x="285"/>
+
+<height>20</height>
+
+</widget>
+
+
+<widget class="edu.wpi.first.smartdashboard.gui.elements.TextBox" type="Number" field="elevatorP">
+
+<location y="241" x="283"/>
+
+<height>20</height>
+
+</widget>
+
+
+<widget class="edu.wpi.first.smartdashboard.gui.elements.TextBox" type="Number" field="Elevator PID Error">
+
+<location y="182" x="259"/>
+
+</widget>
+
+
+<widget class="edu.wpi.first.smartdashboard.gui.elements.TextBox" type="Number" field="pickupMotor set to">
+
+<location y="140" x="258"/>
+
+</widget>
+
+
+<static-widget class="edu.wpi.first.smartdashboard.gui.elements.WebcamViewerExtension">
+
+<location y="15" x="1080"/>
+
+<width>415</width>
+
+<height>403</height>
+
+</static-widget>
+
+
+<widget class="edu.wpi.first.smartdashboard.gui.elements.TextBox" type="Number" field="Right Talon Get">
+
+<location y="460" x="910"/>
+
+</widget>
+
+
+<widget class="edu.wpi.first.smartdashboard.gui.elements.TextBox" type="Number" field="Left Talon Get">
+
+<location y="460" x="498"/>
+
+</widget>
+
 </dashboard>
-<live-window>
-</live-window>
+
+<live-window> </live-window>
+
 </xml>

@@ -31,6 +31,7 @@ Command *Robot::zeroElevator = 0;
 Parameters *Robot::parameters = 0;
 PowerDistributionPanel *Robot::pdp = 0;
 Camera *Robot::cameras[2];
+bool *Robot::isAuto = false;
 
 int Ticks = 0;
 
@@ -96,6 +97,7 @@ void Robot::DisabledPeriodic() {
 }
 
 void Robot::AutonomousInit() {
+	isAuto = true;
 	RobotMap::driveBackLeft->SetPosition(0.0);
 	cameras[0]->CameraStart();
 	if (autonomousCommand != NULL)
@@ -109,6 +111,7 @@ void Robot::AutonomousPeriodic() {
 }
 
 void Robot::TeleopInit() {
+	isAuto = false;
 	cameras[0]->CameraStart();
 	// This makes sure that the autonomous stops running when
 	// teleop starts running. If you want the autonomous to 

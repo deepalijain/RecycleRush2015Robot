@@ -17,17 +17,18 @@
 #include "../Robot.h"
 #include "PositionElevator.h"
 #include "DriveDistanceCommand.h"
+#include "DriveCommand.h"
 
 /**
  *
  *
  * @author ExampleAuthor
  */
-class OneCanAuto: public CommandGroup {
+class OneToteAndCanAuto: public CommandGroup {
 public:
-	OneCanAuto();
+	OneToteAndCanAuto();
 private:
 	Command* GoUpTote();
-	Command* GoDownTote();
+	Command* turn90();
 	Command* DriveToCenter();
 };

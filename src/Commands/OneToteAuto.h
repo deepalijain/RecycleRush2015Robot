@@ -23,9 +23,9 @@
  *
  * @author ExampleAuthor
  */
-class OneCanAuto: public CommandGroup {
+class OneToteAuto: public CommandGroup {
 public:
-	OneCanAuto();
+	OneToteAuto();
 private:
 	Command* GoUpTote();
 	Command* GoDownTote();

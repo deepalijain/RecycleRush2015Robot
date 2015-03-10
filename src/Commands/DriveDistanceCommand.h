@@ -40,6 +40,8 @@
 class DriveDistanceCommand: public Command {
 private:
 	float distance; // requested distance in inches
+	int right;
+	int left;
 	bool isCommandDone;
 	float distanceError;
 	float voltageLeft = 0.0;
@@ -55,7 +57,7 @@ private:
 	// If we're off by 1 inch, increase the voltage by 0.05
 	float voltageScale = 0.05;
 public:
-	DriveDistanceCommand(int dist);
+	DriveDistanceCommand(int dist, int r, int l);
 	virtual void Initialize();
 	virtual void Execute();
 	virtual bool IsFinished();
