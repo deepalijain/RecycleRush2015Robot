@@ -95,7 +95,7 @@ bool PositionElevator::IsFinished() {
 void PositionElevator::End() {
 	printf("PositionElevator ended for commandDirection=%d, %s version\n",
 			commandDirection, trashcan ? "Trash Can" : "Tote");
-	if(Robot::isAuto==false){
+	if(Robot::isAuto()==false){
 		Robot::driveElevatorCommand->Start();
 	}
 }

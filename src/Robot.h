@@ -34,7 +34,6 @@ class Robot : public IterativeRobot {
 private:
 
 public:
-	bool *isAuto;
 	Command *autonomousCommand;
 	static PowerDistributionPanel* pdp;
 	static Parameters *parameters;
@@ -66,6 +65,7 @@ public:
 	void UpdateDashboardPeriodic();
 	void DisplaySensorData();
 	int CameraCount();
+	bool isAuto();
 	void CameraStart(int i);
 	void CameraFeed(int i);
 	void CameraStop(int i);

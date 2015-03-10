@@ -31,7 +31,7 @@ Command *Robot::zeroElevator = 0;
 Parameters *Robot::parameters = 0;
 PowerDistributionPanel *Robot::pdp = 0;
 Camera *Robot::cameras[2];
-bool *Robot::isAuto = false;
+bool isAuto = false;
 
 int Ticks = 0;
 
