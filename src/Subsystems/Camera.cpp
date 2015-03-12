@@ -91,6 +91,25 @@ void Camera::DumpModes() {
 	}
 }
 
+IMAQdxError Camera::SetMode() {
+	IMAQdxVideoMode videoModes[120];
+	uInt32 count;
+	uInt32 mode;
+	IMAQdxEnumerateVideoModes(session, videoModes, &count, &mode);
+	printf("There are %lu video modes, and the current mode is %lu\n", count, mode);
+	for (uInt32 i=0; i!=count; i++) {
+		printf("Video mode[%lu] is %s = %lu\n", i, videoModes[i].Name, videoModes[i].Value);
+		if (i==95) {
+			imaqError = IMAQdxSetAttribute(session, IMAQdxAttributeVideoMode, IMAQdxValueTypeU32, videoModes[i].Value);
+			if(imaqError != IMAQdxErrorSuccess) {
+				printf("IMAQdxOpenCamera attempt to set video mode to %lu failed: %x\n", videoModes[i].Value, imaqError);
+			}
+			return imaqError;
+		}
+	}
+	return IMAQdxErrorInternal;
+}
+
 void Camera::DumpAttrs() {
 		//IMAQdxEnumerateAttributes(IMAQdxSession id, IMAQdxAttributeInformation attributeInformationArray[], uInt32* count, const char* root);
 		IMAQdxAttributeInformation attributeInformationArray[300];
@@ -150,11 +169,9 @@ IMAQdxError Camera::Start() {
 		printf("IMAQdxOpenCamera error: %x\n", imaqError);
 		return imaqError;
 	}
-	uInt32 videoMode = 95;
-	imaqError = IMAQdxGetAttribute(session, IMAQdxAttributeVideoMode, IMAQdxValueTypeU32, &videoMode);
+	imaqError = Camera::SetMode();
 	if(imaqError != IMAQdxErrorSuccess) {
-		printf("IMAQdxOpenCamera attempt to set video mode to %lu failed: %x\n", videoMode, imaqError);
-		//return imaqError;
+		return imaqError;
 	}
 	imaqError = IMAQdxConfigureGrab(session);
 	if(imaqError != IMAQdxErrorSuccess) {
@@ -205,7 +222,7 @@ IMAQdxError Camera::Stop() {
 		//imaqDrawTextOnImage(frame, frame, {120, 80}, "X", &options, &fontUsed);
 		if (NULL!=frame && camera==currentCamera) {
 			// Would really like to make this semi-transparent, but not apparent how.
-			imaqDrawShapeOnImage(frame, frame, { 100, 100, 160, 160 }, DrawMode::IMAQ_DRAW_VALUE, ShapeMode::IMAQ_SHAPE_OVAL,3.0f);
+			imaqDrawShapeOnImage(frame, frame, { 80, 80, 160, 160 }, DrawMode::IMAQ_DRAW_VALUE, ShapeMode::IMAQ_SHAPE_OVAL,3.0f);
 			CameraServer::GetInstance()->SetImage(frame);
 		}
 		IMAQdxStopAcquisition(session);

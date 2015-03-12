@@ -25,6 +25,7 @@ public:
 	Camera(uInt32 i);
 	void DumpAttrs();
 	void DumpModes();
+	IMAQdxError SetMode();
 	static int EnumerateCameras();
 	static uInt32 SwitchCamera();
 	static void StartCameras();
