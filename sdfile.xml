@@ -1,5 +1,14 @@
 <xml version="1.0">
 <dashboard>
+	<widget field="Elevator Target Position" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="124"/>
+	</widget>
+	<widget field="Autonomous Modes" type="String Chooser" class="edu.wpi.first.smartdashboard.gui.elements.Chooser">
+		<location x="0" y="50"/>
+	</widget>
+	<widget field="AutoCommand1Can" type="Command" class="edu.wpi.first.smartdashboard.gui.elements.Command">
+		<location x="0" y="201"/>
+	</widget>
 	<widget field="Left Encoder Position" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
 		<location x="863" y="397"/>
 	</widget>

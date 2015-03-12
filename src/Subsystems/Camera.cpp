@@ -96,7 +96,6 @@ IMAQdxError Camera::SetMode() {
 	uInt32 count;
 	uInt32 mode;
 	IMAQdxEnumerateVideoModes(session, videoModes, &count, &mode);
-	printf("There are %lu video modes, and the current mode is %lu\n", count, mode);
 	for (uInt32 i=0; i!=count; i++) {
 		printf("Video mode[%lu] is %s = %lu\n", i, videoModes[i].Name, videoModes[i].Value);
 		if (i==95) {
