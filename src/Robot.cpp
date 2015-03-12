@@ -17,6 +17,8 @@
 #include "Commands/PositionElevator.h"
 #include "Commands/DrivePID.h"
 #include "Commands/ZeroElevator.h"
+#include "Commands/AutoForwardCommand.h"
+#include "Commands/AutonomousCommand1Can.h"
 
 DriveSubsystem *Robot::driveSubsystem = 0;
 Elevator *Robot::elevator = 0;
@@ -42,6 +44,7 @@ void Robot::RobotInit() {
 		parameters->GetParams();
 
 		RobotMap::init();
+
 		pdp = new PowerDistributionPanel();
 		printf("PDP Temperature: %f\n", pdp->GetTemperature());
 		driveSubsystem = new DriveSubsystem();
@@ -65,6 +68,16 @@ void Robot::RobotInit() {
 		holdElevatorCommand = new PositionElevator(0, false);
 		driveElevatorCommand = new DriveElevator();
 		zeroElevator = new ZeroElevator();
+
+		autoDriveToAutoZone = new AutoForwardCommand(60); //inches to drive
+		autoCommand1Can = new AutonomousCommand1Can();
+
+		// Stuff to get autonomous selection on SmartDashboard
+		chooser = new SendableChooser();
+		chooser->AddDefault("Drive to Auto Zone", autoDriveToAutoZone);
+		chooser->AddDefault("Can to Auto Zone", autoCommand1Can);
+		SmartDashboard::PutData("Autonomous Modes",chooser);
+
 		if (Camera::EnumerateCameras() > 0) {
 			cameras[0] = new Camera(0);
 			// we'll think about two cameras when we can figure out how to stitch them..
@@ -97,9 +110,13 @@ void Robot::DisabledPeriodic() {
 }
 
 void Robot::AutonomousInit() {
-	isAuto = true;
+	//isAuto = true;
 	RobotMap::driveBackLeft->SetPosition(0.0);
 	cameras[0]->CameraStart();
+
+	// Get Autonomous Command from SmartDashboard
+	autonomousCommand = (Command *) chooser->GetSelected();
+
 	if (autonomousCommand != NULL)
 		autonomousCommand->Start();
 }
@@ -111,7 +128,7 @@ void Robot::AutonomousPeriodic() {
 }
 
 void Robot::TeleopInit() {
-	isAuto = false;
+	//isAuto = false;
 	cameras[0]->CameraStart();
 	// This makes sure that the autonomous stops running when
 	// teleop starts running. If you want the autonomous to 
