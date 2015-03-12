@@ -11,7 +11,11 @@
 #include <limits.h>
 
 uInt32 Camera::cameraCount = 0;
+uInt32 Camera::currentCamera = 0;
 IMAQdxCameraInformation Camera::camInfo[6];
+Camera *Camera::cameras[6];
+Image *Camera::frame = NULL;
+
 
 // i is the index of the camera we want to open
 Camera::Camera(uInt32 i) {
@@ -20,7 +24,6 @@ Camera::Camera(uInt32 i) {
 		return;
 	}
 	camera = i;
-	frame = 0;
 	session = ULONG_MAX;
 }
 
@@ -31,12 +34,29 @@ int Camera::EnumerateCameras() {
 	IMAQdxEnumerateCameras(camInfo, &count, true);
 	cameraCount = count;
 	printf("Cameras (%u):\n", (unsigned int)cameraCount);
-	for (uInt32 i=0; i!=cameraCount; i++) printf("  %s / %s / %s\n", camInfo[i].VendorName,
+	for (uInt32 i=0; i!=cameraCount; i++) {
+		cameras[i] = new Camera(i);
+		printf("  %s / %s / %s\n", camInfo[i].VendorName,
 											     camInfo[i].ModelName, camInfo[i].InterfaceName);
+	}
 	return cameraCount;
 }
 
-IMAQdxError Camera::CameraStart() {
+uInt32 Camera::SwitchCamera() {
+	if (currentCamera++ >= cameraCount) currentCamera = 0;
+	return currentCamera;
+}
+
+
+// Feed video frams from the currently selected camera.
+// Should be called once per tick, or however often you want frames.
+void Camera::Feed()
+{
+	IMAQdxError imaqError = cameras[currentCamera]->GetFrame();
+	if (IMAQdxErrorSuccess!=imaqError) CameraServer::GetInstance()->SetImage(frame);
+}
+
+IMAQdxError Camera::Start() {
     // create an image
 	printf("Opening camera %s\n", camInfo[camera].InterfaceName);
 	imaqError = IMAQdxOpenCamera(camInfo[camera].InterfaceName, IMAQdxCameraControlModeController, &session);
@@ -61,25 +81,20 @@ IMAQdxError Camera::CameraStart() {
 	return imaqError;
 }
 
-IMAQdxError Camera::CameraFeed() {
+IMAQdxError Camera::GetFrame() {
 	imaqError = IMAQdxErrorSuccess;
     // grab an image, draw the circle, and provide it for the camera server which will
     // in turn send it to the dashboard.
-	// let's only do this every 1/10 second to avoid excess cpu & network traffic
-	// Ticks+2 to avoid doing it on same cycle as SmartDashBoard updates
-	if (session!=ULONG_MAX && frame!=0) {
+	if (session!=ULONG_MAX) {
 		IMAQdxGrab(session, frame, false, NULL);
 		if(imaqError != IMAQdxErrorSuccess) {
 			printf("IMAQdxConfigureGrab error (%s): %x\n", camInfo[camera].InterfaceName, imaqError);
 		}
-		else {
-			CameraServer::GetInstance()->SetImage(frame);
-		}				// wait for a motor update time
 	}
 	return imaqError;
 }
 
-IMAQdxError Camera::CameraStop() {
+IMAQdxError Camera::Stop() {
     // stop image acquisition
 	imaqError = IMAQdxErrorSuccess;
 	if (ULONG_MAX!=session) {

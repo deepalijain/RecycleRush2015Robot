@@ -24,7 +24,7 @@ public:
 	Joystick *joystick2;
 	Joystick *joystick1;
 
-	Command *driveDistanceCommand;
+	Command *driveDistanceCommand;	// don't have time to debug this?
 	Command *driveCommand;
 	Command *toggleArmFlap;
 	Command *armsUp;	// open, widen
@@ -36,6 +36,7 @@ public:
 	Command *drivePID;
 	Command *toggleCompressor;
 	Command *pushTote;
+	Command *switchCamera;
 
 	OI();
  

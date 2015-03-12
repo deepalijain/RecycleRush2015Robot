@@ -12,8 +12,10 @@
 class Camera {
 private:
 	static IMAQdxCameraInformation camInfo[6];
+	static Camera *cameras[6];	// array of ourselves
 	static uInt32 cameraCount;
-	Image *frame;
+	static uInt32 currentCamera;
+	static Image *frame;
 	IMAQdxSession session;
 	IMAQdxError imaqError;
 	uInt32 camera;
@@ -21,9 +23,11 @@ private:
 public:
 	Camera(uInt32 i);
 	static int EnumerateCameras();
+	static uInt32 SwitchCamera();
+	static void Feed();
 
-	IMAQdxError CameraStart();
-	IMAQdxError CameraFeed();
-	IMAQdxError CameraStop();
+	IMAQdxError Start();
+	IMAQdxError GetFrame();
+	IMAQdxError Stop();
 
 };
