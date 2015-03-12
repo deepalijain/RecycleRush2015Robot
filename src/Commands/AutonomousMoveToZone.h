@@ -15,9 +15,9 @@
 *
 * @author ExampleAuthor
 */
-class AutonomousCommand1Can: public CommandGroup {
+class AutonomousMoveToZone: public CommandGroup {
 public:
-AutonomousCommand1Can();
+	AutonomousMoveToZone();
 private:
 
 };

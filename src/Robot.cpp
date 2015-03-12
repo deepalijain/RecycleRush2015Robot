@@ -66,7 +66,7 @@ void Robot::RobotInit() {
 		SmartDashboard::PutData("AutoCommand1Can", autoCommand1Can);
 		// Stuff to get autonomous selection on SmartDashboard
 		chooser = new SendableChooser();
-		chooser->AddDefault("Drive to Auto Zone", oi->drivePID);
+		chooser->AddDefault("Drive to Auto Zone", oi->drive100);
 		chooser->AddDefault("Can to Auto Zone", autoCommand1Can);
 		SmartDashboard::PutData("Autonomous Modes",chooser);
 

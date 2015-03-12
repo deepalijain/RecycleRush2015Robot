@@ -25,7 +25,7 @@
 
 class DrivePID: public Command {
 public:
-	DrivePID();
+	DrivePID(double left, double right);
 	virtual void Initialize();
 	virtual void Execute();
 	virtual bool IsFinished();
@@ -34,6 +34,8 @@ public:
 private:
 	int timeticks, currentTime;
 	bool isFinished,firstTime;
+	double leftInches, rightInches;		// distances (and direction) to drive
+	double leftTicks, rightTicks;
 };
 
 #endif

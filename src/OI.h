@@ -33,7 +33,9 @@ public:
 	Command *toteDown;
 	Command *canUp;
 	Command *canDown;
-	Command *drivePID;
+	Command *drive100;
+	Command *turnLeft;
+	Command *turnRight;
 	Command *toggleCompressor;
 	Command *pushTote;
 	Command *switchCamera;

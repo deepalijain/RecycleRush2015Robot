@@ -34,7 +34,7 @@ OI::OI() {
 
 	//applyBreakCommand = new ApplyBreakCommand();
 	driveCommand = new DriveCommand();
-	drivePID = new DrivePID();
+	drive100 = new DrivePID(100.0, 100.0);
 	driveDistanceCommand = new DriveDistanceCommand(12*1);
 	toggleArmFlap = new ToggleFlapsCommand(0);
 	armsUp = new ToggleFlapsCommand(-1);
@@ -42,6 +42,8 @@ OI::OI() {
 	toggleCompressor = new ToggleCompressor();
 	pushTote = new PushTote();
 	switchCamera = new SwitchCamera();
+	turnLeft = new DrivePID(-3.14*20.0, 3.14*20.0);
+	turnRight = new DrivePID(3.14*20.0, -3.14*20.0);
 
 	toteUp = new PositionElevator(1, false);				// Tote Up
 	toteDown = new PositionElevator(-1, false);				// Tote Down
@@ -60,7 +62,7 @@ OI::OI() {
 
 	// these next two commands are only for testing
 	Joystick1WhenPressed(switchCamera, 10);			// right axis click
-	Joystick1WhenPressed(drivePID, 9);			// right axis click
+	Joystick1WhenPressed(drive100, 9);			    // left axis click
 }
 
 void OI::Joystick1WhenPressed(Command *command, int buttonNum) {
