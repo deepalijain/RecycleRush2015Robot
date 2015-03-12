@@ -15,16 +15,23 @@ private:
 	static Camera *cameras[6];	// array of ourselves
 	static uInt32 cameraCount;
 	static uInt32 currentCamera;
-	static Image *frame;
+	Image *frame;
 	IMAQdxSession session;
 	IMAQdxError imaqError;
 	uInt32 camera;
+	bool firstTime;
 
 public:
 	Camera(uInt32 i);
+	void DumpAttrs();
+	void DumpModes();
 	static int EnumerateCameras();
 	static uInt32 SwitchCamera();
+	static void StartCameras();
+	static void StopCameras();
 	static void Feed();
+	static char *GetName();
+	static char *GetModel();
 
 	IMAQdxError Start();
 	IMAQdxError GetFrame();

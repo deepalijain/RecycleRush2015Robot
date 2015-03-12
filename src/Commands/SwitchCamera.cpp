@@ -18,8 +18,14 @@ SwitchCamera::SwitchCamera() {
 
 // Called just before this Command runs the first time
 void SwitchCamera::Initialize() {
+	char *cam1 = Camera::GetName();
+	char *camModel1 = Camera::GetModel();
 	Camera::SwitchCamera();	// just get next in sequence
-	printf("ToggleCamera command called \n");
+	char *cam2 = Camera::GetName();
+	char *camModel2 = Camera::GetModel();
+	printf("Camera: switching from %s (%s) to %s (%s)\n",
+			cam1, camModel1,
+			cam2, camModel2);
 }
 
 // Called repeatedly when this Command is scheduled to run

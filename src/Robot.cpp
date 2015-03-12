@@ -80,7 +80,7 @@ void Robot::RobotInit() {
  * You can use it to reset subsystems before shutting down.
  */
 void Robot::DisabledInit() {
-
+	Camera::StopCameras();
 }
 
 void Robot::DisabledPeriodic() {
@@ -92,6 +92,7 @@ void Robot::AutonomousInit() {
 	RobotMap::driveBackLeft->SetPosition(0.0);
 	if (autonomousCommand != NULL)
 		autonomousCommand->Start();
+	Camera::StartCameras();
 }
 
 void Robot::AutonomousPeriodic() {
@@ -114,6 +115,7 @@ void Robot::TeleopInit() {
 	// It seems that we need a Set to confirm the control mode or else it reverts
 	parameters->UpdateDrivePIDParams();
 	parameters->UpdateElevatorPIDParams();
+	Camera::StartCameras();
 }
 
 
