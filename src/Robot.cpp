@@ -13,6 +13,7 @@
 #include "Commands/DrivePID.h"
 #include "Commands/ZeroElevator.h"
 #include "Commands/AutonomousCommand1Can.h"
+#include "Commands/AutonomousMoveToZone.h"
 #include "Subsystems/Camera.h"
 
 DriveSubsystem *Robot::driveSubsystem = 0;
@@ -61,13 +62,15 @@ void Robot::RobotInit() {
 		driveElevatorCommand = new DriveElevator();
 		zeroElevator = new ZeroElevator();
 
+		autoCommandMoveToZone = new AutonomousMoveToZone();
 		autoCommand1Can = new AutonomousCommand1Can();
 		// Add a button to the SmartDashboard to allow the command to be tested
+		SmartDashboard::PutData("AutoCommand1Can", autoCommandMoveToZone);
 		SmartDashboard::PutData("AutoCommand1Can", autoCommand1Can);
 		// Stuff to get autonomous selection on SmartDashboard
 		chooser = new SendableChooser();
-		chooser->AddDefault("Drive to Auto Zone", oi->drive100);
 		chooser->AddDefault("Can to Auto Zone", autoCommand1Can);
+		chooser->AddObject("Drive to Auto Zone", autoCommandMoveToZone);
 		SmartDashboard::PutData("Autonomous Modes",chooser);
 
 		Camera::EnumerateCameras();
