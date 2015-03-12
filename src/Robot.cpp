@@ -12,6 +12,7 @@
 #include "Commands/PositionElevator.h"
 #include "Commands/DrivePID.h"
 #include "Commands/ZeroElevator.h"
+#include "Commands/AutonomousCommand1Can.h"
 #include "Subsystems/Camera.h"
 
 DriveSubsystem *Robot::driveSubsystem = 0;
@@ -60,6 +61,15 @@ void Robot::RobotInit() {
 		driveElevatorCommand = new DriveElevator();
 		zeroElevator = new ZeroElevator();
 
+		autoCommand1Can = new AutonomousCommand1Can();
+		// Add a button to the SmartDashboard to allow the command to be tested
+		SmartDashboard::PutData("AutoCommand1Can", autoCommand1Can);
+		// Stuff to get autonomous selection on SmartDashboard
+		chooser = new SendableChooser();
+		chooser->AddDefault("Drive to Auto Zone", oi->drivePID);
+		chooser->AddDefault("Can to Auto Zone", autoCommand1Can);
+		SmartDashboard::PutData("Autonomous Modes",chooser);
+
 		Camera::EnumerateCameras();
 
 		lw = LiveWindow::GetInstance();
@@ -90,6 +100,8 @@ void Robot::DisabledPeriodic() {
 
 void Robot::AutonomousInit() {
 	RobotMap::driveBackLeft->SetPosition(0.0);
+	parameters->UpdateDrivePIDParams();
+	parameters->UpdateElevatorPIDParams();
 	if (autonomousCommand != NULL)
 		autonomousCommand->Start();
 	Camera::StartCameras();
@@ -128,6 +140,7 @@ void Robot::TeleopPeriodic() {
 void Robot::TestPeriodic() {
 	lw->Run();
 	Camera::Feed();
+	UpdateDashboardPeriodic();
 }
 
 void Robot::UpdateDashboardPeriodic() {
