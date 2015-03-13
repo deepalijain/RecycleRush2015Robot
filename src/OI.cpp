@@ -60,8 +60,10 @@ OI::OI() {
 	Joystick1WhenPressed(pushTote, 8);			// tiny start button
 
 	// these next two commands are only for testing
-	Joystick1WhenPressed(switchCamera, 10);			// right axis click
-	Joystick1WhenPressed(drive100, 9);			    // left axis click
+	Joystick2WhenPressed(switchCamera, 11);			// upper right button on Logitech Attack 3
+	Joystick2WhenPressed(drive100, 6);			    // upper left button on Logitech Attack 3
+	Joystick2WhenPressed(turnLeft, 8);
+	Joystick2WhenPressed(turnRight, 9);
 }
 
 void OI::Joystick1WhenPressed(Command *command, int buttonNum) {
@@ -69,6 +71,11 @@ void OI::Joystick1WhenPressed(Command *command, int buttonNum) {
 	// Once we assigned WhenPressed, we could throw them away
 	joystick1Buttons[buttonNum] = new JoystickButton(joystick1, buttonNum);
 	joystick1Buttons[buttonNum]->WhenPressed(command);
+}
+
+void OI::Joystick2WhenPressed(Command *command, int buttonNum) {
+	joystick2Buttons[buttonNum] = new JoystickButton(joystick2, buttonNum);
+	joystick2Buttons[buttonNum]->WhenPressed(command);
 }
 
 Joystick* OI::getJoystick2() {

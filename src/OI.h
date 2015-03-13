@@ -16,9 +16,11 @@
 class OI {
 private:
 	JoystickButton *joystick1Buttons[12];	// we don't use zero!
+	JoystickButton *joystick2Buttons[12];
 
 	// helper function for binding joystick buttons
 	void Joystick1WhenPressed(Command *command, int buttonNum);
+	void Joystick2WhenPressed(Command *command, int buttonNum);
 
 public:
 	Joystick *joystick2;

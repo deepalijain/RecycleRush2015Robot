@@ -106,6 +106,8 @@ void Robot::AutonomousInit() {
 	parameters->UpdateDrivePIDParams();
 	zeroElevator->Start();
 	parameters->UpdateElevatorPIDParams();
+	if (!elevator->WasZeroed()) zeroElevator->Start();
+	autonomousCommand = (Command *)chooser->GetSelected();
 	if (autonomousCommand != NULL)
 		autonomousCommand->Start();
 	Camera::StartCameras();
