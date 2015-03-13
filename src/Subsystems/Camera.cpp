@@ -97,7 +97,7 @@ IMAQdxError Camera::SetMode() {
 	uInt32 mode;
 	IMAQdxEnumerateVideoModes(session, videoModes, &count, &mode);
 	for (uInt32 i=0; i!=count; i++) {
-		printf("Video mode[%lu] is %s = %lu\n", i, videoModes[i].Name, videoModes[i].Value);
+		//printf("Video mode[%lu] is %s = %lu\n", i, videoModes[i].Name, videoModes[i].Value);
 		if (i==95) {
 			imaqError = IMAQdxSetAttribute(session, IMAQdxAttributeVideoMode, IMAQdxValueTypeU32, videoModes[i].Value);
 			if(imaqError != IMAQdxErrorSuccess) {

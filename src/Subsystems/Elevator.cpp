@@ -24,7 +24,7 @@ Elevator::Elevator() : Subsystem("Elevator") {
 
 	if (RobotMap::testBot) encoderPos = -70.0;	// simulated encoder
 
-	wheelDiameter = 2.0; 				// starting guess
+	wheelDiameter = 1.85; 				// starting guess
 
 	ticksPerRotation = 1024.0;
 	inchesPerTote = 12.1;
@@ -38,7 +38,7 @@ Elevator::Elevator() : Subsystem("Elevator") {
 	//Define elevator heights for lifting totes
 	printf("Elevator heights ----------------------------------------------------\n");
 	elevatorHeightsTotes[0] = 0.0;
-	elevatorHeightsTotes[1] = round(ticksPerInch * 4.0);
+	elevatorHeightsTotes[1] = round(ticksPerInch * 6.0);
 	printf("   elevatorHeightsTotes[0] = %1.2f\n   elevatorHeightsTotes[1] = %1.2f\n",
 			elevatorHeightsTotes[0], elevatorHeightsTotes[1]);
 
@@ -66,15 +66,10 @@ Elevator::Elevator() : Subsystem("Elevator") {
     
 void Elevator::SetHeight(double height)
 {
+	targetHeight = height;
+
 	if (!RobotMap::testBot) {
 		Robot::parameters->UpdateElevatorPIDParams();
-		if (false) {
-			Parameters::elevatorP = SmartDashboard::GetNumber("elevatorP");
-			Parameters::elevatorI = SmartDashboard::GetNumber("elevatorI");
-			Parameters::elevatorD = SmartDashboard::GetNumber("elevatorD");
-			Parameters::elevatorF = SmartDashboard::GetNumber("elevatorF");
-			//Parameters::elevatorRampRateCloseLoop = SmartDashboard::GetNumber("ElClosedLoopRR");
-		}
 		elevatorMotor1->SetVoltageRampRate(30.0);
 		elevatorMotor1->SetPID(Parameters::elevatorP,Parameters::elevatorI,Parameters::elevatorD,Parameters::elevatorF);
 		elevatorMotor1->ClearIaccum();
@@ -91,8 +86,8 @@ void Elevator::SetHeight(double height)
 
 void Elevator::MoveByTote(int commandDirection) {
 	// for better or worse, negative is up on our elevator
-	printf("MoveTote from %d to %d\n", elevatorIndex, elevatorIndex-commandDirection);
-	elevatorIndex -= commandDirection;
+	printf("MoveTote from %d to %d\n", elevatorIndex, elevatorIndex+commandDirection);
+	elevatorIndex += commandDirection;
 	if (elevatorIndex < 0) elevatorIndex = 0;
 	if (elevatorIndex >= (int)LENGTH(elevatorHeightsTotes)) elevatorIndex = LENGTH(elevatorHeightsTotes)-1;
 	SetHeight(-elevatorHeightsTotes[elevatorIndex]);
@@ -100,8 +95,8 @@ void Elevator::MoveByTote(int commandDirection) {
 
 void Elevator::MoveCan(int commandDirection) {
 	// for better or worse, negative is up on our elevator
-	printf("MoveCan from %d to %d\n", elevatorIndex, elevatorIndex-commandDirection);
-	elevatorIndex -= commandDirection;
+	printf("MoveCan from %d to %d\n", elevatorIndex, elevatorIndex+commandDirection);
+	elevatorIndex += commandDirection;
 	if (elevatorIndex < 0) elevatorIndex = 0;
 	if (elevatorIndex >= (int)LENGTH(elevatorHeightsCans)) elevatorIndex = LENGTH(elevatorHeightsCans)-1;
 	SetHeight(-elevatorHeightsCans[elevatorIndex]);
@@ -125,9 +120,11 @@ void Elevator::InitDefaultCommand() {
 	// Set the default command for a subsystem here.
 	// presume Elevator starts at position zero. We need to actually
 	// ensure this elsewhere
-	if (!RobotMap::testBot) {
+	/*   Nah, we don't want this anymore
+	 * if (!RobotMap::testBot) {
 		SetDefaultCommand(Robot::holdElevatorCommand);
 	}
+	*/
 }
 
 double Elevator::GetPosition() {

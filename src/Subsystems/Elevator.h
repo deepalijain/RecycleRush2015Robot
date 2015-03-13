@@ -55,7 +55,7 @@ public:
 	bool zeroed;
 	double targetHeight;
 
-	double elevatorHeightsTotes[7];
+	double elevatorHeightsTotes[6];
 	double elevatorHeightsCans[5];
 
 	double ticksPerRotation;

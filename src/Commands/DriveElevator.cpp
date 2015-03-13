@@ -56,6 +56,9 @@ void DriveElevator::End() {
 	// If the driver isn't actively moving the elevator, then use
 	// the holdElevatorCommand to keep it in place.
 	printf("Drive elevator ending, reverting to PID control.\n");
+	// Max says this is wrong, I think it'll work for now:
+	double curPos =  RobotMap::elevatorMotor1->GetEncPosition();
+	Robot::elevator->SetHeight(curPos);
 	Robot::holdElevatorCommand->Start();
  }
 

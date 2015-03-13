@@ -104,6 +104,7 @@ void Robot::DisabledPeriodic() {
 void Robot::AutonomousInit() {
 	RobotMap::driveBackLeft->SetPosition(0.0);
 	parameters->UpdateDrivePIDParams();
+	zeroElevator->Start();
 	parameters->UpdateElevatorPIDParams();
 	if (autonomousCommand != NULL)
 		autonomousCommand->Start();
@@ -137,6 +138,13 @@ void Robot::TeleopInit() {
 void Robot::TeleopPeriodic() {
 	Scheduler::GetInstance()->Run();
 	UpdateDashboardPeriodic();
+	float up = Robot::oi->joystick1->GetRawAxis(3);
+	float down = Robot::oi->joystick1->GetRawAxis(2);
+	if (fabs(up) > 0.06 || fabs(down) > 0.06)
+	{
+		//printf("Drive Elevator initiated by joystick input up=%f, down=%f.\n", up, down);
+		Robot::driveElevatorCommand->Start();
+	}
 	Camera::Feed();
 }
 

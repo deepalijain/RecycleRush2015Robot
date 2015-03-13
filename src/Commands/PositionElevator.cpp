@@ -26,14 +26,14 @@ void PositionElevator::Initialize() {
 	double curPos;
 	SetInterruptible(true);
 	Robot::parameters->UpdateElevatorPIDParams();
-	printf("PositionElevator initialized for commandDirection=%d, %s version\n",
-			commandDirection, trashcan ? "Trash Can" : "Tote");
-	// always make sure we're back in position control mode.
 	if (!RobotMap::testBot) {
 		RobotMap::elevatorMotor1->SetControlMode(CANSpeedController::kPosition);
 	}
-	curPos = elevator->GetPosition();
-
+	// Max says this is wrong, I think it'll work for now:
+	curPos =  RobotMap::elevatorMotor1->GetEncPosition();
+	printf("PositionElevator initialized for commandDirection=%d, %s version moving from %1.2f\n",
+			commandDirection, trashcan ? "Trash Can" : "Tote", curPos);
+	// always make sure we're back in position control mode.
 	if (commandDirection == 0) {
 		// if curPos is not accurate, stupid things happen here
 		elevator->SetHeight(curPos);	// hold mode
@@ -69,17 +69,9 @@ void PositionElevator::Execute() {
 // Make this return true when this Command no longer needs to run execute()
 bool PositionElevator::IsFinished() {
 	// End PID control if the joystick throttles are pressed
-	float up = Robot::oi->joystick1->GetRawAxis(3);
-	float down = Robot::oi->joystick1->GetRawAxis(2);
-	if (fabs(up) > 0.1 || fabs(down) > 0.1)
-	{
-		printf("Elevator PID terminated by joystick input up=%f, down=%f.\n", up, down);
-		return true;
-	}
 	// Test bot is different. Simulated elevator ends when it reaches set point
 	if (RobotMap::testBot && commandDirection!=0)
 		return (fabs(elevator->GetPosition() - elevator->targetHeight) < 2*elevator->ticksPerCycle);
-	return false;
 	// Otherwise, the PID directional move commands end immediately -- the PID loop
 	// will do the rest. Except the default command -- holdElevator, that maintains
 	// position.
@@ -88,14 +80,13 @@ bool PositionElevator::IsFinished() {
 		return true;
 	}
 	// on testBot, we only end when if we've reached the target
-	return false;
+	return true;
 }
 
 // Called once after isFinished returns true
 void PositionElevator::End() {
 	printf("PositionElevator ended for commandDirection=%d, %s version\n",
 			commandDirection, trashcan ? "Trash Can" : "Tote");
-	Robot::driveElevatorCommand->Start();
 }
 
 // Called when another command which requires one or more of the same
