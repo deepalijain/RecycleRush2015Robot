@@ -23,9 +23,9 @@ DrivePID::DrivePID(double leftInches, double rightInches)  :
 	Requires(Robot::driveSubsystem);
 	isFinished = false;
 	printf("drivePID constructed for leftInches=%1.2f, rightInches=%1.2f.\n", leftInches, rightInches);
-	double wheelDiameter = 6.0; 				// starting guess
+	double wheelDiameter = 6.25; 				// measured
 
-	double ticksPerRotation = 1024.0;
+	double ticksPerRotation = 1024.0 *3;// 3:1 gear on encoder
 	double inchesPerRotation = wheelDiameter * 3.14159;
 	leftTicks = leftInches * (ticksPerRotation/inchesPerRotation);
 	rightTicks = rightInches * (ticksPerRotation/inchesPerRotation);
