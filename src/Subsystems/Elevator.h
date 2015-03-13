@@ -56,7 +56,7 @@ public:
 	double targetHeight;
 
 	double elevatorHeightsTotes[6];
-	double elevatorHeightsCans[5];
+	double elevatorHeightsCans[4];
 
 	double ticksPerRotation;
 	double m_startPos;

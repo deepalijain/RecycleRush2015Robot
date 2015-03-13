@@ -24,7 +24,7 @@ Elevator::Elevator() : Subsystem("Elevator") {
 
 	if (RobotMap::testBot) encoderPos = -70.0;	// simulated encoder
 
-	wheelDiameter = 1.85; 				// starting guess
+	wheelDiameter = 1.895; 				// starting guess
 
 	ticksPerRotation = 1024.0;
 	inchesPerTote = 12.1;
@@ -46,6 +46,7 @@ Elevator::Elevator() : Subsystem("Elevator") {
 		elevatorHeightsTotes[i] = round((i - 1) * ticksPerTote + elevatorHeightsTotes[1]);
 		printf("   elevatorHeightsTotes[%d] = %1.2f\n", i, elevatorHeightsTotes[i]);
 	}
+	elevatorHeightsTotes[LENGTH(elevatorHeightsTotes)-1] = 7840.0;
 
 	//Define elevator heights for lifting cans
 
@@ -58,6 +59,8 @@ Elevator::Elevator() : Subsystem("Elevator") {
 		elevatorHeightsCans[i] = round((i - 1) * ticksPerTote + elevatorHeightsCans[1] /*+ ticksPerCanOffset*/);
 		printf("   elevatorHeightsCans[%d] = %1.2f\n", i, elevatorHeightsCans[i]);
 	}
+	elevatorHeightsCans[LENGTH(elevatorHeightsCans)-1] = 7840.0;
+
 
 	// This is for testBot only:
 	// Simulate movement so a full tote's height takes about 2 seconds
