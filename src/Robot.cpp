@@ -13,6 +13,7 @@
 #include "Commands/DrivePID.h"
 #include "Commands/ZeroElevator.h"
 #include "Commands/AutonomousCommand1Can.h"
+#include "Commands/AutonomousCommand1Can1Tote.h"
 #include "Commands/AutonomousMoveToZone.h"
 #include "Subsystems/Camera.h"
 
@@ -64,13 +65,17 @@ void Robot::RobotInit() {
 
 		autoCommandMoveToZone = new AutonomousMoveToZone();
 		autoCommand1Can = new AutonomousCommand1Can();
+		autoCommand1Can1Tote = new AutonomousCommand1Can1Tote();
 		// Add a button to the SmartDashboard to allow the command to be tested
 		SmartDashboard::PutData("AutoCommand1Can", autoCommandMoveToZone);
 		SmartDashboard::PutData("AutoCommand1Can", autoCommand1Can);
+		SmartDashboard::PutData("AutoCommand1Can", autoCommand1Can1Tote);
+
 		// Stuff to get autonomous selection on SmartDashboard
 		chooser = new SendableChooser();
 		chooser->AddDefault("Can to Auto Zone", autoCommand1Can);
 		chooser->AddObject("Drive to Auto Zone", autoCommandMoveToZone);
+		chooser->AddObject("Drive to Auto Zone", autoCommand1Can1Tote);
 		SmartDashboard::PutData("Autonomous Modes",chooser);
 
 		Camera::EnumerateCameras();
