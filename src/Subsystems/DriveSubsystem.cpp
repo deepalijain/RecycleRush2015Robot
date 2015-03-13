@@ -55,7 +55,7 @@ void DriveSubsystem::SetPIDDistance(double left, double right)
 	backLeftMotor->SetPID(Parameters::driveP,Parameters::driveI,
 									Parameters::driveD,Parameters::driveF);
 	backLeftMotor->SetIzone(Parameters::driveIZone);
-	backLeftMotor->SetCloseLoopRampRate(Parameters::driveIZone);
+	backLeftMotor->SetCloseLoopRampRate(Parameters::driveRampRate);
 	backLeftMotor->ClearIaccum();
 
 	printf("PID Left from=%1.0f, to=%1.2f, driveP=%1.3f, driveI=%1.3f, driveD=%1.3f, driveF=%1.3f.\n",
@@ -65,7 +65,7 @@ void DriveSubsystem::SetPIDDistance(double left, double right)
 	backRightMotor->SetPID(Parameters::driveP,Parameters::driveI,
 									 Parameters::driveD,Parameters::driveF);
 	backRightMotor->SetIzone(Parameters::driveIZone);
-	backRightMotor->SetCloseLoopRampRate(Parameters::driveIZone);
+	backRightMotor->SetCloseLoopRampRate(Parameters::driveRampRate);
 	backRightMotor->ClearIaccum();
 
 	printf("PID Right from=%1.0f, to=%1.2f, driveP=%1.3f, driveI=%1.3f, driveD=%1.3f, driveF=%1.3f.\n",

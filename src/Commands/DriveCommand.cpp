@@ -23,7 +23,7 @@ DriveCommand::DriveCommand() {
 
 // Called just before this Command runs the first time
 void DriveCommand::Initialize() {
-	turnMax = 0.8;
+	turnMax = 0.7;
 }
 
 // Called repeatedly when this Command is scheduled to run
@@ -34,12 +34,12 @@ void DriveCommand::Execute() {
 	// The ArcadeDrive method seems to expect this.
 
 	float x = Robot::oi->joystick1->GetRawAxis(4);
-	//if (x>turnMax){
-//		x = turnMax;
-	//}
-	//if (x<-turnMax){
-	//	x =  -turnMax;
-	//}
+	if (x > turnMax){
+		x = turnMax;
+	}
+	if (x < -turnMax){
+		x = -turnMax;
+	}
 	Robot::driveSubsystem->DriveJoysticks(y,x);
 	SmartDashboard::PutNumber("Drive Command Y", y);
 	SmartDashboard::PutNumber("Drive Command X", x);

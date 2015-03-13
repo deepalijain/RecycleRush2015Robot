@@ -41,8 +41,8 @@ OI::OI() {
 	toggleCompressor = new ToggleCompressor();
 	pushTote = new PushTote();
 	switchCamera = new SwitchCamera();
-	turnLeft = new DrivePID(-3.14*20.0, 3.14*20.0);
-	turnRight = new DrivePID(3.14*20.0, -3.14*20.0);
+	turnLeft = new DrivePID(-ninetyDegreeTurn, ninetyDegreeTurn);
+	turnRight = new DrivePID(ninetyDegreeTurn, -ninetyDegreeTurn);
 
 	toteUp = new PositionElevator(1, false);				// Tote Up
 	toteDown = new PositionElevator(-1, false);				// Tote Down
@@ -54,16 +54,16 @@ OI::OI() {
 	Joystick1WhenPressed(canUp, 4);				// Y button
 	Joystick1WhenPressed(canDown, 1);			// A button
 
-	Joystick1WhenPressed(armsUp, 3);			// X button (open, widen arms)
-	Joystick1WhenPressed(armsDown, 2);			// B button (close, narrow arms)
+	Joystick1WhenPressed(armsUp, 2);			// B button (close, narrow arms)
+	Joystick1WhenPressed(armsDown, 3);			// X button (open, widen arms)
 	Joystick1WhenPressed(toggleCompressor, 7);	// tiny back button (old XBox)
 	Joystick1WhenPressed(pushTote, 8);			// tiny start button
 
 	// these next two commands are only for testing
-	Joystick2WhenPressed(switchCamera, 11);			// upper right button on Logitech Attack 3
+	/* Joystick2WhenPressed(switchCamera, 11);			// upper right button on Logitech Attack 3
 	Joystick2WhenPressed(drive100, 6);			    // upper left button on Logitech Attack 3
 	Joystick2WhenPressed(turnLeft, 8);
-	Joystick2WhenPressed(turnRight, 9);
+	Joystick2WhenPressed(turnRight, 9);*/
 }
 
 void OI::Joystick1WhenPressed(Command *command, int buttonNum) {

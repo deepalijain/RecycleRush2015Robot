@@ -15,7 +15,10 @@
 #include "Commands/AutonomousCommand1Can.h"
 #include "Commands/AutonomousCommand1Can1Tote.h"
 #include "Commands/AutonomousMoveToZone.h"
+#include "Commands/AutonomousEmpty.h"
 #include "Subsystems/Camera.h"
+#include "Commands/Delay.h"
+#include "Commands/ToggleFlapsCommand.h"
 
 DriveSubsystem *Robot::driveSubsystem = 0;
 Elevator *Robot::elevator = 0;
@@ -64,8 +67,33 @@ void Robot::RobotInit() {
 		zeroElevator = new ZeroElevator();
 
 		autoCommandMoveToZone = new AutonomousMoveToZone();
+		autoCommandMoveToZone->AddSequential(new Delay(0.2));
+
+		autoCommandDoNothing = new AutonomousEmpty();
+
 		autoCommand1Can = new AutonomousCommand1Can();
+		autoCommand1Can->AddSequential(new ZeroElevator());
+		autoCommand1Can->AddSequential(new ToggleFlapsCommand(-1)); 	// make sure flaps are closed
+		autoCommand1Can->AddSequential(new PositionElevator(1, true));
+		//AddSequential(Robot::oi->toteUp);
+		// TODO: DrivePID only goes straight right now. We need to be able to pass in values
+		// but I want to coordinate with Charles
+		autoCommand1Can->AddSequential(new DrivePID(100.0, 100.0));
+
 		autoCommand1Can1Tote = new AutonomousCommand1Can1Tote();
+		// Need to go up twice to get a can
+		autoCommand1Can1Tote->AddSequential(new ZeroElevator());
+		autoCommand1Can1Tote->AddSequential(new PositionElevator(1, true));
+		autoCommand1Can1Tote->AddSequential(new Delay(1.5));
+		autoCommand1Can1Tote->AddSequential(new DrivePID(21.0, 21.0));
+		autoCommand1Can1Tote->AddSequential(new PositionElevator(-1, true));	// put the can on the tote
+		autoCommand1Can1Tote->AddSequential(new PositionElevator(-1, false));	// move down to under the Tote
+		autoCommand1Can1Tote->AddSequential(new Delay(1.5));
+		autoCommand1Can1Tote->AddSequential(new ToggleFlapsCommand(-1)); 	// make sure flaps are closed
+		autoCommand1Can1Tote->AddSequential(new PositionElevator(1, false));	// pick up the Tote
+		autoCommand1Can1Tote->AddSequential(new DrivePID(-ninetyDegreeTurn, ninetyDegreeTurn)); // turn left
+		autoCommand1Can1Tote->AddSequential(new DrivePID(100.0, 100.0)); // and drive off into the sunset..
+
 		// Add a button to the SmartDashboard to allow the command to be tested
 		SmartDashboard::PutData("AutoCommand1Can", autoCommandMoveToZone);
 		SmartDashboard::PutData("AutoCommand1Can", autoCommand1Can);
@@ -73,9 +101,10 @@ void Robot::RobotInit() {
 
 		// Stuff to get autonomous selection on SmartDashboard
 		chooser = new SendableChooser();
-		chooser->AddDefault("Can to Auto Zone", autoCommand1Can);
-		chooser->AddObject("Drive to Auto Zone", autoCommandMoveToZone);
+		chooser->AddDefault("Can to Auto Zone", autoCommandMoveToZone);
+		chooser->AddObject("Drive to Auto Zone", autoCommand1Can);
 		chooser->AddObject("Drive to Auto Zone", autoCommand1Can1Tote);
+		chooser->AddObject("Do absolutely nothing", autoCommandDoNothing);
 		SmartDashboard::PutData("Autonomous Modes",chooser);
 
 		Camera::EnumerateCameras();
@@ -107,18 +136,34 @@ void Robot::DisabledPeriodic() {
 }
 
 void Robot::AutonomousInit() {
-	RobotMap::driveBackLeft->SetPosition(0.0);
-	parameters->UpdateDrivePIDParams();
-	zeroElevator->Start();
-	parameters->UpdateElevatorPIDParams();
-	if (!elevator->WasZeroed()) zeroElevator->Start();
-	autonomousCommand = (Command *)chooser->GetSelected();
+	//RobotMap::driveBackLeft->SetPosition(0.0);
+	UpdateDashboardPeriodic();
+	//parameters->UpdateDrivePIDParams();
+	//parameters->UpdateElevatorPIDParams();
+#ifndef badautobadauto
+	// make the above true to run the reliable drive forward 100" auto
+	autonomousCommand = NULL;
+	//autonomousCommand = (CommandGroup *)new DrivePID(100.0, 100.0);
+#else
+	//autonomousCommand = autoCommandMoveToZone;
+	autonomousCommand =  (CommandGroup *)chooser->GetSelected();
+	printf("Autonomous chosen: %s\n",
+			autonomousCommand== autoCommandMoveToZone ? "autoCommandMoveToZone" :
+					autonomousCommand==autoCommand1Can1Tote ? "autoCommand1Can1Tote" :
+							autonomousCommand==autoCommandDoNothing ? "autoCommandDoNothing" :
+									autonomousCommand==autoCommandMoveToZone ? "autonomousCommand"	 : "autoDoNothing!"	);
+#endif
 	if (autonomousCommand != NULL)
 		autonomousCommand->Start();
+
 	Camera::StartCameras();
 }
 
 void Robot::AutonomousPeriodic() {
+	if (autoPeriodicCount++ < 4) {
+		printf("AutoPeriodic %d!\n", autoPeriodicCount);
+	}
+	else if (autoPeriodicCount==120) printf("AutoPeriodic still alive %d!\n", autoPeriodicCount);
 	Scheduler::GetInstance()->Run();
 	UpdateDashboardPeriodic();
 	Camera::Feed();
@@ -129,6 +174,7 @@ void Robot::TeleopInit() {
 	// teleop starts running. If you want the autonomous to 
 	// continue until interrupted by another command, remove
 	// these lines or comment it out.
+	printf("Teleop Init was here!\n");
 	if (autonomousCommand != NULL)
 		autonomousCommand->Cancel();
 	if (!elevator->WasZeroed()) zeroElevator->Start();
