@@ -1,5 +1,14 @@
 <xml version="1.0">
 <dashboard>
+	<widget field="autoCommandMoveToZone" type="Command" class="edu.wpi.first.smartdashboard.gui.elements.Command">
+		<location x="0" y="437"/>
+	</widget>
+	<widget field="autoCommandDoNothing" type="Command" class="edu.wpi.first.smartdashboard.gui.elements.Command">
+		<location x="0" y="375"/>
+	</widget>
+	<widget field="autoCommand1Can1Tote" type="Command" class="edu.wpi.first.smartdashboard.gui.elements.Command">
+		<location x="0" y="339"/>
+	</widget>
 	<widget field="Elevator Encoder Raw" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
 		<location x="0" y="235"/>
 	</widget>

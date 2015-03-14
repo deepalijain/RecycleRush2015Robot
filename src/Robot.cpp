@@ -78,16 +78,17 @@ void Robot::RobotInit() {
 		autoCommand1Can1Tote = new AutonomousCommand1Can1Tote();
 
 		// Add a button to the SmartDashboard to allow the command to be tested
-		SmartDashboard::PutData("AutoCommand1Can", autoCommandMoveToZone);
+		SmartDashboard::PutData("autoCommandDoNothing", autoCommandDoNothing);
+		SmartDashboard::PutData("autoCommandMoveToZone", autoCommandMoveToZone);
 		SmartDashboard::PutData("AutoCommand1Can", autoCommand1Can);
-		SmartDashboard::PutData("AutoCommand1Can", autoCommand1Can1Tote);
+		SmartDashboard::PutData("autoCommand1Can1Tote", autoCommand1Can1Tote);
 
 		// Stuff to get autonomous selection on SmartDashboard
 		chooser = new SendableChooser();
 		chooser->AddDefault("Do absolutely nothing", autoCommandDoNothing);
 		chooser->AddObject("Move to Auto Zone", autoCommandMoveToZone);
 		chooser->AddObject("Lift Can and Drive to Zone", autoCommand1Can);
-		chooser->AddObject("Lift Can and Tote and Rive to Zone", autoCommand1Can1Tote);
+		chooser->AddObject("Lift Can and Tote and Drive to Zone", autoCommand1Can1Tote);
 		SmartDashboard::PutData("Autonomous Modes",chooser);
 
 		Camera::EnumerateCameras();
@@ -123,6 +124,12 @@ void Robot::AutonomousInit() {
 	UpdateDashboardPeriodic();
 	//parameters->UpdateDrivePIDParams();
 	//parameters->UpdateElevatorPIDParams();
+	RobotMap::armFlapSolenoid->Set(DoubleSolenoid::kOff);
+	RobotMap::shifterSolenoid->Set(DoubleSolenoid::kOff);
+	RobotMap::totePusherSolenoid->Set(DoubleSolenoid::kOff);
+	// It seems that we need a Set to confirm the control mode or else it reverts
+	parameters->UpdateDrivePIDParams();
+	parameters->UpdateElevatorPIDParams();
 	autonomousCommand = autoCommandMoveToZone;
 	autonomousCommand =  (CommandGroup *)chooser->GetSelected();
 	printf("Autonomous chosen: %s\n",
@@ -155,12 +162,6 @@ void Robot::TeleopInit() {
 	if (autonomousCommand != NULL)
 		autonomousCommand->Cancel();
 	if (!elevator->WasZeroed()) zeroElevator->Start();
-	RobotMap::armFlapSolenoid->Set(DoubleSolenoid::kOff);
-	RobotMap::shifterSolenoid->Set(DoubleSolenoid::kOff);
-	RobotMap::totePusherSolenoid->Set(DoubleSolenoid::kOff);
-	// It seems that we need a Set to confirm the control mode or else it reverts
-	parameters->UpdateDrivePIDParams();
-	parameters->UpdateElevatorPIDParams();
 	Camera::StartCameras();
 }
 

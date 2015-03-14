@@ -7,6 +7,5 @@
 
 AutonomousMoveToZone::AutonomousMoveToZone() {
 	printf("AutonomousMoveToZone constructed\n");
-	//AddSequential(new DrivePID(100.0, 100.0));
-	AddSequential(new ToggleFlapsCommand(1));
+	AddSequential(new DrivePID(100.0, 100.0));
 }
