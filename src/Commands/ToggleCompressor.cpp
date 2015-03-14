@@ -21,9 +21,8 @@ ToggleCompressor::ToggleCompressor() {
 
 // Called just before this Command runs the first time
 void ToggleCompressor::Initialize() {
-	printf("Solenoid toggle");
 	Robot::compressorSubsystem->Toggle();
-	printf("ToggleSolenoid command initialized \n");
+	printf("ToggleCompressor command initialized \n");
 }
 
 // Called repeatedly when this Command is scheduled to run

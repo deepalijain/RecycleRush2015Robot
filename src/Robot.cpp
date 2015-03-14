@@ -84,10 +84,10 @@ void Robot::RobotInit() {
 
 		// Stuff to get autonomous selection on SmartDashboard
 		chooser = new SendableChooser();
-		chooser->AddDefault("Move to Auto Zone", autoCommandMoveToZone);
+		chooser->AddDefault("Do absolutely nothing", autoCommandDoNothing);
+		chooser->AddObject("Move to Auto Zone", autoCommandMoveToZone);
 		chooser->AddObject("Lift Can and Drive to Zone", autoCommand1Can);
 		chooser->AddObject("Lift Can and Tote and Rive to Zone", autoCommand1Can1Tote);
-		chooser->AddObject("Do absolutely nothing", autoCommandDoNothing);
 		SmartDashboard::PutData("Autonomous Modes",chooser);
 
 		Camera::EnumerateCameras();
@@ -119,10 +119,10 @@ void Robot::DisabledPeriodic() {
 }
 
 void Robot::AutonomousInit() {
-	RobotMap::driveBackLeft->SetPosition(0.0);
+	//RobotMap::driveBackLeft->SetPosition(0.0);
 	UpdateDashboardPeriodic();
-	parameters->UpdateDrivePIDParams();
-	parameters->UpdateElevatorPIDParams();
+	//parameters->UpdateDrivePIDParams();
+	//parameters->UpdateElevatorPIDParams();
 	autonomousCommand = autoCommandMoveToZone;
 	autonomousCommand =  (CommandGroup *)chooser->GetSelected();
 	printf("Autonomous chosen: %s\n",
