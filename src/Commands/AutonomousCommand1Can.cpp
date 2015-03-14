@@ -8,9 +8,8 @@
 
 
 AutonomousCommand1Can::AutonomousCommand1Can() {
-	// Need to go up twice to get a can
-
-	// And now drive into Auto Zone
-	// TODO: Need to pass in distance. Both sides should be the same
-	// AddSequential(Robot::oi->drivePID);
+	printf("AutonomousCommand1Can constructed\n");
+	AddSequential(new ZeroElevator());
+	AddSequential(new ToggleFlapsCommand(-1)); 	// make sure flaps are closed
+	AddSequential(new PositionElevator(1, true));
 }

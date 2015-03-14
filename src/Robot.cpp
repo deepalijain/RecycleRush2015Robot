@@ -67,32 +67,15 @@ void Robot::RobotInit() {
 		zeroElevator = new ZeroElevator();
 
 		autoCommandMoveToZone = new AutonomousMoveToZone();
-		autoCommandMoveToZone->AddSequential(new Delay(0.2));
-
 		autoCommandDoNothing = new AutonomousEmpty();
-
 		autoCommand1Can = new AutonomousCommand1Can();
-		autoCommand1Can->AddSequential(new ZeroElevator());
-		autoCommand1Can->AddSequential(new ToggleFlapsCommand(-1)); 	// make sure flaps are closed
-		autoCommand1Can->AddSequential(new PositionElevator(1, true));
+
 		//AddSequential(Robot::oi->toteUp);
 		// TODO: DrivePID only goes straight right now. We need to be able to pass in values
 		// but I want to coordinate with Charles
 		autoCommand1Can->AddSequential(new DrivePID(100.0, 100.0));
 
 		autoCommand1Can1Tote = new AutonomousCommand1Can1Tote();
-		// Need to go up twice to get a can
-		autoCommand1Can1Tote->AddSequential(new ZeroElevator());
-		autoCommand1Can1Tote->AddSequential(new PositionElevator(1, true));
-		autoCommand1Can1Tote->AddSequential(new Delay(1.5));
-		autoCommand1Can1Tote->AddSequential(new DrivePID(21.0, 21.0));
-		autoCommand1Can1Tote->AddSequential(new PositionElevator(-1, true));	// put the can on the tote
-		autoCommand1Can1Tote->AddSequential(new PositionElevator(-1, false));	// move down to under the Tote
-		autoCommand1Can1Tote->AddSequential(new Delay(1.5));
-		autoCommand1Can1Tote->AddSequential(new ToggleFlapsCommand(-1)); 	// make sure flaps are closed
-		autoCommand1Can1Tote->AddSequential(new PositionElevator(1, false));	// pick up the Tote
-		autoCommand1Can1Tote->AddSequential(new DrivePID(-ninetyDegreeTurn, ninetyDegreeTurn)); // turn left
-		autoCommand1Can1Tote->AddSequential(new DrivePID(100.0, 100.0)); // and drive off into the sunset..
 
 		// Add a button to the SmartDashboard to allow the command to be tested
 		SmartDashboard::PutData("AutoCommand1Can", autoCommandMoveToZone);
@@ -101,9 +84,9 @@ void Robot::RobotInit() {
 
 		// Stuff to get autonomous selection on SmartDashboard
 		chooser = new SendableChooser();
-		chooser->AddDefault("Can to Auto Zone", autoCommandMoveToZone);
-		chooser->AddObject("Drive to Auto Zone", autoCommand1Can);
-		chooser->AddObject("Drive to Auto Zone", autoCommand1Can1Tote);
+		chooser->AddDefault("Move to Auto Zone", autoCommandMoveToZone);
+		chooser->AddObject("Lift Can and Drive to Zone", autoCommand1Can);
+		chooser->AddObject("Lift Can and Tote and Rive to Zone", autoCommand1Can1Tote);
 		chooser->AddObject("Do absolutely nothing", autoCommandDoNothing);
 		SmartDashboard::PutData("Autonomous Modes",chooser);
 
@@ -136,32 +119,26 @@ void Robot::DisabledPeriodic() {
 }
 
 void Robot::AutonomousInit() {
-	//RobotMap::driveBackLeft->SetPosition(0.0);
+	RobotMap::driveBackLeft->SetPosition(0.0);
 	UpdateDashboardPeriodic();
-	//parameters->UpdateDrivePIDParams();
-	//parameters->UpdateElevatorPIDParams();
-#ifndef badautobadauto
-	// make the above true to run the reliable drive forward 100" auto
-	autonomousCommand = NULL;
-	//autonomousCommand = (CommandGroup *)new DrivePID(100.0, 100.0);
-#else
-	//autonomousCommand = autoCommandMoveToZone;
+	parameters->UpdateDrivePIDParams();
+	parameters->UpdateElevatorPIDParams();
+	autonomousCommand = autoCommandMoveToZone;
 	autonomousCommand =  (CommandGroup *)chooser->GetSelected();
 	printf("Autonomous chosen: %s\n",
 			autonomousCommand== autoCommandMoveToZone ? "autoCommandMoveToZone" :
 					autonomousCommand==autoCommand1Can1Tote ? "autoCommand1Can1Tote" :
 							autonomousCommand==autoCommandDoNothing ? "autoCommandDoNothing" :
 									autonomousCommand==autoCommandMoveToZone ? "autonomousCommand"	 : "autoDoNothing!"	);
-#endif
-	if (autonomousCommand != NULL)
-		autonomousCommand->Start();
 
+	autonomousCommand->Start();
 	Camera::StartCameras();
 }
 
 void Robot::AutonomousPeriodic() {
 	if (autoPeriodicCount++ < 4) {
 		printf("AutoPeriodic %d!\n", autoPeriodicCount);
+		printf("autoCommandMoveToZone Run: %x\n", (unsigned int)Scheduler::GetInstance());
 	}
 	else if (autoPeriodicCount==120) printf("AutoPeriodic still alive %d!\n", autoPeriodicCount);
 	Scheduler::GetInstance()->Run();
