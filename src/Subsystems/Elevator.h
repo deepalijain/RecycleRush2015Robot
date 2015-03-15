@@ -50,6 +50,7 @@ public:
 	bool IsAtTop();
 	bool IsAtBottom();
 	bool WasZeroed();
+	double GetPositionInInches();
 
 	int elevatorIndex;
 	bool zeroed;

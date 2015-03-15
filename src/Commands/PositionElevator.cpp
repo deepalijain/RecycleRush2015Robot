@@ -17,7 +17,7 @@ PositionElevator::PositionElevator(int commandDirection, bool trashcan) {
 	elevator = Robot::elevator;
 	this->commandDirection = commandDirection;	// +1 for up, -1 for down, 0 to hold
 	this->trashcan = trashcan;			// true if we're move trash cans, false for totes
-	printf("PositionElevator constructed for commandDirection=%d, %s version, elevatorPIDDistance=%1.2f\n",
+	printf("PositionElevator constructed for commandDirection=%d, %s version, distance=%1.2f\n",
 			commandDirection, trashcan ? "Trash Can" : "Tote", elevator->GetPosition());
 }
 

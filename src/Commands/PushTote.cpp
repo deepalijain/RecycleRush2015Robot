@@ -23,6 +23,7 @@ PushTote::PushTote() {
 // Called just before this Command runs the first time
 void PushTote::Initialize() {
 	count = 0;
+	limit = 41;
 }
 
 // Called repeatedly when this Command is scheduled to run

@@ -1,5 +1,14 @@
 <xml version="1.0">
 <dashboard>
+	<widget field="autoCommandMoveToZone" type="Command" class="edu.wpi.first.smartdashboard.gui.elements.Command">
+		<location x="0" y="435"/>
+	</widget>
+	<widget field="autoCommandDoNothing" type="Command" class="edu.wpi.first.smartdashboard.gui.elements.Command">
+		<location x="0" y="373"/>
+	</widget>
+	<widget field="autoCommand1Can1Tote" type="Command" class="edu.wpi.first.smartdashboard.gui.elements.Command">
+		<location x="0" y="339"/>
+	</widget>
 	<widget field="Elevator Encoder Raw" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
 		<location x="0" y="235"/>
 	</widget>
@@ -7,7 +16,7 @@
 		<location x="0" y="124"/>
 	</widget>
 	<widget field="Autonomous Modes" type="String Chooser" class="edu.wpi.first.smartdashboard.gui.elements.Chooser">
-		<location x="0" y="50"/>
+		<location x="215" y="5"/>
 	</widget>
 	<widget field="AutoCommand1Can" type="Command" class="edu.wpi.first.smartdashboard.gui.elements.Command">
 		<location x="0" y="201"/>
@@ -61,7 +70,7 @@
 		<location x="1" y="101"/>
 	</widget>
 	<widget field="armFlapUp" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.BooleanBox">
-		<location x="300" y="69"/>
+		<location x="1069" y="484"/>
 	</widget>
 	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.Label">
 		<location x="30" y="84"/>
@@ -164,43 +173,4 @@
 		<location x="264" y="343"/>
 		<height>20</height>
 	</widget>
-	<widget field="elevatorPIDDistance" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="249" y="303"/>
-		<height>20</height>
-	</widget>
-	<widget field="elevatorD" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="282" y="283"/>
-		<height>20</height>
-	</widget>
-	<widget field="elevatorF" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="284" y="323"/>
-	</widget>
-	<widget field="elevatorI" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="285" y="262"/>
-		<height>20</height>
-	</widget>
-	<widget field="elevatorP" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="283" y="241"/>
-		<height>20</height>
-	</widget>
-	<widget field="Elevator PID Error" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="259" y="182"/>
-	</widget>
-	<widget field="pickupMotor set to" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="368" y="138"/>
-	</widget>
-	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.WebcamViewerExtension">
-		<location x="807" y="-24"/>
-		<width>415</width>
-		<height>403</height>
-	</static-widget>
-	<widget field="Right Talon Get" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="0" y="483"/>
-	</widget>
-	<widget field="Left Talon Get" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="0" y="414"/>
-	</widget>
-</dashboard>
-<live-window>
-</live-window>
-</xml>
+	<widget field="elevatorPIDDistance" type="Number" class="edu.wpi.first.smart

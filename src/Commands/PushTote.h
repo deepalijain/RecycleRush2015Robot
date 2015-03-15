@@ -33,7 +33,7 @@ public:
 private:
 	int count = 0;
 	bool finish = false;
-	int limit = 25;
+	int limit;
 };
 
 #endif

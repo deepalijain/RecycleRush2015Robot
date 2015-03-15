@@ -67,44 +67,24 @@ void Robot::RobotInit() {
 		zeroElevator = new ZeroElevator();
 
 		autoCommandMoveToZone = new AutonomousMoveToZone();
-		autoCommandMoveToZone->AddSequential(new Delay(0.2));
 
 		autoCommandDoNothing = new AutonomousEmpty();
+		autoCommand1Can1Tote = new AutonomousCommand1Can1Tote();
 
 		autoCommand1Can = new AutonomousCommand1Can();
-		autoCommand1Can->AddSequential(new ZeroElevator());
-		autoCommand1Can->AddSequential(new ToggleFlapsCommand(-1)); 	// make sure flaps are closed
-		autoCommand1Can->AddSequential(new PositionElevator(1, true));
-		//AddSequential(Robot::oi->toteUp);
-		// TODO: DrivePID only goes straight right now. We need to be able to pass in values
-		// but I want to coordinate with Charles
-		autoCommand1Can->AddSequential(new DrivePID(100.0, 100.0));
-
-		autoCommand1Can1Tote = new AutonomousCommand1Can1Tote();
-		// Need to go up twice to get a can
-		autoCommand1Can1Tote->AddSequential(new ZeroElevator());
-		autoCommand1Can1Tote->AddSequential(new PositionElevator(1, true));
-		autoCommand1Can1Tote->AddSequential(new Delay(1.5));
-		autoCommand1Can1Tote->AddSequential(new DrivePID(21.0, 21.0));
-		autoCommand1Can1Tote->AddSequential(new PositionElevator(-1, true));	// put the can on the tote
-		autoCommand1Can1Tote->AddSequential(new PositionElevator(-1, false));	// move down to under the Tote
-		autoCommand1Can1Tote->AddSequential(new Delay(1.5));
-		autoCommand1Can1Tote->AddSequential(new ToggleFlapsCommand(-1)); 	// make sure flaps are closed
-		autoCommand1Can1Tote->AddSequential(new PositionElevator(1, false));	// pick up the Tote
-		autoCommand1Can1Tote->AddSequential(new DrivePID(-ninetyDegreeTurn, ninetyDegreeTurn)); // turn left
-		autoCommand1Can1Tote->AddSequential(new DrivePID(100.0, 100.0)); // and drive off into the sunset..
 
 		// Add a button to the SmartDashboard to allow the command to be tested
-		SmartDashboard::PutData("AutoCommand1Can", autoCommandMoveToZone);
+		SmartDashboard::PutData("autoCommandDoNothing", autoCommandDoNothing);
+		SmartDashboard::PutData("autoCommandMoveToZone", autoCommandMoveToZone);
 		SmartDashboard::PutData("AutoCommand1Can", autoCommand1Can);
-		SmartDashboard::PutData("AutoCommand1Can", autoCommand1Can1Tote);
+		SmartDashboard::PutData("autoCommand1Can1Tote", autoCommand1Can1Tote);
 
 		// Stuff to get autonomous selection on SmartDashboard
 		chooser = new SendableChooser();
-		chooser->AddDefault("Can to Auto Zone", autoCommandMoveToZone);
-		chooser->AddObject("Drive to Auto Zone", autoCommand1Can);
-		chooser->AddObject("Drive to Auto Zone", autoCommand1Can1Tote);
-		chooser->AddObject("Do absolutely nothing", autoCommandDoNothing);
+		chooser->AddDefault("0. Do absolutely nothing", autoCommandDoNothing);
+		chooser->AddObject("1. Drive to Zone", autoCommandMoveToZone);
+		chooser->AddObject("2. Can to Auto Zone", autoCommand1Can);
+		chooser->AddObject("3. Can+Tote to Auto Zone", autoCommand1Can1Tote);
 		SmartDashboard::PutData("Autonomous Modes",chooser);
 
 		Camera::EnumerateCameras();
@@ -136,23 +116,22 @@ void Robot::DisabledPeriodic() {
 }
 
 void Robot::AutonomousInit() {
-	//RobotMap::driveBackLeft->SetPosition(0.0);
+	RobotMap::driveBackLeft->SetPosition(0.0);
 	UpdateDashboardPeriodic();
-	//parameters->UpdateDrivePIDParams();
-	//parameters->UpdateElevatorPIDParams();
-#ifndef badautobadauto
-	// make the above true to run the reliable drive forward 100" auto
-	autonomousCommand = NULL;
-	//autonomousCommand = (CommandGroup *)new DrivePID(100.0, 100.0);
-#else
+	parameters->UpdateDrivePIDParams();
+	parameters->UpdateElevatorPIDParams();
+	RobotMap::armFlapSolenoid->Set(DoubleSolenoid::kOff);
+	RobotMap::shifterSolenoid->Set(DoubleSolenoid::kOff);
+	RobotMap::totePusherSolenoid->Set(DoubleSolenoid::kOff);
+	// It seems that we need a Set to confirm the control mode or else it reverts
+
 	//autonomousCommand = autoCommandMoveToZone;
 	autonomousCommand =  (CommandGroup *)chooser->GetSelected();
 	printf("Autonomous chosen: %s\n",
-			autonomousCommand== autoCommandMoveToZone ? "autoCommandMoveToZone" :
-					autonomousCommand==autoCommand1Can1Tote ? "autoCommand1Can1Tote" :
-							autonomousCommand==autoCommandDoNothing ? "autoCommandDoNothing" :
-									autonomousCommand==autoCommandMoveToZone ? "autonomousCommand"	 : "autoDoNothing!"	);
-#endif
+			autonomousCommand==autoCommandMoveToZone ? "autoCommandMoveToZone" :
+					autonomousCommand==autoCommand1Can ? "autoCommand1Can" :
+							autonomousCommand==autoCommand1Can1Tote ? "autoCommand1Can1Tote" :
+									autonomousCommand==autoCommandDoNothing ? "autoCommandDoNothing" : "NO AUTO CHOSEN");
 	if (autonomousCommand != NULL)
 		autonomousCommand->Start();
 
@@ -178,12 +157,6 @@ void Robot::TeleopInit() {
 	if (autonomousCommand != NULL)
 		autonomousCommand->Cancel();
 	if (!elevator->WasZeroed()) zeroElevator->Start();
-	RobotMap::armFlapSolenoid->Set(DoubleSolenoid::kOff);
-	RobotMap::shifterSolenoid->Set(DoubleSolenoid::kOff);
-	RobotMap::totePusherSolenoid->Set(DoubleSolenoid::kOff);
-	// It seems that we need a Set to confirm the control mode or else it reverts
-	parameters->UpdateDrivePIDParams();
-	parameters->UpdateElevatorPIDParams();
 	Camera::StartCameras();
 }
 
@@ -232,9 +205,10 @@ void Robot::UpdateDashboardPeriodic() {
 			if (!RobotMap::testBot) {
 				SmartDashboard::PutNumber("Elevator Encoder Raw", RobotMap::elevatorMotor1->GetEncPosition());
 				SmartDashboard::PutNumber("Elevator PID Error", RobotMap::elevatorMotor1->GetClosedLoopError());
+				SmartDashboard::PutNumber("Elevator height", elevator->GetPositionInInches());
 			}
-			SmartDashboard::PutNumber("Elevator Position", Robot::elevator->GetPosition());
-			SmartDashboard::PutNumber("Elevator Target Position", Robot::elevator->targetHeight);
+			SmartDashboard::PutNumber("Elevator Position", elevator->GetPosition());
+			SmartDashboard::PutNumber("Elevator Target Position", elevator->targetHeight);
 		}
 		catch(int e) {
 			printf("SmartDashboard exception, post ShowPIDParams.\n");

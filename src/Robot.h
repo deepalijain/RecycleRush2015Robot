@@ -48,6 +48,7 @@ public:
 	CommandGroup *autoCommand1Can;
 	CommandGroup *autoCommandMoveToZone;
 	CommandGroup *autoCommand1Can1Tote;
+// moved to OI for testing	CommandGroup *autoCommand1Can1Tote;
 	CommandGroup *autoCommandDoNothing;
 	static OI *oi;
 	LiveWindow *lw;

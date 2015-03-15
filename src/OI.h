@@ -41,6 +41,9 @@ public:
 	Command *toggleCompressor;
 	Command *pushTote;
 	Command *switchCamera;
+// Just here for testing
+	CommandGroup *autoCommand1Can1Tote;
+	Button *cgtestbutton;
 
 	OI();
  

@@ -23,6 +23,7 @@
 class DriveElevator: public Command {
 private:
 	float joystickup, joystickdown;
+	double maxSpeed;
 public:
 	DriveElevator();
 	virtual void Initialize();

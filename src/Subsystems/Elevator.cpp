@@ -38,7 +38,7 @@ Elevator::Elevator() : Subsystem("Elevator") {
 	//Define elevator heights for lifting totes
 	printf("Elevator heights ----------------------------------------------------\n");
 	elevatorHeightsTotes[0] = 0.0;
-	elevatorHeightsTotes[1] = round(ticksPerInch * 6.0);
+	elevatorHeightsTotes[1] = round(ticksPerInch * 7.0);
 	printf("   elevatorHeightsTotes[0] = %1.2f\n   elevatorHeightsTotes[1] = %1.2f\n",
 			elevatorHeightsTotes[0], elevatorHeightsTotes[1]);
 
@@ -159,6 +159,10 @@ bool Elevator::IsAtBottom() {
 		}
 		return (encoderPos==0);
 	}
+}
+
+double Elevator::GetPositionInInches() {
+	return -(elevatorMotor1->GetEncPosition()/ticksPerInch) + 8.25;
 }
 
 bool Elevator::WasZeroed() {

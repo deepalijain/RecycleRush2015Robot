@@ -5,12 +5,15 @@
 #include "ToggleFlapsCommand.h"
 #include "PositionElevator.h"
 #include "ZeroElevator.h"
+#include "Delay.h"
 
 
 AutonomousCommand1Can::AutonomousCommand1Can() {
-	// Need to go up twice to get a can
-
-	// And now drive into Auto Zone
-	// TODO: Need to pass in distance. Both sides should be the same
-	// AddSequential(Robot::oi->drivePID);
+	//AddSequential(new ZeroElevator());
+	AddSequential(new Delay(0.5));
+	AddSequential(new ToggleFlapsCommand(-1)); 	// make sure flaps are closed
+	AddSequential(new PositionElevator(1, true));	// first call goes to "Driving position"
+	AddSequential(new PositionElevator(1, true));	// second call will raise it to can height
+	AddSequential(new Delay(1.5));
+	AddSequential(new DrivePID(100.0, 100.0));
 }
