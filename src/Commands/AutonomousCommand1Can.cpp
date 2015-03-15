@@ -9,6 +9,7 @@
 
 
 AutonomousCommand1Can::AutonomousCommand1Can() {
+	printf("AutonomousCommand1Can constructed\n");
 	//AddSequential(new ZeroElevator());
 	AddSequential(new Delay(0.5));
 	AddSequential(new ToggleFlapsCommand(-1)); 	// make sure flaps are closed

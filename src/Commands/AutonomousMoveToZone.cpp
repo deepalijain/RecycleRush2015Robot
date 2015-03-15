@@ -3,6 +3,7 @@
 #include "AutonomousMoveToZone.h"
 #include "Delay.h"
 #include "DrivePID.h"
+#include "ToggleFlapsCommand.h"
 
 AutonomousMoveToZone::AutonomousMoveToZone() {
 	printf("AutonomousMoveToZone constructed\n");

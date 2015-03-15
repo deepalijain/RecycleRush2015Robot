@@ -67,10 +67,8 @@ void Robot::RobotInit() {
 		zeroElevator = new ZeroElevator();
 
 		autoCommandMoveToZone = new AutonomousMoveToZone();
-
 		autoCommandDoNothing = new AutonomousEmpty();
 		autoCommand1Can1Tote = new AutonomousCommand1Can1Tote();
-
 		autoCommand1Can = new AutonomousCommand1Can();
 
 		// Add a button to the SmartDashboard to allow the command to be tested
@@ -85,6 +83,7 @@ void Robot::RobotInit() {
 		chooser->AddObject("1. Drive to Zone", autoCommandMoveToZone);
 		chooser->AddObject("2. Can to Auto Zone", autoCommand1Can);
 		chooser->AddObject("3. Can+Tote to Auto Zone", autoCommand1Can1Tote);
+
 		SmartDashboard::PutData("Autonomous Modes",chooser);
 
 		Camera::EnumerateCameras();
@@ -123,11 +122,10 @@ void Robot::AutonomousInit() {
 	RobotMap::armFlapSolenoid->Set(DoubleSolenoid::kOff);
 	RobotMap::shifterSolenoid->Set(DoubleSolenoid::kOff);
 	RobotMap::totePusherSolenoid->Set(DoubleSolenoid::kOff);
-	// It seems that we need a Set to confirm the control mode or else it reverts
 
-	//autonomousCommand = autoCommandMoveToZone;
 	autonomousCommand =  (CommandGroup *)chooser->GetSelected();
 	printf("Autonomous chosen: %s\n",
+
 			autonomousCommand==autoCommandMoveToZone ? "autoCommandMoveToZone" :
 					autonomousCommand==autoCommand1Can ? "autoCommand1Can" :
 							autonomousCommand==autoCommand1Can1Tote ? "autoCommand1Can1Tote" :
@@ -135,12 +133,14 @@ void Robot::AutonomousInit() {
 	if (autonomousCommand != NULL)
 		autonomousCommand->Start();
 
+	autonomousCommand->Start();
 	Camera::StartCameras();
 }
 
 void Robot::AutonomousPeriodic() {
 	if (autoPeriodicCount++ < 4) {
 		printf("AutoPeriodic %d!\n", autoPeriodicCount);
+		printf("autoCommandMoveToZone Run: %x\n", (unsigned int)Scheduler::GetInstance());
 	}
 	else if (autoPeriodicCount==120) printf("AutoPeriodic still alive %d!\n", autoPeriodicCount);
 	Scheduler::GetInstance()->Run();

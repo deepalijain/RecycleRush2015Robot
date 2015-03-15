@@ -1,10 +1,17 @@
 <xml version="1.0">
 <dashboard>
 	<widget field="autoCommandMoveToZone" type="Command" class="edu.wpi.first.smartdashboard.gui.elements.Command">
+<<<<<<< HEAD
 		<location x="0" y="435"/>
 	</widget>
 	<widget field="autoCommandDoNothing" type="Command" class="edu.wpi.first.smartdashboard.gui.elements.Command">
 		<location x="0" y="373"/>
+=======
+		<location x="0" y="437"/>
+	</widget>
+	<widget field="autoCommandDoNothing" type="Command" class="edu.wpi.first.smartdashboard.gui.elements.Command">
+		<location x="0" y="375"/>
+>>>>>>> branch 'initialDartmouth2' of https://github.com/ligerbots/RecycleRush2015Robot.git
 	</widget>
 	<widget field="autoCommand1Can1Tote" type="Command" class="edu.wpi.first.smartdashboard.gui.elements.Command">
 		<location x="0" y="339"/>
