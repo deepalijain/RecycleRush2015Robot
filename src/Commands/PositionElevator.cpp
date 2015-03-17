@@ -15,10 +15,22 @@ int PositionElevator::targetIndex = 0;
 PositionElevator::PositionElevator(int commandDirection, bool trashcan) {
 	Requires(Robot::elevator);
 	elevator = Robot::elevator;
-	this->commandDirection = commandDirection;	// +1 for up, -1 for down, 0 to hold
-	this->trashcan = trashcan;			// true if we're move trash cans, false for totes
+	commandDirection_ = commandDirection;	// +1 for up, -1 for down, 0 to hold
+	trashcan_ = trashcan;			// true if we're move trash cans, false for totes
 	printf("PositionElevator constructed for commandDirection=%d, %s version, distance=%1.2f\n",
-			commandDirection, trashcan ? "Trash Can" : "Tote", elevator->GetPosition());
+			commandDirection_, trashcan_ ? "Trash Can" : "Tote", elevator->GetPosition());
+	waitPercent_ = 0.0;
+}
+
+PositionElevator::PositionElevator(int commandDirection, bool trashcan, float waitPercent) {
+	Requires(Robot::elevator);
+	elevator = Robot::elevator;
+	commandDirection_ = commandDirection;	// +1 for up, -1 for down, 0 to hold
+	trashcan_ = trashcan;			// true if we're move trash cans, false for totes
+	printf("PositionElevator constructed for commandDirection=%d, %s version, distance=%1.2f\n",
+			commandDirection_, trashcan_ ? "Trash Can" : "Tote", elevator->GetPosition());
+
+	waitPercent_ = waitPercent;
 }
 
 // Called just before this Command runs the first time
@@ -32,25 +44,27 @@ void PositionElevator::Initialize() {
 	// Max says this is wrong, I think it'll work for now:
 	curPos =  RobotMap::elevatorMotor1->GetEncPosition();
 	printf("PositionElevator initialized for commandDirection=%d, %s version moving from %1.2f\n",
-			commandDirection, trashcan ? "Trash Can" : "Tote", curPos);
+			commandDirection_, trashcan_ ? "Trash Can" : "Tote", curPos);
 	// always make sure we're back in position control mode.
-	if (commandDirection == 0) {
+	if (commandDirection_ == 0) {
 		// if curPos is not accurate, stupid things happen here
 		elevator->SetHeight(curPos);	// hold mode
 	}
 	else {
-		if (!trashcan) {
-			elevator->MoveByTote(commandDirection);
+		if (!trashcan_) {
+			elevator->MoveByTote(commandDirection_);
 		}
 		else {
-			elevator->MoveCan(commandDirection);
+			elevator->MoveCan(commandDirection_);
 		}
 	}
+
+	initialError_ = fabs(elevator->GetPosition() - elevator->targetHeight);
 }
 
 // Called repeatedly when this Command is scheduled to run
 void PositionElevator::Execute() {
-	if (RobotMap::testBot && commandDirection!=0) {
+	if (RobotMap::testBot && commandDirection_!=0) {
 		// calculate how much we should move per clock cycle (every 1/50 second)
 		// to move a tote's distance in two seconds
 		// only continue moving if we're more than two cycles away from our goal
@@ -70,14 +84,21 @@ void PositionElevator::Execute() {
 bool PositionElevator::IsFinished() {
 	// End PID control if the joystick throttles are pressed
 	// Test bot is different. Simulated elevator ends when it reaches set point
-	if (RobotMap::testBot && commandDirection!=0)
+	if (RobotMap::testBot && commandDirection_!=0)
 		return (fabs(elevator->GetPosition() - elevator->targetHeight) < 2*elevator->ticksPerCycle);
 	// Otherwise, the PID directional move commands end immediately -- the PID loop
 	// will do the rest. Except the default command -- holdElevator, that maintains
 	// position.
 	if (!RobotMap::testBot) {
-		if (commandDirection==0) return false;	// holdCommand never finishes
-		return true;
+		if (commandDirection_==0) return false;	// holdCommand never finishes
+		if (waitPercent_ == 0.0) return true;
+
+		double error = fabs(elevator->GetPosition() - elevator->targetHeight);
+		//If weightPercent_ is 1.0, go the full length of the command before exiting. If 0.5, go halfway, etc.
+		if(error < initialError_ * (1-waitPercent_))
+			return true;
+
+		return false;
 	}
 	// on testBot, we only end when if we've reached the target
 	return true;
@@ -86,7 +107,7 @@ bool PositionElevator::IsFinished() {
 // Called once after isFinished returns true
 void PositionElevator::End() {
 	printf("PositionElevator ended for commandDirection=%d, %s version\n",
-			commandDirection, trashcan ? "Trash Can" : "Tote");
+			commandDirection_, trashcan_ ? "Trash Can" : "Tote");
 }
 
 // Called when another command which requires one or more of the same
