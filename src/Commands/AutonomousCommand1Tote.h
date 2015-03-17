@@ -1,17 +1,17 @@
-/*
- * AutonomousCommandYellowTote.h
+/* AutonomousCommandYellowTote.h
  *
  *  Created on: Mar 16, 2015
  *      Author: Ligerbots
  */
 
+#include "wpilib.h"
+
 #ifndef SRC_COMMANDS_AUTONOMOUSCOMMANDYELLOWTOTE_H_
 #define SRC_COMMANDS_AUTONOMOUSCOMMANDYELLOWTOTE_H_
 
-
-class AutonomousCommandYellowTote: public CommandGroup {
+class AutonomousCommand1Tote: public CommandGroup {
 public:
-	AutonomousCommandYellowTote();
+	AutonomousCommand1Tote();
 private:
 
 };
