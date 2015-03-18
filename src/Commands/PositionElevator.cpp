@@ -68,9 +68,9 @@ void PositionElevator::Initialize() {
 void PositionElevator::Execute() {
 	if (RobotMap::testBot && _commandDirection!=0) {
 		// calculate how much we should move per clock cycle (every 1/50 second)
-		// to move a tote's distance in two seconds
+		// to move a tote's distance in a half second
 		// only continue moving if we're more than two cycles away from our goal
-		if (fabs(elevator->GetPosition() - elevator->targetHeight) > 2*elevator->ticksPerCycle) {
+		if (fabs(elevator->GetPosition() - elevator->targetHeight) > elevator->ticksPerCycle) {
 			double direction = elevator->targetHeight < elevator->GetPosition() ? -1.0 : 1.0;
 			double movement = direction*elevator->ticksPerCycle;
 			/* printf("PositionElevator: is at %1.0f, moving to moving %1.0f, by %1.0f\n",

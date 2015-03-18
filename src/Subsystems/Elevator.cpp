@@ -47,6 +47,13 @@ Elevator::Elevator() : Subsystem("Elevator") {
 		printf("   elevatorHeightsTotes[%d] = %1.2f\n", i, elevatorHeightsTotes[i]);
 	}
 	elevatorHeightsTotes[LENGTH(elevatorHeightsTotes)-1] = 7840.0;
+	// last debug out
+	//  elevatorHeightsTotes[0] = 0.00
+	//  elevatorHeightsTotes[1] = 1204.00
+	//  elevatorHeightsTotes[2] = 3285.00
+	//  elevatorHeightsTotes[3] = 5367.00
+	//  elevatorHeightsTotes[4] = 7448.00
+	//   elevatorHeightsTotes[5] = 9529.00 -- will be bashed to 7840
 
 	//Define elevator heights for lifting cans
 
@@ -60,11 +67,16 @@ Elevator::Elevator() : Subsystem("Elevator") {
 		printf("   elevatorHeightsCans[%d] = %1.2f\n", i, elevatorHeightsCans[i]);
 	}
 	elevatorHeightsCans[LENGTH(elevatorHeightsCans)-1] = 7840.0;
+	// last debug output:
+	//   elevatorHeightsCans[0] = 0.00
+	//   elevatorHeightsCans[1] = 4300.00
+	//   elevatorHeightsCans[2] = 6381.00
+	//   elevatorHeightsCans[3] = 8463.00 -- will be bashed to 7840
 
 
 	// This is for testBot only:
-	// Simulate movement so a full tote's height takes about 2 seconds
-	ticksPerCycle = ((ticksPerInch * inchesPerTote) / 50) / 2;
+	// Simulate movement so a full tote's height takes about 0.5 seconds
+	ticksPerCycle = ((ticksPerInch * inchesPerTote) / 25);
 }
     
 void Elevator::SetHeight(double height)
@@ -90,7 +102,9 @@ void Elevator::SetHeight(double height)
 void Elevator::MoveByTote(int commandDirection) {
 	// for better or worse, negative is up on our elevator
 	printf("MoveTote from %1.2f to %1.2f\n", elevatorIndex, elevatorIndex+commandDirection);
-	elevatorIndex = trunc(elevatorIndex + (double)commandDirection);
+	// avoid truncation problems
+	if (commandDirection > 0) elevatorIndex = trunc(elevatorIndex + ((double)commandDirection + 0.001));
+	else elevatorIndex = ceil(elevatorIndex + ((double)commandDirection - 0.001));
 	if (elevatorIndex < 0) elevatorIndex = 0;
 	if (elevatorIndex >= (int)LENGTH(elevatorHeightsTotes)) elevatorIndex = LENGTH(elevatorHeightsTotes)-1;
 	SetHeight(-elevatorHeightsTotes[(int)elevatorIndex]);
@@ -99,7 +113,9 @@ void Elevator::MoveByTote(int commandDirection) {
 void Elevator::MoveCan(int commandDirection) {
 	// for better or worse, negative is up on our elevator
 	printf("MoveCan from %1.2f to %1.2f\n", elevatorIndex, elevatorIndex+commandDirection);
-	elevatorIndex = trunc(elevatorIndex + (double)commandDirection);
+	// avoid truncation problems
+	if (commandDirection > 0) elevatorIndex = trunc(elevatorIndex + ((double)commandDirection + 0.001));
+	else elevatorIndex = ceil(elevatorIndex + ((double)commandDirection - 0.001));
 	if (elevatorIndex < 0) elevatorIndex = 0;
 	if (elevatorIndex >= (int)LENGTH(elevatorHeightsCans)) elevatorIndex = LENGTH(elevatorHeightsCans)-1;
 	SetHeight(-elevatorHeightsCans[(int)elevatorIndex]);
@@ -113,11 +129,17 @@ void Elevator::UpdateElevatorIndex() {
 	for (int i = 1; i!=LENGTH(elevatorHeightsTotes); i++) {
 		if (-curPos < elevatorHeightsTotes[i]) {
 			// we're at position i, but also compute the fraction of the "floor" we're at
-			elevatorIndex = i + (elevatorHeightsTotes[i] - -curPos) /
-								 elevatorHeightsTotes[i] - elevatorHeightsTotes[i-1];
+			double frac = (-curPos - elevatorHeightsTotes[i-1]) /
+					 (elevatorHeightsTotes[i] - elevatorHeightsTotes[i-1]);
+			elevatorIndex = (i-1) + frac;
+			printf("Elevator::UpdateElevatorIndex curPos=%1.f, i=%d, frac=%1.2f elevatorHeightsTotes[i]=%1.2f, elevatorHeightsTotes[i-1]=%1.2f\n",
+					 curPos, i, frac,
+					 elevatorHeightsTotes[i],  elevatorHeightsTotes[i-1] );
 			break;
 		}
 	}
+	// it's possible to manually move a little further than the highest official index position..
+	if (-curPos > elevatorHeightsTotes[LENGTH(elevatorHeightsTotes)-1]) elevatorIndex = LENGTH(elevatorHeightsTotes)-1;
 	printf("Elevator::UpdateElevatorIndex curPos = %1.2f, index set to %1.2f.\n", curPos, elevatorIndex);
 }
 
