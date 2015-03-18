@@ -89,32 +89,36 @@ void Elevator::SetHeight(double height)
 
 void Elevator::MoveByTote(int commandDirection) {
 	// for better or worse, negative is up on our elevator
-	printf("MoveTote from %d to %d\n", elevatorIndex, elevatorIndex+commandDirection);
-	elevatorIndex += commandDirection;
+	printf("MoveTote from %1.2f to %1.2f\n", elevatorIndex, elevatorIndex+commandDirection);
+	elevatorIndex = trunc(elevatorIndex + (double)commandDirection);
 	if (elevatorIndex < 0) elevatorIndex = 0;
 	if (elevatorIndex >= (int)LENGTH(elevatorHeightsTotes)) elevatorIndex = LENGTH(elevatorHeightsTotes)-1;
-	SetHeight(-elevatorHeightsTotes[elevatorIndex]);
+	SetHeight(-elevatorHeightsTotes[(int)elevatorIndex]);
 }
 
 void Elevator::MoveCan(int commandDirection) {
 	// for better or worse, negative is up on our elevator
-	printf("MoveCan from %d to %d\n", elevatorIndex, elevatorIndex+commandDirection);
-	elevatorIndex += commandDirection;
+	printf("MoveCan from %1.2f to %1.2f\n", elevatorIndex, elevatorIndex+commandDirection);
+	elevatorIndex = trunc(elevatorIndex + (double)commandDirection);
 	if (elevatorIndex < 0) elevatorIndex = 0;
 	if (elevatorIndex >= (int)LENGTH(elevatorHeightsCans)) elevatorIndex = LENGTH(elevatorHeightsCans)-1;
-	SetHeight(-elevatorHeightsCans[elevatorIndex]);
+	SetHeight(-elevatorHeightsCans[(int)elevatorIndex]);
 }
 
 // For use in handling the transition between manual control and autonomous.
 // Set the current elevator index to be where the elevator actually is
 void Elevator::UpdateElevatorIndex() {
-	int curPos = (int)GetEncPosition();
-	int i = LENGTH(elevatorHeightsTotes)-1;	// if we can't find a position, we must be at highest
-	for (i=0; i!=LENGTH(elevatorHeightsTotes)-1; i++) {
-		if (-curPos >= elevatorHeightsTotes[i] && -curPos < elevatorHeightsTotes[i+1]) break;
+	double curPos = GetEncPosition();
+	// We start at 1 because we can't be under the zero position
+	for (int i = 1; i!=LENGTH(elevatorHeightsTotes); i++) {
+		if (-curPos < elevatorHeightsTotes[i]) {
+			// we're at position i, but also compute the fraction of the "floor" we're at
+			elevatorIndex = i + (elevatorHeightsTotes[i] - -curPos) /
+								 elevatorHeightsTotes[i] - elevatorHeightsTotes[i-1];
+			break;
+		}
 	}
-	elevatorIndex = i;
-	printf("Elevator::UpdateElevatorIndex curPos = %d, index set to %d.\n", curPos, i);
+	printf("Elevator::UpdateElevatorIndex curPos = %1.2f, index set to %1.2f.\n", curPos, elevatorIndex);
 }
 
 // Only valid on the test bot. On the real elevator, we actually move

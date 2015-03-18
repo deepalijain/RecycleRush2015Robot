@@ -53,7 +53,7 @@ public:
 	bool WasZeroed();
 	double GetPositionInInches();
 
-	int elevatorIndex;
+	double elevatorIndex;
 	bool zeroed;
 	double targetHeight;
 
