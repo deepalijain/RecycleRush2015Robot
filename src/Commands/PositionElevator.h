@@ -24,11 +24,11 @@ private:
 	//  0 - hold position (using PID control)
 	//  1 - elevator up command (one floor per press)
 	// -1 - elevator down command (one floor per press)
-	int commandDirection_;
+	int _commandDirection;
 
 	// true if we're an instance for the trachcan buttons,
 	// false if we're the tote version
-	bool trashcan_;
+	bool _trashcan;
 
 	// tergetFloor is how we keep track of multiple presses for each press targetFloor
 	// += m_n. This is legitimately a static, since all instances of PositionElevator
@@ -39,10 +39,10 @@ private:
 	//from 0.0 to 1.0
 	//How much of the command should we wait before isFinished returns true?
 	//Used in autonomoii. They're like autonomoi but with depth perception.
-	float waitPercent_;
+	double _waitPercent;
 
 	//Used with waitPercent to figure out when to quit early
-	double initialError_;
+	double _initialDelta;
 
 };
 

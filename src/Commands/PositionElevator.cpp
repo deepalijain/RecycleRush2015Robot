@@ -15,28 +15,30 @@ int PositionElevator::targetIndex = 0;
 PositionElevator::PositionElevator(int commandDirection, bool trashcan) {
 	Requires(Robot::elevator);
 	elevator = Robot::elevator;
-	commandDirection_ = commandDirection;	// +1 for up, -1 for down, 0 to hold
-	trashcan_ = trashcan;			// true if we're move trash cans, false for totes
+	_commandDirection = commandDirection;	// +1 for up, -1 for down, 0 to hold
+	_trashcan = trashcan;			// true if we're move trash cans, false for totes
 	printf("PositionElevator constructed for commandDirection=%d, %s version, distance=%1.2f\n",
-			commandDirection_, trashcan_ ? "Trash Can" : "Tote", elevator->GetPosition());
-	waitPercent_ = 0.0;
+			_commandDirection, _trashcan ? "Trash Can" : "Tote", elevator->GetPosition());
+	_waitPercent = 0.0;
 }
 
 PositionElevator::PositionElevator(int commandDirection, bool trashcan, float waitPercent) {
 	Requires(Robot::elevator);
 	elevator = Robot::elevator;
-	commandDirection_ = commandDirection;	// +1 for up, -1 for down, 0 to hold
-	trashcan_ = trashcan;			// true if we're move trash cans, false for totes
+	_commandDirection = commandDirection;	// +1 for up, -1 for down, 0 to hold
+	_trashcan = trashcan;			// true if we're move trash cans, false for totes
 	printf("PositionElevator constructed for commandDirection=%d, %s version, distance=%1.2f\n",
-			commandDirection_, trashcan_ ? "Trash Can" : "Tote", elevator->GetPosition());
-
-	waitPercent_ = waitPercent;
+			_commandDirection, _trashcan ? "Trash Can" : "Tote", elevator->GetPosition());
+	_waitPercent = waitPercent;
 }
 
 // Called just before this Command runs the first time
 void PositionElevator::Initialize() {
 	double curPos;
 	SetInterruptible(true);
+	// If we're waiting for a completion, better set a timeout.
+	// No autonomous elevator move should take more than 1.2 seconds.
+	if (_waitPercent > 0.0) SetTimeout(1.2);
 	Robot::parameters->UpdateElevatorPIDParams();
 	if (!RobotMap::testBot) {
 		RobotMap::elevatorMotor1->SetControlMode(CANSpeedController::kPosition);
@@ -44,27 +46,27 @@ void PositionElevator::Initialize() {
 	// Max says this is wrong, I think it'll work for now:
 	curPos =  RobotMap::elevatorMotor1->GetEncPosition();
 	printf("PositionElevator initialized for commandDirection=%d, %s version moving from %1.2f\n",
-			commandDirection_, trashcan_ ? "Trash Can" : "Tote", curPos);
+			_commandDirection, _trashcan ? "Trash Can" : "Tote", curPos);
 	// always make sure we're back in position control mode.
-	if (commandDirection_ == 0) {
+	if (_commandDirection == 0) {
 		// if curPos is not accurate, stupid things happen here
 		elevator->SetHeight(curPos);	// hold mode
 	}
 	else {
-		if (!trashcan_) {
-			elevator->MoveByTote(commandDirection_);
+		if (!_trashcan) {
+			elevator->MoveByTote(_commandDirection);
 		}
 		else {
-			elevator->MoveCan(commandDirection_);
+			elevator->MoveCan(_commandDirection);
 		}
 	}
 
-	initialError_ = fabs(elevator->GetPosition() - elevator->targetHeight);
+	_initialDelta = fabs(elevator->GetPosition() - elevator->targetHeight);
 }
 
 // Called repeatedly when this Command is scheduled to run
 void PositionElevator::Execute() {
-	if (RobotMap::testBot && commandDirection_!=0) {
+	if (RobotMap::testBot && _commandDirection!=0) {
 		// calculate how much we should move per clock cycle (every 1/50 second)
 		// to move a tote's distance in two seconds
 		// only continue moving if we're more than two cycles away from our goal
@@ -84,21 +86,20 @@ void PositionElevator::Execute() {
 bool PositionElevator::IsFinished() {
 	// End PID control if the joystick throttles are pressed
 	// Test bot is different. Simulated elevator ends when it reaches set point
-	if (RobotMap::testBot && commandDirection_!=0)
+	if (RobotMap::testBot && _commandDirection!=0)
 		return (fabs(elevator->GetPosition() - elevator->targetHeight) < 2*elevator->ticksPerCycle);
 	// Otherwise, the PID directional move commands end immediately -- the PID loop
 	// will do the rest. Except the default command -- holdElevator, that maintains
 	// position.
 	if (!RobotMap::testBot) {
-		if (commandDirection_==0) return false;	// holdCommand never finishes
-		if (waitPercent_ == 0.0) return true;
+		if (_commandDirection==0) return false;	// holdCommand never finishes
+		if (_waitPercent == 0.0) return true;
 
-		double error = fabs(elevator->GetPosition() - elevator->targetHeight);
-		//If weightPercent_ is 1.0, go the full length of the command before exiting. If 0.5, go halfway, etc.
-		if(error < initialError_ * (1-waitPercent_))
-			return true;
-
-		return false;
+		double delta = fabs(elevator->GetPosition() - elevator->targetHeight);
+		// If weightPercent_ is 1.0, go the full length of the command before exiting. If 0.5, go halfway, etc.
+		// The PID loop might stop slightly short of the goal, so we consider anything within .2 inches of our
+		// target to have met the goal. Otherwise, we risk never finishing.
+		return (delta >= (_initialDelta * _waitPercent) - 0.2 * elevator->ticksPerInch);
 	}
 	// on testBot, we only end when if we've reached the target
 	return true;
@@ -107,7 +108,7 @@ bool PositionElevator::IsFinished() {
 // Called once after isFinished returns true
 void PositionElevator::End() {
 	printf("PositionElevator ended for commandDirection=%d, %s version\n",
-			commandDirection_, trashcan_ ? "Trash Can" : "Tote");
+			_commandDirection, _trashcan ? "Trash Can" : "Tote");
 }
 
 // Called when another command which requires one or more of the same
