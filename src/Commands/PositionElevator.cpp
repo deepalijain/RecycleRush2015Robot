@@ -44,7 +44,7 @@ void PositionElevator::Initialize() {
 		RobotMap::elevatorMotor1->SetControlMode(CANSpeedController::kPosition);
 	}
 	// Max says this is wrong, I think it'll work for now:
-	curPos =  RobotMap::elevatorMotor1->GetEncPosition();
+	curPos =  elevator->GetEncPosition();
 	printf("PositionElevator initialized for commandDirection=%d, %s version moving from %1.2f\n",
 			_commandDirection, _trashcan ? "Trash Can" : "Tote", curPos);
 	// always make sure we're back in position control mode.

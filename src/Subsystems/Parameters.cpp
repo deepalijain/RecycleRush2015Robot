@@ -24,7 +24,6 @@ double Parameters::elevatorP;
 double Parameters::elevatorI;
 double Parameters::elevatorD;
 double Parameters::elevatorF;
-double Parameters::elevatorPIDDistance;
 
 int Parameters::version;
 
@@ -48,7 +47,6 @@ void Parameters::ShowPIDParams()
 		SmartDashboard::PutNumber("elevatorI", elevatorI);
 		SmartDashboard::PutNumber("elevatorD", elevatorD);
 		SmartDashboard::PutNumber("elevatorF", elevatorF);
-		SmartDashboard::PutNumber("elevatorPIDDistance", elevatorPIDDistance);
 	}
 	catch (int e) {
 		printf("ShowPIDParams threw exception\n");
@@ -104,7 +102,6 @@ void Parameters::UpdateElevatorPIDParams()
 	lelevatorI = SmartDashboard::GetNumber("elevatorI");
 	lelevatorD = SmartDashboard::GetNumber("elevatorD");
 	lelevatorF = SmartDashboard::GetNumber("elevatorF");
-	elevatorPIDDistance = SmartDashboard::GetNumber("elevatorPIDDistance");
 
 	needsUpdate |= (lelevatorP != elevatorP);
 	needsUpdate |= (lelevatorI != elevatorI);

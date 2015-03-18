@@ -30,8 +30,6 @@ void DriveElevator::Initialize() {
 
 // Called repeatedly when this Command is scheduled to run
 void DriveElevator::Execute() {
-
-
 	joystickup = maxSpeed*(Robot::oi->joystick1->GetRawAxis(3));
 	joystickdown = maxSpeed*(Robot::oi->joystick1->GetRawAxis(2));
 	if (RobotMap::testBot) {
@@ -61,7 +59,8 @@ void DriveElevator::End() {
 	// the holdElevatorCommand to keep it in place.
 	printf("Drive elevator ending, reverting to PID control.\n");
 	// Max says this is wrong, I think it'll work for now:
-	double curPos =  RobotMap::elevatorMotor1->GetEncPosition();
+	double curPos =  Robot::elevator->GetEncPosition();
+	Robot::elevator->UpdateElevatorIndex();
 	Robot::elevator->SetHeight(curPos);
 	Robot::holdElevatorCommand->Start();
  }

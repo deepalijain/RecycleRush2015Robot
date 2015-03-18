@@ -40,10 +40,11 @@ public:
 	void InitDefaultCommand();
 	void ArmFlapUp();
 	void ArmFlapDown();
-	double GetEncoderPosition();
+	double GetEncPosition();
 	double GetPosition();
 	void MoveByTote(int commandDirection);
 	void MoveCan(int commandDirection);
+	void UpdateElevatorIndex();
 
 	void SetHeight(double height);
 	void Move(double n);

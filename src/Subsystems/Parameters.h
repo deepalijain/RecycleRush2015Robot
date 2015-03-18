@@ -28,7 +28,6 @@ public:
 	static double elevatorI;
 	static double elevatorD;
 	static double elevatorF;
-	static double elevatorPIDDistance;
 	Parameters();
 	void GetParams();
 	void ShowPIDParams();

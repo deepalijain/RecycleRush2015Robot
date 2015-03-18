@@ -105,6 +105,18 @@ void Elevator::MoveCan(int commandDirection) {
 	SetHeight(-elevatorHeightsCans[elevatorIndex]);
 }
 
+// For use in handling the transition between manual control and autonomous.
+// Set the current elevator index to be where the elevator actually is
+void Elevator::UpdateElevatorIndex() {
+	int curPos = (int)GetEncPosition();
+	int i = LENGTH(elevatorHeightsTotes)-1;	// if we can't find a position, we must be at highest
+	for (i=0; i!=LENGTH(elevatorHeightsTotes)-1; i++) {
+		if (-curPos >= elevatorHeightsTotes[i] && -curPos < elevatorHeightsTotes[i+1]) break;
+	}
+	elevatorIndex = i;
+	printf("Elevator::UpdateElevatorIndex curPos = %d, index set to %d.\n", curPos, i);
+}
+
 // Only valid on the test bot. On the real elevator, we actually move
 void Elevator::Move(double ticksToMove) {
 	// On the production bot, nothing's here. The Talon's PID loop is doing all the work!
@@ -135,6 +147,11 @@ double Elevator::GetPosition() {
 	return elevatorMotor1->Get();
 }
 
+double Elevator::GetEncPosition() {
+	if (RobotMap::testBot) return encoderPos;
+	return elevatorMotor1->GetEncPosition();
+}
+
 bool Elevator::IsAtTop() {
 	if (!RobotMap::testBot) {
 		if (!elevatorMotor1->GetReverseLimitOK()) printf("Elevator HIT TOP!\n");
@@ -162,7 +179,7 @@ bool Elevator::IsAtBottom() {
 }
 
 double Elevator::GetPositionInInches() {
-	return -(elevatorMotor1->GetEncPosition()/ticksPerInch) + 8.25;
+	return -(GetEncPosition()/ticksPerInch) + 8.25;
 }
 
 bool Elevator::WasZeroed() {
