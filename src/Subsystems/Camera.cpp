@@ -9,6 +9,7 @@
 #include <CameraServer.h>
 #include <stdio.h>
 #include <limits.h>
+#include <string.h>
 #include <regex>
 
 uInt32 Camera::cameraCount = 0;
@@ -135,7 +136,9 @@ IMAQdxError Camera::Start() {
 		return imaqError;
 	}
 	// imaqError = Camera::SetMode();
-	SetVideoMode(416, 240, 15, true);
+	if (strstr(camInfo[camera].ModelName, "LifeCam")!=nullptr) SetVideoMode(416, 240, 15, false);
+	else if (strstr(camInfo[camera].ModelName, "Logitech Webcam")!=nullptr) SetVideoMode(800, 448, 30, false);
+	else SetVideoMode(320, 240, 15, false);	// default to a widely supported mode
 	if (imaqError != IMAQdxErrorSuccess) {
 		return imaqError;
 	}
@@ -182,7 +185,7 @@ IMAQdxError Camera::Stop() {
 // send a frame every tick if the camera rate is slower
 void Camera::Feed(int ticks)
 {
-	if (enabled && cameraCount > 0 && ticks%2==0) {
+	if (enabled && cameraCount > 0 /* && ticks%2==0*/) {
 		IMAQdxError imaqError = cameras[currentCamera]->GetFrame();
 		if (cameras[currentCamera]->frame!=NULL) {
 			if (IMAQdxErrorSuccess==imaqError) {
@@ -261,9 +264,10 @@ bool Camera::SetVideoMode(unsigned int reqx, unsigned int reqy, unsigned int req
 
 // old SetMode
 IMAQdxError Camera::SetMode() {
-	IMAQdxVideoMode videoModes[120];
 	uInt32 count;
 	uInt32 mode;
+	IMAQdxEnumerateVideoModes(session, NULL, &count, &mode);
+	IMAQdxVideoMode videoModes[count];
 	IMAQdxEnumerateVideoModes(session, videoModes, &count, &mode);
 	for (uInt32 i=0; i!=count; i++) {
 		//printf("Video mode[%lu] is %s = %lu\n", i, videoModes[i].Name, videoModes[i].Value);

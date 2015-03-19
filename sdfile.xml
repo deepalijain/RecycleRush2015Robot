@@ -4,15 +4,15 @@
 		<location x="209" y="230"/>
 	</widget>
 	<widget field="Elevator Encoder Raw" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="400" y="310"/>
+		<location x="696" y="6"/>
 	</widget>
 	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.WebcamViewerExtension">
-		<location x="688" y="-2"/>
-		<width>442</width>
-		<height>349</height>
+		<location x="255" y="248"/>
+		<width>744</width>
+		<height>417</height>
 	</static-widget>
 	<widget field="elevatorPIDDistance" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="415" y="282"/>
+		<location x="711" y="43"/>
 	</widget>
 	<widget field="elevatorP" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
 		<location x="205" y="207"/>
@@ -27,7 +27,7 @@
 		<location x="198" y="138"/>
 	</widget>
 	<widget field="driveRampRate" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="426" y="260"/>
+		<location x="702" y="80"/>
 	</widget>
 	<widget field="drivePIDDistance" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
 		<location x="415" y="236"/>
