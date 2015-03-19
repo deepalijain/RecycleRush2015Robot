@@ -35,9 +35,11 @@ void SwitchCamera::Initialize() {
 	else {
 		// we're the toggle cameras (disable/enable) command
 		if (Camera::IsEnabled()) {
+			printf("Disabling camaeras.\n");
 			Camera::DisableCameras();
 		}
 		else {
+			printf("Enabling camaeras.\n");
 			Camera::EnableCameras();
 		}
 	}

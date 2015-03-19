@@ -15,6 +15,7 @@ private:
 	static Camera *cameras[6];	// array of ourselves
 	static uInt32 cameraCount;
 	static uInt32 currentCamera;
+	static bool debugOutput;
 	Image *frame;
 	IMAQdxSession session;
 	IMAQdxError imaqError;

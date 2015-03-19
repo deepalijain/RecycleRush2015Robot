@@ -62,7 +62,7 @@ OI::OI() {
 	Joystick1WhenPressed(pushTote, 8);			// tiny start button
 
 	Joystick1WhenPressed(switchCamera, 10);		// Right joystick press
-	Joystick1WhenPressed(switchCamera, 9);		// Left joystick press
+	Joystick1WhenPressed(toggleCameras, 9);		// Left joystick press
 
 
 	printf("Joystick2 button count: %d.\n", joystick2->GetButtonCount());

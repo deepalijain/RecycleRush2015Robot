@@ -16,6 +16,7 @@ uInt32 Camera::currentCamera = 0;
 IMAQdxCameraInformation Camera::camInfo[6];
 Camera *Camera::cameras[6];
 bool Camera::enabled;
+bool Camera::debugOutput;
 
 
 /*
@@ -52,6 +53,7 @@ bool Camera::enabled;
  */
 // i is the index of the camera we want to open
 Camera::Camera(uInt32 i) {
+	debugOutput = true;
 	if (cameraCount == 0 && i>cameraCount) {
 		printf("Camera: attempt to open camera out of range (zero or too big).\n");
 		return;
@@ -103,6 +105,8 @@ uInt32 Camera::SwitchCamera() {
 void Camera::EnableCameras() {
 	StartCameras();
 	enabled = true;
+	// the most verbose debug output we only do the first time
+	debugOutput = false;
 }
 
 void Camera::DisableCameras() {
@@ -127,10 +131,11 @@ IMAQdxError Camera::Start() {
 	imaqError = IMAQdxOpenCamera(camInfo[camera].InterfaceName, IMAQdxCameraControlModeController, &session);
 	if(imaqError != IMAQdxErrorSuccess) {
 		printf("IMAQdxOpenCamera error: %x\n", imaqError);
+		session = ULONG_MAX;
 		return imaqError;
 	}
 	// imaqError = Camera::SetMode();
-	SetVideoMode(640, 360, 30, true);
+	SetVideoMode(416, 240, 15, true);
 	if (imaqError != IMAQdxErrorSuccess) {
 		return imaqError;
 	}
@@ -202,7 +207,7 @@ bool Camera::SetVideoMode(unsigned int reqx, unsigned int reqy, unsigned int req
 	uInt32 count;
 	uInt32 currentMode;
 
-	printf("Set Video Mode, requesting %u x %u at %u fps %s.\n",
+	if (debugOutput) printf("Set Video Mode, requesting %u x %u at %u fps %s.\n",
 			reqx, reqy, reqfps, use_Jpeg ? "use JPEG": "not JPEG");
 	// most of this is copied from wpilibC++Devices/src/USBCamera.cpp
 	IMAQdxEnumerateVideoModes(session, NULL, &count, &currentMode);	// first call to get the count of modes
@@ -210,7 +215,7 @@ bool Camera::SetVideoMode(unsigned int reqx, unsigned int reqy, unsigned int req
 
 	// then get the modes
 	IMAQdxEnumerateVideoModes(session, modes, &count, &currentMode);
-	printf("Set Video Mode, %lu modes; Current mode %lu is %s = %lu\n", count,
+	if (debugOutput) printf("Set Video Mode, %lu modes; Current mode %lu is %s = %lu\n", count,
 			currentMode, modes[currentMode].Name, modes[currentMode].Value);
 
 	// Groups are:
@@ -222,9 +227,8 @@ bool Camera::SetVideoMode(unsigned int reqx, unsigned int reqy, unsigned int req
     IMAQdxVideoMode* foundMode = nullptr;
 	IMAQdxVideoMode* currentModePtr = &modes[currentMode];
 	double foundFps = 1000.0;
-	unsigned int i;
-	for (i = 0; i < count; i++) {
-		printf("Video mode[%u] is %s = %lu\n", i, modes[i].Name, modes[i].Value);
+	for (unsigned int i = 0; i < count; i++) {
+		if (debugOutput) printf("Video mode[%u] is %s = %lu\n", i, modes[i].Name, modes[i].Value);
 		std::cmatch m;
 		if (!std::regex_match(modes[i].Name, m, reMode))
 		  	continue;
@@ -247,7 +251,7 @@ bool Camera::SetVideoMode(unsigned int reqx, unsigned int reqy, unsigned int req
 	}
 	if (foundMode != nullptr) {
 		if (foundMode->Value != currentModePtr->Value) {
-			printf("Found mode[%u] is %s = %lu\n", i, foundMode->Name, foundMode->Value);
+			printf("Found mode is %s = %lu\n",foundMode->Name, foundMode->Value);
 			IMAQdxSetAttribute(session, IMAQdxAttributeVideoMode, IMAQdxValueTypeU32, foundMode->Value);
 			return true;
 		}
@@ -255,7 +259,7 @@ bool Camera::SetVideoMode(unsigned int reqx, unsigned int reqy, unsigned int req
 	return false;
 }
 
-
+// old SetMode
 IMAQdxError Camera::SetMode() {
 	IMAQdxVideoMode videoModes[120];
 	uInt32 count;
