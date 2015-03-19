@@ -39,6 +39,7 @@ public:
 	CommandGroup *autonomousCommand;
 	SendableChooser *chooser;
 
+	static int Ticks;
 	static PowerDistributionPanel* pdp;
 	static Parameters *parameters;
 	static Command *driveCommand;

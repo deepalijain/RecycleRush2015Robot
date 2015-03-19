@@ -67,10 +67,12 @@ uInt32 Camera::SwitchCamera() {
 
 
 // Feed video frams from the currently selected camera.
-// Should be called once per tick, or however often you want frames.
-void Camera::Feed()
+// Pass in the robot tick count -- it's just wasteful to
+// send a frame every tick if the camera rate is slower
+void Camera::Feed(int ticks)
 {
-	if (cameraCount > 0) {
+	// If we
+	if (cameraCount > 0 && ticks%2==0) {
 		IMAQdxError imaqError = cameras[currentCamera]->GetFrame();
 		if (cameras[currentCamera]->frame!=NULL) {
 			if (IMAQdxErrorSuccess==imaqError) {

@@ -33,8 +33,7 @@ Command *Robot::holdElevatorCommand = 0;
 Command *Robot::zeroElevator = 0;
 Parameters *Robot::parameters = 0;
 PowerDistributionPanel *Robot::pdp = 0;
-
-int Ticks = 0;
+int Robot::Ticks = 0;
 
 void Robot::RobotInit() {
 	try {
@@ -148,7 +147,7 @@ void Robot::AutonomousPeriodic() {
 	else if (autoPeriodicCount==120) printf("AutoPeriodic still alive %d!\n", autoPeriodicCount);
 	Scheduler::GetInstance()->Run();
 	UpdateDashboardPeriodic();
-	Camera::Feed();
+	Camera::Feed(Ticks);
 }
 
 void Robot::TeleopInit() {
@@ -174,12 +173,12 @@ void Robot::TeleopPeriodic() {
 		//printf("Drive Elevator initiated by joystick input up=%f, down=%f.\n", up, down);
 		Robot::driveElevatorCommand->Start();
 	}
-	Camera::Feed();
+	Camera::Feed(Ticks);
 }
 
 void Robot::TestPeriodic() {
 	lw->Run();
-	Camera::Feed();
+	Camera::Feed(Ticks);
 	UpdateDashboardPeriodic();
 }
 

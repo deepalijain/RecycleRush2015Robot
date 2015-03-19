@@ -30,7 +30,7 @@ public:
 	static uInt32 SwitchCamera();
 	static void StartCameras();
 	static void StopCameras();
-	static void Feed();
+	static void Feed(int ticks);
 	static char *GetName();
 	static char *GetModel();
 
