@@ -12,20 +12,35 @@
 #include "../Subsystems/camera.h"
 #include "SwitchCamera.h"
 
-SwitchCamera::SwitchCamera() {
-
+SwitchCamera::SwitchCamera() : 	_disable(false) {
 }
+
+SwitchCamera::SwitchCamera(bool disable) : _disable(disable) {
+}
+
 
 // Called just before this Command runs the first time
 void SwitchCamera::Initialize() {
-	char *cam1 = Camera::GetName();
-	char *camModel1 = Camera::GetModel();
-	Camera::SwitchCamera();	// just get next in sequence
-	char *cam2 = Camera::GetName();
-	char *camModel2 = Camera::GetModel();
-	printf("Camera: switching from %s (%s) to %s (%s)\n",
-			cam1, camModel1,
-			cam2, camModel2);
+	if (!_disable) {
+		// we're the switch command
+		char *cam1 = Camera::GetName();
+		char *camModel1 = Camera::GetModel();
+		Camera::SwitchCamera();	// just get next in sequence
+		char *cam2 = Camera::GetName();
+		char *camModel2 = Camera::GetModel();
+		printf("Camera: switching from %s (%s) to %s (%s)\n",
+				cam1, camModel1,
+				cam2, camModel2);
+	}
+	else {
+		// we're the toggle cameras (disable/enable) command
+		if (Camera::IsEnabled()) {
+			Camera::DisableCameras();
+		}
+		else {
+			Camera::EnableCameras();
+		}
+	}
 }
 
 // Called repeatedly when this Command is scheduled to run

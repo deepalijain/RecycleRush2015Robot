@@ -42,6 +42,7 @@ OI::OI() {
 	toggleCompressor = new ToggleCompressor();
 	pushTote = new PushTote();
 	switchCamera = new SwitchCamera();
+	toggleCameras = new SwitchCamera(true);
 	turnLeft = new DrivePID(-ninetyDegreeTurn, ninetyDegreeTurn);
 	turnRight = new DrivePID(ninetyDegreeTurn, -ninetyDegreeTurn);
 
@@ -60,12 +61,16 @@ OI::OI() {
 	Joystick1WhenPressed(toggleCompressor, 7);	// tiny back button (old XBox)
 	Joystick1WhenPressed(pushTote, 8);			// tiny start button
 
-	Joystick1WhenPressed(switchCamera, 10);		// Can we have the same command on two buttons?
+	Joystick1WhenPressed(switchCamera, 10);		// Right joystick press
+	Joystick1WhenPressed(switchCamera, 9);		// Left joystick press
+
 
 	printf("Joystick2 button count: %d.\n", joystick2->GetButtonCount());
 	if (joystick2->GetButtonCount() > 0) {
 	// these next two commands are only for testing
 		Joystick2WhenPressed(switchCamera, 11);			// upper right button on Logitech Attack 3
+		Joystick2WhenPressed(toggleCameras, 10);		// middle right button?
+
 		Joystick2WhenPressed(drive100, 6);			    // upper left button on Logitech Attack 3
 		Joystick2WhenPressed(turnLeft, 8);
 		Joystick2WhenPressed(turnRight, 9);

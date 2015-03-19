@@ -19,8 +19,11 @@
  * @author ExampleAuthor
  */
 class SwitchCamera: public Command {
+private:
+	bool _disable; 	// true if we're really the disable command
 public:
 	SwitchCamera();
+	SwitchCamera(bool disable);
 	virtual void Initialize();
 	virtual void Execute();
 	virtual bool IsFinished();
