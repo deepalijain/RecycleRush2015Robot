@@ -52,8 +52,8 @@ void DriveSubsystem::SetPIDDistance(double left, double right)
 	if (RobotMap::testBot) right *= -(1200/1024);
 
 	// account for left drive being reversed, on production bot only??
-	if (!RobotMap::testBot) left = leftPosition - left;
-	else left += leftPosition;
+	if (RobotMap::testBot) left += leftPosition;
+	else left = leftPosition - left;
 	right += rightPosition;
 
 	backLeftMotor->SetControlMode(CANSpeedController::kPosition);
@@ -105,7 +105,7 @@ void DriveSubsystem::DriveJoysticks(double y, double x)
 }
 
 void DriveSubsystem::InitDefaultCommand() {
-	SetDefaultCommand(Robot::driveCommand);
+	//SetDefaultCommand(Robot::driveCommand);
 }
 
 double DriveSubsystem::GetLeftEncoderPosition() {

@@ -25,7 +25,8 @@ DrivePID::DrivePID(double leftInches, double rightInches)  :
 	printf("drivePID constructed for leftInches=%1.2f, rightInches=%1.2f.\n", leftInches, rightInches);
 	double wheelDiameter = 6.25; 				// starting guess
 
-	double ticksPerRotation = 7640;			// empircally determined
+	//double ticksPerRotation = 7640;			// empircally determined
+	double ticksPerRotation = 6912;			// empircally determined
 	double inchesPerRotation = wheelDiameter * 3.14159;
 	leftTicks = leftInches * (ticksPerRotation/inchesPerRotation);
 	rightTicks = rightInches * (ticksPerRotation/inchesPerRotation);
@@ -40,7 +41,7 @@ void DrivePID::Initialize() {
 	Robot::parameters->UpdateDrivePIDParams();
 	// Vestigial:
 	// double distance = Parameters::drivePIDDistance;
-	printf("drivePID initialized for leftTicks=%1.2f, rightInches=%1.2f.\n", leftTicks, rightTicks);
+	printf("drivePID initialized for leftTicks=%1.2f, rightTicks=%1.2f.\n", leftTicks, rightTicks);
 	Robot::driveSubsystem->SetPIDDistance(leftTicks, rightTicks);
 }
 

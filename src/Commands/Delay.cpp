@@ -23,18 +23,18 @@ void Delay::Initialize() {
 
 // Called repeatedly when this Command is scheduled to run
 void Delay::Execute() {
-
+	printf("%d ", ticks);
 }
 
 // Make this return true when this Command no longer needs to run execute()
 bool Delay::IsFinished() {
-	return (ticks++*50.0 > delayPeriod);
+	return ((ticks++)/50.0 > delayPeriod);
 
 }
 
 // Called once after isFinished returns true
 void Delay::End() {
-	printf("Delay Done\n");
+	printf("Delay Done at %1.0f\n", ticks);
 	ticks = 0;
 }
 

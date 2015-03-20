@@ -137,7 +137,7 @@ IMAQdxError Camera::Start() {
 	}
 	// imaqError = Camera::SetMode();
 	if (strstr(camInfo[camera].ModelName, "LifeCam")!=nullptr) SetVideoMode(416, 240, 15, false);
-	else if (strstr(camInfo[camera].ModelName, "Logitech Webcam")!=nullptr) SetVideoMode(800, 448, 15, false);
+	else if (strstr(camInfo[camera].ModelName, "Logitech Webcam")!=nullptr) SetVideoMode(640, 360, 24, false);
 	else {
 		if (!SetVideoMode(800, 600, 10, false)) // Genuis wide angle camera, low frame rate
 			SetVideoMode(320, 240, 15, false);	// default to a widely supported mode
@@ -188,7 +188,7 @@ IMAQdxError Camera::Stop() {
 // send a frame every tick if the camera rate is slower
 void Camera::Feed(int ticks)
 {
-	if (enabled && cameraCount > 0 /* && ticks%2==0*/) {
+	if (enabled && cameraCount > 0 && ticks%2==0) {
 		IMAQdxError imaqError = cameras[currentCamera]->GetFrame();
 		if (cameras[currentCamera]->frame!=NULL) {
 			if (IMAQdxErrorSuccess==imaqError) {

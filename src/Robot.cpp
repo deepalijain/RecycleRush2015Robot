@@ -157,6 +157,7 @@ void Robot::TeleopInit() {
 	if (autonomousCommand != NULL)
 		autonomousCommand->Cancel();
 	if (!elevator->WasZeroed()) zeroElevator->Start();
+	driveCommand->Start();
 }
 
 
@@ -211,7 +212,7 @@ void Robot::UpdateDashboardPeriodic() {
 				printf("SmartDashboard exception, post ShowPIDParams.\n");
 			}
 
-			SmartDashboard::PutNumber("PDP Temperature", pdp->GetTemperature());
+			//SmartDashboard::PutNumber("PDP Temperature", pdp->GetTemperature());
 			RobotMap::Ct->UpdateDashboard();
 		}
 

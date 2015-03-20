@@ -1,7 +1,15 @@
 <xml version="1.0">
 <dashboard>
+	<widget field="autoCommand1Tote" type="Command" class="edu.wpi.first.smartdashboard.gui.elements.Command">
+		<location x="348" y="186"/>
+	</widget>
+	<widget field="Elevator Index" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="193" y="462"/>
+	</widget>
 	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.WebcamViewerExtension">
 		<location x="380" y="244"/>
+		<width>725</width>
+		<height>326</height>
 	</static-widget>
 	<widget field="elevatorPIDDistance" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
 		<location x="354" y="165"/>

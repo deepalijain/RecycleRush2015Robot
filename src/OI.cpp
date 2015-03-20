@@ -54,10 +54,11 @@ OI::OI() {
 	Joystick1WhenPressed(toteUp, 6);			// Right bumper
 	Joystick1WhenPressed(toteDown, 5);			// Left bumper
 	Joystick1WhenPressed(canUp, 4);				// Y button
-	Joystick1WhenPressed(canDown, 1);			// A button
+	// Joystick1WhenPressed(canDown, XXX);			// B button (open, widen arms)
 
-	Joystick1WhenPressed(armsUp, 2);			// B button (close, narrow arms)
-	Joystick1WhenPressed(armsDown, 3);			// X button (open, widen arms)
+	Joystick1WhenPressed(armsUp, 1);			// A button
+	Joystick1WhenPressed(armsDown, 3);			// X button (close, narrow arms)
+	Joystick1WhenPressed(armsDown, 2);			// B button (close, narrow arms)
 	Joystick1WhenPressed(toggleCompressor, 7);	// tiny back button (old XBox)
 	Joystick1WhenPressed(pushTote, 8);			// tiny start button
 
