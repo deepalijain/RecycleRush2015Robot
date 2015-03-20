@@ -34,7 +34,7 @@ OI::OI() {
 
 	//applyBreakCommand = new ApplyBreakCommand();
 	driveCommand = new DriveCommand();
-	drive100 = new DrivePID(100.0, 100.0);
+	drive100 = new DrivePID(100.0, 100.0, false);
 	driveDistanceCommand = new DriveDistanceCommand(12*1);
 	toggleArmFlap = new ToggleFlapsCommand(0);
 	armsUp = new ToggleFlapsCommand(-1);
@@ -43,8 +43,8 @@ OI::OI() {
 	pushTote = new PushTote();
 	switchCamera = new SwitchCamera();
 	toggleCameras = new SwitchCamera(true);
-	turnLeft = new DrivePID(-ninetyDegreeTurn, ninetyDegreeTurn);
-	turnRight = new DrivePID(ninetyDegreeTurn, -ninetyDegreeTurn);
+	turnLeft = new DrivePID(-ninetyDegreeTurn, ninetyDegreeTurn, false);
+	turnRight = new DrivePID(ninetyDegreeTurn, -ninetyDegreeTurn, false);
 
 	toteUp = new PositionElevator(1, false);				// Tote Up
 	toteDown = new PositionElevator(-1, false);				// Tote Down

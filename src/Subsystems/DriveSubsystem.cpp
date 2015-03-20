@@ -84,7 +84,7 @@ void DriveSubsystem::SetPIDDistance(double left, double right)
 
 }
 
-// if the last five closed loop errors (where each error is the sum of left + right)
+// if the last 10 closed loop errors (where each error is the sum of left + right)
 // didn't change, then we can consider the PID loop to have completed its task
 bool DriveSubsystem::IsFinished() {
 	int left = abs(backLeftMotor->GetClosedLoopError());
@@ -92,7 +92,7 @@ bool DriveSubsystem::IsFinished() {
 
 	int closedLoopError = left + right;
 	if (previousClosedLoopError - closedLoopError < 3) {
-		if (++numberofsame >= 5) return true;
+		if (++numberofsame >= 10) return true;
 	}
 	else numberofsame = 0;
 	previousClosedLoopError = closedLoopError;

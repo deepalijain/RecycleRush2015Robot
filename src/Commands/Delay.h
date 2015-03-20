@@ -29,8 +29,8 @@ public:
 	virtual void Interrupted();
 
 private:
-	int ticks;
-	double delayPeriod;		// number of seconds to delay
+	int _ticks;
+	double _delayPeriod;		// number of seconds to delay
 };
 
 

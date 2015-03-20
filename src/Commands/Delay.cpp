@@ -11,35 +11,36 @@
 
 #include "Delay.h"
 
-Delay::Delay(double time) : delayPeriod(time) {
+Delay::Delay(double t) : _delayPeriod(t) {
 
 }
 
 // Called just before this Command runs the first time
 void Delay::Initialize() {
-	printf("Delay init'd for %1.f seconds\n", delayPeriod);
-	ticks = 0;
+	printf("Delay init'd for %1.2f seconds\n", _delayPeriod);
+	SetInterruptible(false);
+	//SetTimeout(_delayPeriod);
+	_ticks = 0;
 }
 
 // Called repeatedly when this Command is scheduled to run
 void Delay::Execute() {
-	printf("%d ", ticks);
 }
 
 // Make this return true when this Command no longer needs to run execute()
 bool Delay::IsFinished() {
-	return ((ticks++)/50.0 > delayPeriod);
-
+	return ((++_ticks/50.0 >= _delayPeriod));
+	//return IsTimedOut();
 }
 
 // Called once after isFinished returns true
 void Delay::End() {
-	printf("Delay Done at %1.0f\n", ticks);
-	ticks = 0;
+	printf("Delay Done at %d\n", _ticks);
+	_ticks = 0;
 }
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
 void Delay::Interrupted() {
-
+	printf("Delay INTERRUPTED at %d\n", _ticks);
 }

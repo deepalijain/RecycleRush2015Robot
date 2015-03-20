@@ -54,7 +54,7 @@ bool Camera::debugOutput;
  */
 // i is the index of the camera we want to open
 Camera::Camera(uInt32 i) {
-	debugOutput = true;
+	debugOutput = false;
 	if (cameraCount == 0 && i>cameraCount) {
 		printf("Camera: attempt to open camera out of range (zero or too big).\n");
 		return;

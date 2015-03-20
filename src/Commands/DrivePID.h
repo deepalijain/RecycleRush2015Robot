@@ -25,17 +25,18 @@
 
 class DrivePID: public Command {
 public:
-	DrivePID(double left, double right);
+	DrivePID(double left, double right, bool autonomous=true);
 	virtual void Initialize();
 	virtual void Execute();
 	virtual bool IsFinished();
 	virtual void End();
 	virtual void Interrupted();
 private:
-	int timeticks, currentTime;
-	bool isFinished,firstTime;
-	double leftInches, rightInches;		// distances (and direction) to drive
-	double leftTicks, rightTicks;
+	double _leftInches, _rightInches;		// distances (and direction) to drive
+	bool _autonomous;
+	int _timeticks, _currentTime;
+	bool _isFinished,_firstTime;
+	double _leftTicks, _rightTicks;
 };
 
 #endif

@@ -29,11 +29,11 @@ void ToggleFlapsCommand::Execute() {
 			// toggle -- we're not using this one
 			if (armFlapUp) {
 				Robot::armFlaps->ArmFlapDown();
-				printf("Arm Flap Down");
+				printf("Arm Flap Down\n");
 			}
 			else {
 				Robot::armFlaps->ArmFlapUp();
-				printf("ArmFlapUp");
+				printf("Arm Flap Up\n");
 			}
 			armFlapUp = !armFlapUp;
 			SmartDashboard::PutBoolean("armFlapUp",armFlapUp);
@@ -41,13 +41,13 @@ void ToggleFlapsCommand::Execute() {
 		case 1:
 			// open (widen), which the kids called "down"
 			Robot::armFlaps->ArmFlapDown();
-			printf("Arm Flap Down");
+			printf("Arm Flap Down\n");
 			armFlapUp = false;
 			break;
 		case -1:
 			// close (narrow), which the kids called "up"
 			Robot::armFlaps->ArmFlapUp();
-			printf("ArmFlapUp");
+			printf("Arm Flap Up\n");
 			armFlapUp = true;
 			break;
 	}
