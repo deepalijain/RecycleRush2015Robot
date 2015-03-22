@@ -52,7 +52,6 @@ void ZeroElevator::End() {
 	printf("Zero elevator ended at position %1.2f due to %s\n",
 			position,
 			Robot::elevator->IsAtBottom() ? "At Bottom" : "At Top");
-	Robot::driveElevatorCommand->Start();
 }
 
 // Called when another command which requires one or more of the same

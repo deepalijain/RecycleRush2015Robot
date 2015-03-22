@@ -17,8 +17,8 @@
 
 AutonomousCommand1Tote::AutonomousCommand1Tote() {
 	printf("AutonomousCommand1Can1Tote constructed\n");
-	// Need to go up twice to get a can
-	//AddSequential(new ZeroElevator());
+
+	AddSequential(new ZeroElevator());				// make sure elevator is zero'd
 	AddSequential(new ToggleFlapsCommand(1)); 			// make sure flaps are closed
 	AddSequential(new PositionElevator(1, false, 0.9)); // move tote up to driving position
 	AddSequential(new DrivePID(ninetyDegreeTurn, -ninetyDegreeTurn)); // turn right

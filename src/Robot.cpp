@@ -124,6 +124,7 @@ void Robot::AutonomousInit() {
 	RobotMap::armFlapSolenoid->Set(DoubleSolenoid::kOff);
 	RobotMap::shifterSolenoid->Set(DoubleSolenoid::kOff);
 	RobotMap::totePusherSolenoid->Set(DoubleSolenoid::kOff);
+
 	autonomousCommand =  (CommandGroup *)chooser->GetSelected();
 	printf("Autonomous chosen: %s\n",
 			autonomousCommand==autoCommandMoveToZone ? "autoCommandMoveToZone" :
@@ -134,7 +135,6 @@ void Robot::AutonomousInit() {
 	if (autonomousCommand != NULL)
 		autonomousCommand->Start();
 
-	autonomousCommand->Start();
 	Camera::StartCameras();
 }
 
@@ -218,9 +218,8 @@ void Robot::UpdateDashboardPeriodic() {
 
 		// Run camaera feeds whenever Dashboard is being updated, but on a
 		// more frequent clock. (We just feed the Camera class the clock,
-		// it decide on update frequency
+		// it decide on update frequency.)
 		Camera::Feed(Ticks);
-
 	}
 	catch (std::exception& e) {
 		printf("SmartDashboard Exception: %s\n",  e.what());

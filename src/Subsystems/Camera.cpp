@@ -172,7 +172,9 @@ IMAQdxError Camera::Stop() {
 		//imaqDrawTextOnImage(frame, frame, {120, 80}, "X", &options, &fontUsed);
 		if (NULL!=frame && camera==currentCamera) {
 			// Would really like to make this semi-transparent, but not apparent how.
-			imaqDrawShapeOnImage(frame, frame, { 80, 80, 160, 160 }, DrawMode::IMAQ_DRAW_VALUE, ShapeMode::IMAQ_SHAPE_OVAL,3.0f);
+			int x, y;
+			imaqGetImageSize(frame, &x, &y);
+			imaqDrawShapeOnImage(frame, frame, { y/3, x/3, (2*y)/3, (2*x)/3 }, DrawMode::IMAQ_DRAW_INVERT, ShapeMode::IMAQ_SHAPE_OVAL,3.0f);
 			CameraServer::GetInstance()->SetImage(frame);
 		}
 		IMAQdxStopAcquisition(session);
