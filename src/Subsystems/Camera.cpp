@@ -174,7 +174,12 @@ IMAQdxError Camera::Stop() {
 			// Would really like to make this semi-transparent, but not apparent how.
 			int x, y;
 			imaqGetImageSize(frame, &x, &y);
-			imaqDrawShapeOnImage(frame, frame, { y/3, x/3, (2*y)/3, (2*x)/3 }, DrawMode::IMAQ_DRAW_INVERT, ShapeMode::IMAQ_SHAPE_OVAL,3.0f);
+			//RGBValue color = IMAQ_RGB_YELLOW;
+			//color.G = 240;
+			//color.R = 240;
+			//imaqOverlayOval(frame, { y/3, x/3, y/3, x/3 }, &color, IMAQ_DRAW_VALUE, NULL);
+			//imaqMergeOverlay(NULL, frame, NULL, 0, NULL);
+			imaqDrawShapeOnImage(frame, frame, { y/3, x/3, y/3, x/3 }, DrawMode::IMAQ_DRAW_INVERT, ShapeMode::IMAQ_SHAPE_OVAL,0.0);
 			CameraServer::GetInstance()->SetImage(frame);
 		}
 		IMAQdxStopAcquisition(session);
