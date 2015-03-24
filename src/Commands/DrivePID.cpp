@@ -26,8 +26,8 @@ DrivePID::DrivePID(double leftInches, double rightInches, bool autonomous)  :
 	printf("drivePID constructed for leftInches=%1.2f, rightInches=%1.2f.\n", leftInches, rightInches);
 	double wheelDiameter = 6.25; 				// starting guess
 
-	//double ticksPerRotation = 7640;			// empircally determined
-	double ticksPerRotation = 6912;			// empircally determined
+	double ticksPerRotation = 7680;			// should be
+	// double ticksPerRotation = 6912;			// empircally determined
 	double inchesPerRotation = wheelDiameter * 3.14159;
 	_leftTicks = leftInches * (ticksPerRotation/inchesPerRotation);
 	_rightTicks = rightInches * (ticksPerRotation/inchesPerRotation);
@@ -76,8 +76,6 @@ bool DrivePID::IsFinished() {
 // Called once after isFinished returns true
 void DrivePID::End() {
 	if (!_autonomous) {
-		RobotMap::driveBackLeft->SetControlMode(CANSpeedController::kPercentVbus);
-		RobotMap::driveBackRight->SetControlMode(CANSpeedController::kPercentVbus);
 		Robot::driveCommand->Start();
 	}
 }

@@ -23,6 +23,8 @@ DriveCommand::DriveCommand() {
 
 // Called just before this Command runs the first time
 void DriveCommand::Initialize() {
+	RobotMap::driveBackLeft->SetControlMode(CANSpeedController::kPercentVbus);
+	RobotMap::driveBackRight->SetControlMode(CANSpeedController::kPercentVbus);
 	turnMax = 0.7;
 }
 

@@ -11,7 +11,7 @@
 
 #ifndef _ROBOT_H
 #define _ROBOT_H
-#define inchesBetweenWheels 24.0
+#define inchesBetweenWheels 25.5
 #define ninetyDegreeTurn (inchesBetweenWheels*(3.14159/4))
 
 #include "WPILib.h"

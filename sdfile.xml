@@ -1,5 +1,20 @@
 <xml version="1.0">
 <dashboard>
+	<widget field="Elevator height" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="665"/>
+	</widget>
+	<widget field="Elevator PID Error" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="504"/>
+	</widget>
+	<widget field="Elevator Lead-Volts" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="481"/>
+	</widget>
+	<widget field="Elevator Lead-Status" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="412"/>
+	</widget>
+	<widget field="Elevator Lead-Amps" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="389"/>
+	</widget>
 	<widget field="Elevator Index" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
 		<location x="1391" y="48"/>
 	</widget>
