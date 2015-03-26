@@ -56,6 +56,7 @@ private:
 			char stat_label[32];
 			char volt_label[32];
 			char amp_label[32];
+			char watt_label[32];
 		};
 public:
 		Talon m_talons[MAX_TALONS];

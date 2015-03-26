@@ -26,6 +26,7 @@ CANTalon* CANTalons::Init(int dN, char* description) {
 			sprintf(m_talons[dN].stat_label, "%s-Status", description);
 			sprintf(m_talons[dN].volt_label, "%s-Volts", description);
 			sprintf(m_talons[dN].amp_label, "%s-Amps", description);
+			sprintf(m_talons[dN].watt_label, "%s-Watts", description);
 			printf("Talon %d, %s initialized, Error: %d, Bus Voltage: %f, Output Voltage %f\n",
 					dN, description, error.GetCode(),
 					busvoltage,  m_talons[dN].voltage);
@@ -53,8 +54,9 @@ void CANTalons::UpdateDashboard() {
 				t.voltage = t.talon->GetOutputVoltage();
 				t.current = t.talon->GetOutputCurrent();
 				SmartDashboard::PutBoolean(t.stat_label,t.status);
-				SmartDashboard::PutNumber(t.volt_label, (double)t.voltage);
-				SmartDashboard::PutNumber(t.amp_label, (double)t.current);
+				//SmartDashboard::PutNumber(t.volt_label, (double)t.voltage);
+				//SmartDashboard::PutNumber(t.amp_label, (double)t.current);
+				SmartDashboard::PutNumber(t.watt_label, (double)(t.voltage * t.current));
 			}
 		}
 	}
