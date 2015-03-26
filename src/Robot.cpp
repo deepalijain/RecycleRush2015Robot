@@ -201,12 +201,23 @@ void Robot::UpdateDashboardPeriodic() {
 				// CANTalon 1, which is the Elevator lead Talon, isn't present on the kit bot
 				if (!RobotMap::testBot) {
 					SmartDashboard::PutNumber("Elevator PID Error", RobotMap::elevatorMotor1->GetClosedLoopError());
-					SmartDashboard::PutNumber("Elevator height", elevator->GetPositionInInches());
+					//SmartDashboard::PutNumber("Elevator height", elevator->GetPositionInInches());
 				}
-				SmartDashboard::PutNumber("Elevator Encoder Raw", elevator->GetEncPosition());
 				SmartDashboard::PutNumber("Elevator Position", elevator->GetPosition());
 				SmartDashboard::PutNumber("Elevator Target Position", elevator->targetHeight);
-				SmartDashboard::PutNumber("Elevator Index", elevator->elevatorIndex);
+				int elevatorIndex = elevator->UpdateElevatorIndex();
+				SmartDashboard::PutBoolean("Elevator Index", elevatorIndex);
+				SmartDashboard::PutBoolean("0", 0==elevatorIndex);
+				SmartDashboard::PutBoolean("0.2", 1==elevatorIndex);
+				SmartDashboard::PutBoolean("1", 2==elevatorIndex);
+				SmartDashboard::PutBoolean("2", 3==elevatorIndex);
+				SmartDashboard::PutBoolean("3", 4==elevatorIndex);
+				SmartDashboard::PutBoolean("Too High!", 5!=elevatorIndex);
+				if (5==elevatorIndex && (Ticks < (rumbleTicks+2)) ) {
+					oi->joystick1->SetRumble(Joystick::kRightRumble, 0.2);
+					if (INT_MAX==rumbleTicks) rumbleTicks = Ticks;
+				}
+				else {rumbleTicks = INT_MAX;}
 			}
 			catch(int e) {
 				printf("SmartDashboard exception, post ShowPIDParams.\n");
