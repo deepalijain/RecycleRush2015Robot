@@ -123,7 +123,7 @@ void Elevator::MoveCan(int commandDirection) {
 
 // For use in handling the transition between manual control and autonomous.
 // Set the current elevator index to be where the elevator actually is
-void Elevator::UpdateElevatorIndex() {
+int Elevator::UpdateElevatorIndex() {
 	double curPos = GetEncPosition();
 	// We start at 1 because we can't be under the zero position
 	for (int i = 1; i!=LENGTH(elevatorHeightsTotes); i++) {
@@ -132,15 +132,16 @@ void Elevator::UpdateElevatorIndex() {
 			double frac = (-curPos - elevatorHeightsTotes[i-1]) /
 					 (elevatorHeightsTotes[i] - elevatorHeightsTotes[i-1]);
 			elevatorIndex = (i-1) + frac;
-			printf("Elevator::UpdateElevatorIndex curPos=%1.f, i=%d, frac=%1.2f elevatorHeightsTotes[i]=%1.2f, elevatorHeightsTotes[i-1]=%1.2f\n",
+			/*printf("Elevator::UpdateElevatorIndex curPos=%1.f, i=%d, frac=%1.2f elevatorHeightsTotes[i]=%1.2f, elevatorHeightsTotes[i-1]=%1.2f\n",
 					 curPos, i, frac,
-					 elevatorHeightsTotes[i],  elevatorHeightsTotes[i-1] );
+					 elevatorHeightsTotes[i],  elevatorHeightsTotes[i-1] );*/
 			break;
 		}
 	}
 	// it's possible to manually move a little further than the highest official index position..
 	if (-curPos > elevatorHeightsTotes[LENGTH(elevatorHeightsTotes)-1]) elevatorIndex = LENGTH(elevatorHeightsTotes)-1;
-	printf("Elevator::UpdateElevatorIndex curPos = %1.2f, index set to %1.2f.\n", curPos, elevatorIndex);
+	//printf("Elevator::UpdateElevatorIndex curPos = %1.2f, index set to %1.2f.\n", curPos, elevatorIndex);
+	return elevatorIndex;
 }
 
 // Only valid on the test bot. On the real elevator, we actually move
@@ -170,7 +171,7 @@ void Elevator::InitDefaultCommand() {
 
 double Elevator::GetPosition() {
 	if (RobotMap::testBot) return encoderPos;
-	return elevatorMotor1->Get();
+	return elevatorMotor1->GetPosition();
 }
 
 double Elevator::GetEncPosition() {

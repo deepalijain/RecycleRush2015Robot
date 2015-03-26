@@ -44,7 +44,7 @@ public:
 	double GetPosition();
 	void MoveByTote(int commandDirection);
 	void MoveCan(int commandDirection);
-	void UpdateElevatorIndex();
+	int UpdateElevatorIndex();
 
 	void SetHeight(double height);
 	void Move(double n);
