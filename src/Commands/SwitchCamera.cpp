@@ -9,7 +9,7 @@
 // it from being updated in the future.
 
 
-#include "../Subsystems/camera.h"
+#include "../Subsystems/Camera.h"
 #include "SwitchCamera.h"
 
 SwitchCamera::SwitchCamera() : 	_disable(false) {

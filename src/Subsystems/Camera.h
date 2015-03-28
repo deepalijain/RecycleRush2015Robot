@@ -22,6 +22,7 @@ private:
 	uInt32 camera;
 	bool firstTime;
 	static bool enabled;
+	static bool overlay;
 
 public:
 	Camera(uInt32 i);
@@ -40,6 +41,7 @@ public:
 	static void DisableCameras();
 	static bool IsEnabled();
 	static bool IsOpen();
+	static void ToggleOverlay();
 
 	IMAQdxError Start();
 	IMAQdxError GetFrame();

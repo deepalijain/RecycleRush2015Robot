@@ -42,6 +42,7 @@ public:
 	Command *pushTote;
 	Command *switchCamera;
 	Command *toggleCameras;
+	Command *toggleOverlay;
 // Just here for testing
 	CommandGroup *autoCommand1Can1Tote;
 	Button *cgtestbutton;
