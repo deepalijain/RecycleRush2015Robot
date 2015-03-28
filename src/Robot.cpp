@@ -213,7 +213,11 @@ void Robot::UpdateDashboardPeriodic() {
 				SmartDashboard::PutBoolean("2", elevatorIndex>=3);
 				SmartDashboard::PutBoolean("3", elevatorIndex>=4);
 				SmartDashboard::PutBoolean("Too High!", elevatorIndex<5);
+<<<<<<< HEAD
 				if (5==elevatorIndex && (Ticks < (rumbleTicks+20)) ) {
+=======
+				if (5==elevatorIndex && (Ticks < (rumbleTicks+2)) ) {
+>>>>>>> 977737851aac8ea07eea1a566bd2bace15078344
 					oi->joystick1->SetRumble(Joystick::kRightRumble, 0.2);
 					if (INT_MAX==rumbleTicks) rumbleTicks = Ticks;
 				}
