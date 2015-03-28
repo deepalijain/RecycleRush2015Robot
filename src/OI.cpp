@@ -35,7 +35,7 @@ OI::OI() {
 	//applyBreakCommand = new ApplyBreakCommand();
 	driveCommand = new DriveCommand();
 	drive100 = new DrivePID(100.0, 100.0, false);
-	driveDistanceCommand = new DriveDistanceCommand(12*1);
+	driveDistanceCommand = new DriveDistanceCommand(100);
 	toggleArmFlap = new ToggleFlapsCommand(0);
 	armsUp = new ToggleFlapsCommand(-1);
 	armsDown = new ToggleFlapsCommand(1);
@@ -53,7 +53,8 @@ OI::OI() {
 
 	Joystick1WhenPressed(toteUp, 6);			// Right bumper
 	Joystick1WhenPressed(toteDown, 5);			// Left bumper
-	Joystick1WhenPressed(canUp, 4);				// Y button
+	//Joystick1WhenPressed(canUp, 4);				// Y button
+	Joystick1WhenPressed(driveDistanceCommand, 4);
 	// Joystick1WhenPressed(canDown, XXX);			// B button (open, widen arms)
 
 	Joystick1WhenPressed(armsUp, 1);			// A button
@@ -75,6 +76,7 @@ OI::OI() {
 		Joystick2WhenPressed(drive100, 6);			    // upper left button on Logitech Attack 3
 		Joystick2WhenPressed(turnLeft, 8);
 		Joystick2WhenPressed(turnRight, 9);
+
 	}
 }
 

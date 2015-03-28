@@ -22,8 +22,8 @@ AutonomousCommand1Tote::AutonomousCommand1Tote() {
 	AddSequential(new ToggleFlapsCommand(1)); 			// make sure flaps are closed
 	AddSequential(new PositionElevator(1, false, 0.9)); // move tote up to driving position
 	AddSequential(new DrivePID(ninetyDegreeTurn, -ninetyDegreeTurn)); // turn right
-	AddSequential(new Delay(1.5));
-	AddSequential(new DrivePID(100.0, 100.0)); 			// and drive off into the sunset..
-
+	AddSequential(new Delay(0.5));
+	AddSequential(new DrivePID(106.0, 106.0)); 			// and drive off into the sunset..
+	AddSequential(new PositionElevator(-1, false)); // move tote to floor
 }
 

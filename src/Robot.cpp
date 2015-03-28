@@ -135,7 +135,7 @@ void Robot::AutonomousInit() {
 	if (autonomousCommand != NULL)
 		autonomousCommand->Start();
 
-	Camera::StartCameras();
+	//Camera::StartCameras();
 }
 
 void Robot::AutonomousPeriodic() {
@@ -205,15 +205,15 @@ void Robot::UpdateDashboardPeriodic() {
 				}
 				SmartDashboard::PutNumber("Elevator Position", elevator->GetPosition());
 				SmartDashboard::PutNumber("Elevator Target Position", elevator->targetHeight);
-				int elevatorIndex = elevator->UpdateElevatorIndex();
+				int elevatorIndex = elevator->elevatorIndex;
 				SmartDashboard::PutBoolean("Elevator Index", elevatorIndex);
-				SmartDashboard::PutBoolean("0", 0==elevatorIndex);
-				SmartDashboard::PutBoolean("0.2", 1==elevatorIndex);
-				SmartDashboard::PutBoolean("1", 2==elevatorIndex);
-				SmartDashboard::PutBoolean("2", 3==elevatorIndex);
-				SmartDashboard::PutBoolean("3", 4==elevatorIndex);
-				SmartDashboard::PutBoolean("Too High!", 5!=elevatorIndex);
-				if (5==elevatorIndex && (Ticks < (rumbleTicks+2)) ) {
+				SmartDashboard::PutBoolean("0", elevatorIndex>=0);
+				SmartDashboard::PutBoolean("0.2", elevatorIndex>=1);
+				SmartDashboard::PutBoolean("1", elevatorIndex>=2);
+				SmartDashboard::PutBoolean("2", elevatorIndex>=3);
+				SmartDashboard::PutBoolean("3", elevatorIndex>=4);
+				SmartDashboard::PutBoolean("Too High!", elevatorIndex<5);
+				if (5==elevatorIndex && (Ticks < (rumbleTicks+20)) ) {
 					oi->joystick1->SetRumble(Joystick::kRightRumble, 0.2);
 					if (INT_MAX==rumbleTicks) rumbleTicks = Ticks;
 				}

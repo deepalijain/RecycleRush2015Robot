@@ -49,11 +49,12 @@ private:
 	float secondsToMax = 1.5;
 	float voltageStep = maxVoltage/(secondsToMax/timeStep);
 	// To do: change wheelDiam to 6.0 for production robot
-	float wheelDiam = 4.0;
+	float wheelDiam = 6.25;
 	float distancePerRev = 3.1416*wheelDiam;
-	float inchesPerTick = distancePerRev/1024;
+	float inchesPerTick = distancePerRev/7680;
 	// If we're off by 1 inch, increase the voltage by 0.05
-	float voltageScale = 0.05;
+	float voltageScale = 0.0;
+	int ticks = 0;
 public:
 	DriveDistanceCommand(int dist);
 	virtual void Initialize();

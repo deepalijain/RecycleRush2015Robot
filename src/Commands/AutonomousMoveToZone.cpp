@@ -8,6 +8,7 @@
 
 AutonomousMoveToZone::AutonomousMoveToZone() {
 	printf("AutonomousMoveToZone constructed\n");
-	AddParallel(new DrivePID(100.0, 100.0));
-	AddParallel(new ZeroElevator());
+	//AddParallel(new ZeroElevator());
+	AddParallel(new DrivePID(106.0, 106.0));
+
 }

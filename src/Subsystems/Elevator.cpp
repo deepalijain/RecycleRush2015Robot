@@ -32,7 +32,7 @@ Elevator::Elevator() : Subsystem("Elevator") {
 	ticksPerInch = ticksPerRotation / inchesPerRotation;
 	ticksPerTote = ticksPerInch * inchesPerTote;
 
-	inchesPerCanOffset = 21.0;
+	inchesPerCanOffset = 28.0;
 	//ticksPerCanOffset = ticksPerInch * inchesPerCanOffset;
 
 	//Define elevator heights for lifting totes
@@ -114,8 +114,8 @@ void Elevator::MoveCan(int commandDirection) {
 	// for better or worse, negative is up on our elevator
 	printf("MoveCan from %1.2f to %1.2f\n", elevatorIndex, elevatorIndex+commandDirection);
 	// avoid truncation problems
-	if (commandDirection > 0) elevatorIndex = trunc(elevatorIndex + ((double)commandDirection + 0.001));
-	else elevatorIndex = ceil(elevatorIndex + ((double)commandDirection - 0.001));
+	if (commandDirection > 0) elevatorIndex = trunc(elevatorIndex + ((double)commandDirection + 0.01));
+	else elevatorIndex = ceil(elevatorIndex + ((double)commandDirection - 0.01));
 	if (elevatorIndex < 0) elevatorIndex = 0;
 	if (elevatorIndex >= (int)LENGTH(elevatorHeightsCans)) elevatorIndex = LENGTH(elevatorHeightsCans)-1;
 	SetHeight(-elevatorHeightsCans[(int)elevatorIndex]);

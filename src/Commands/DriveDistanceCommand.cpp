@@ -27,8 +27,11 @@ void DriveDistanceCommand::Initialize() {
 	// reset the encoders to 0
 	RobotMap::driveBackLeft->SetPosition(0);
 	distanceTravelledL = 0.0;
+	voltageLeft = 0.0;
 	RobotMap::driveBackRight->SetPosition(0);
 	distanceTravelledR = 0.0;
+	voltageRight = 0.0;
+	ticks = 0;
 }
 
 // Called repeatedly when this Command is scheduled to run
@@ -36,7 +39,7 @@ void DriveDistanceCommand::Execute() {
 	// If we're farther away than 1 foot then speed up to max
 	distanceTravelledL = inchesPerTick * RobotMap::driveBackLeft->GetEncPosition();
 	distanceTravelledR = inchesPerTick * RobotMap::driveBackRight->GetEncPosition();
-	if (distance - distanceTravelledL > 12)
+	if (distance - distanceTravelledL > 20)
 	{
 		voltageLeft = std::min(voltageLeft + voltageStep, maxVoltage);
 	}
@@ -47,23 +50,31 @@ void DriveDistanceCommand::Execute() {
 	}
 	// Now let's check to see how far each side has traveled
 	// and scale the right side accordingly
-	distanceError = distanceTravelledL - distanceTravelledR;
+	// The right side goes in the opposite direction, so to get a difference
+	// we add.
+	distanceError = distanceTravelledL + distanceTravelledR;
 
 	voltageRight = voltageLeft + distanceError * voltageScale;
 
 	Robot::driveSubsystem->robotDrive->TankDrive(voltageLeft,voltageRight,true);
+
+	if (ticks++%10==0)
+	{
+		printf("distanceError = %f\n", distanceError);
+	}
 }
 
 // Make this return true when this Command no longer needs to run execute()
 bool DriveDistanceCommand::IsFinished() {
 	// Command will be finished when we get to within
 	// 1 inch of commanded position
-	return fabs(distanceTravelledL - distance) < 1.0;
+	return fabs(distanceTravelledL - distance) < 5.0;
 }
 
 // Called once after isFinished returns true
 void DriveDistanceCommand::End() {
 	Robot::driveSubsystem->robotDrive->ArcadeDrive(0, 0, true);
+	printf("distanceLeft = %f, distanceRight = %f\n",distanceTravelledL, distanceTravelledR);
 	((DriveCommand *)Robot::driveCommand)->Start();
 
 }
