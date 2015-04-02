@@ -36,7 +36,7 @@ OI::OI() {
 	//applyBreakCommand = new ApplyBreakCommand();
 	driveCommand = new DriveCommand();
 	drive100 = new DrivePID(100.0, 100.0, false);
-	driveDistanceCommand = new DriveDistanceCommand(100);
+	driveDistanceCommand = new DriveDistanceCommand(100.0, 100.0);
 	toggleArmFlap = new ToggleFlapsCommand(0);
 	armsUp = new ToggleFlapsCommand(-1);
 	armsDown = new ToggleFlapsCommand(1);
