@@ -11,6 +11,7 @@
 
 #include <algorithm>
 #include "DriveDistanceCommand.h"
+#include "../Subsystems/Parameters.h"
 
 DriveDistanceCommand::DriveDistanceCommand(float distL, float distR) {
 	// Use requires() here to declare subsystem dependencies
@@ -33,6 +34,9 @@ void DriveDistanceCommand::Initialize() {
 	distanceTravelledR = 0.0;
 	voltageRight = 0.0;
 	ticks = 0;
+	// Disable the voltage ramp rate
+	RobotMap::driveBackLeft->SetVoltageRampRate(0.0);
+	RobotMap::driveBackRight->SetVoltageRampRate(0.0);
 }
 
 // Called repeatedly when this Command is scheduled to run
@@ -47,7 +51,7 @@ void DriveDistanceCommand::Execute() {
 	else
 		// We're getting close so slow down
 	{
-		voltageLeft = std::max(voltageLeft - voltageStep, float(0.0));
+		voltageLeft = std::max(voltageLeft - voltageStep, 0.0F);
 	}
 	// Now let's check to see how far each side has traveled
 	// and scale the right side accordingly
@@ -55,13 +59,17 @@ void DriveDistanceCommand::Execute() {
 	// we add.
 	distanceError = distanceTravelledL + distanceTravelledR;
 
-	voltageRight = voltageLeft + distanceError * voltageScale;
+	//voltageRight = voltageLeft + distanceError * voltageScale;
+	// For test bot use '-'
+	voltageRight = voltageLeft - distanceError * voltageScale;
 
 	Robot::driveSubsystem->robotDrive->TankDrive(voltageLeft,voltageRight,true);
 
 	if (ticks++%5==0)
 	{
-		printf("distanceError = %f\n", distanceError);
+//		printf("distanceError = %f\n", distanceError);
+		printf("distanceError = %f, distanceLeft = %f, distanceRight = %f, voltageL = %f, voltageR = %f\n",
+				distanceError,distanceTravelledL, distanceTravelledR, voltageLeft, voltageRight);
 	}
 }
 
@@ -69,8 +77,10 @@ void DriveDistanceCommand::Execute() {
 bool DriveDistanceCommand::IsFinished() {
 	// Command will be finished when we get to within
 	// 1 inch of commanded position
-	remainingDistance = std::max(fabs(distanceTravelledL - distanceL),
-			fabs(distanceTravelledL - distanceL));
+//	remainingDistance = std::max(fabs(distanceTravelledL - distanceL),
+//			fabs(distanceTravelledR - distanceR));
+
+	remainingDistance = distanceL - distanceTravelledL;
 	isCommandDone = remainingDistance < 5.0;
 	return isCommandDone;
 }
@@ -79,7 +89,12 @@ bool DriveDistanceCommand::IsFinished() {
 void DriveDistanceCommand::End() {
 	Robot::driveSubsystem->robotDrive->ArcadeDrive(0, 0, true);
 	printf("distanceLeft = %f, distanceRight = %f\n",distanceTravelledL, distanceTravelledR);
-	((DriveCommand *)Robot::driveCommand)->Start();
+
+	// Set the voltage ramp rate for both drive motors
+	RobotMap::driveBackLeft->SetVoltageRampRate(Parameters::driveRampRate);
+	RobotMap::driveBackRight->SetVoltageRampRate(Parameters::driveRampRate);
+
+((DriveCommand *)Robot::driveCommand)->Start();
 
 }
 

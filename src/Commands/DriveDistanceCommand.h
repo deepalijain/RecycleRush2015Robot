@@ -56,7 +56,7 @@ private:
 	float distancePerRev = 3.1416*wheelDiam;
 	float inchesPerTick = distancePerRev/7680;
 	// If we're off by 1 inch, increase the voltage by 0.05
-	float voltageScale = 0.01;
+	float voltageScale = 0.05;
 	int ticks = 0;
 public:
 	DriveDistanceCommand(float distL, float distR);
