@@ -30,19 +30,22 @@ void DriveCommand::Initialize() {
 
 // Called repeatedly when this Command is scheduled to run
 void DriveCommand::Execute() {
-	float y = Robot::oi->joystick1->GetY();
+	double y = Robot::oi->joystick1->GetY();
 	// Note that the sense of Y is negative, That is, if one pushes the joystick forward, Y is negative.
 	// So a negative y value means we want to drive forward.
 	// The ArcadeDrive method seems to expect this.
 
-	float x = Robot::oi->joystick1->GetRawAxis(4);
-	if (x > turnMax){
-		x = turnMax;
+	// limit our max rates on the test bot just for safety in tight places.
+	if (RobotMap::testBot) {
+		if (y > 0.66) y = 0.65;
+		if (y < -0.65) y = -0.65;
 	}
-	if (x < -turnMax){
-		x = -turnMax;
-	}
-	Robot::driveSubsystem->DriveJoysticks(y,x);
+
+	double x = Robot::oi->joystick1->GetRawAxis(4);
+	if (x > turnMax) x = turnMax;
+	if (x < -turnMax) x = -turnMax;
+
+	Robot::driveSubsystem->DriveJoysticks(y, x);
 	SmartDashboard::PutNumber("Drive Command Y", y);
 	SmartDashboard::PutNumber("Drive Command X", x);
 

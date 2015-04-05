@@ -26,7 +26,7 @@ DrivePID::DrivePID(double leftInches, double rightInches, bool autonomous)  :
 	printf("drivePID constructed for leftInches=%1.2f, rightInches=%1.2f.\n", leftInches, rightInches);
 	double wheelDiameter = 6.25; 				// starting guess
 
-	double ticksPerRotation = 7680;			// should be
+	double ticksPerRotation = (!RobotMap::testBot ? 7680 : 1000);
 	// double ticksPerRotation = 6912;			// empircally determined
 	double inchesPerRotation = wheelDiameter * 3.14159;
 	_leftTicks = leftInches * (ticksPerRotation/inchesPerRotation);

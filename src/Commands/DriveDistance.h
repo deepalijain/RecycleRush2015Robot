@@ -37,29 +37,28 @@
  *
  * @author ExampleAuthor
  */
-class DriveDistanceCommand: public Command {
+class DriveDistance: public Command {
 private:
-	double distanceL;
-	double distanceR;
+	double _distL;
+	double _distR;
 	bool isCommandDone;
-	double distanceError;
 	double remainingDistance;
-	double voltageLeft = 0.0;
-	double voltageRight = 0.0;
-	double maxVoltage = 0.8;
-	double timeStep = 0.02;
-	double secondsToMax = 1.5;
-	// Just make voltageStep 1.0 and let the voltage ramp rate handle it.
+	double rateLeft = 0.0;
+	double rateRight = 0.0;
+	double maxRate = 0.6;
+	// Just make rateStep 1.0 and let the voltage ramp rate handle it.
 	//double voltageStep = maxVoltage/(secondsToMax/timeStep);
-	double voltageStep = 1.0;
-	double wheelDiam = 6.25;
-	double distancePerRev = 3.1416*wheelDiam;
-	double inchesPerTick = distancePerRev/7680;
+	double rateStep = .02;
+	double initialRate = 0.15; 	// overcome intertia
+	double wheelDiam;
+	double distancePerRev;
+	double inchesPerTick;
 	// If we're off by 1 inch, increase the voltage by 0.05
-	double voltageScale = 0.05;
+	double rateScale = 0.04;
 	int ticks = 0;
+	DriveSubsystem *driveSubsystem;
 public:
-	DriveDistanceCommand(double distL, double distR);
+	DriveDistance(double distL, double distR);
 	virtual void Initialize();
 	virtual void Execute();
 	virtual bool IsFinished();

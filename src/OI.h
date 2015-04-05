@@ -36,6 +36,7 @@ public:
 	Command *canUp;
 	Command *canDown;
 	Command *drive100;
+	Command *drive10;
 	Command *turnLeft;
 	Command *turnRight;
 	Command *toggleCompressor;

@@ -8,7 +8,6 @@
 #include <exception>
 #include "Commands/DriveCommand.h"
 #include "Commands/DriveElevator.h"
-#include "Commands/DriveDistanceCommand.h"
 #include "Commands/PositionElevator.h"
 #include "Commands/DrivePID.h"
 #include "Commands/ZeroElevator.h"
@@ -19,6 +18,7 @@
 #include "Commands/AutonomousEmpty.h"
 #include "Subsystems/Camera.h"
 #include "Commands/Delay.h"
+#include "Commands/DriveDistance.h"
 #include "Commands/ToggleFlapsCommand.h"
 
 DriveSubsystem *Robot::driveSubsystem = 0;
@@ -194,8 +194,8 @@ void Robot::UpdateDashboardPeriodic() {
 				SmartDashboard::PutNumber("DrivePID Right Error",RobotMap::driveBackRight->GetClosedLoopError());
 
 				if (Robot::oi->driveDistanceCommand != NULL) {
-					SmartDashboard::PutNumber("DriveDistanceCmd distL",((DriveDistanceCommand *)Robot::oi->driveDistanceCommand)->distanceTravelledL);
-					SmartDashboard::PutNumber("DriveDistanceCmd distR",((DriveDistanceCommand *)Robot::oi->driveDistanceCommand)->distanceTravelledR);
+					SmartDashboard::PutNumber("DriveDistanceCmd distL",((DriveDistance *)Robot::oi->driveDistanceCommand)->distanceTravelledL);
+					SmartDashboard::PutNumber("DriveDistanceCmd distR",((DriveDistance *)Robot::oi->driveDistanceCommand)->distanceTravelledR);
 				}
 				// CANTalon 1, which is the Elevator lead Talon, isn't present on the kit bot
 				if (!RobotMap::testBot) {

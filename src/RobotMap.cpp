@@ -68,7 +68,6 @@ void RobotMap::init() {
     driveBackLeft->SetControlMode(CANSpeedController::kPercentVbus);
     driveBackRight->SetControlMode(CANSpeedController::kPercentVbus);
 
-
     // Set the FRONT talons to follow the BACK talons
     driveFrontLeft->SetControlMode(CANSpeedController::kFollower);
     // Don't mess with ramp rate and PID control at the same time
