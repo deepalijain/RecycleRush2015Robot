@@ -41,22 +41,28 @@ class DriveDistance: public Command {
 private:
 	double _distL;
 	double _distR;
-	bool isCommandDone;
-	double remainingDistance;
+	bool isCommandDone = false;
+	double remainingDistance = 0.0;
+	// maxDecelDisatnce is the distance travelled while decelerating at the
+	// maximum rate based on rateStep
+	double maxDecelDistance = 0.0;
 	double rateLeft = 0.0;
 	double rateRight = 0.0;
 	double maxRate = 0.6;
-	// Just make rateStep 1.0 and let the voltage ramp rate handle it.
-	//double voltageStep = maxVoltage/(secondsToMax/timeStep);
+	// Make sure to disable the VoltageRampRate on the drive Talons
+	// Use this to step up the voltage for acceleration and deceleration
+	// Using the Talon VoltageRampRate interferes with this control loop
 	double rateStep = .02;
 	double initialRate = 0.15; 	// overcome intertia
-	double wheelDiam;
 	double distancePerRev;
-	double inchesPerTick;
-	// If we're off by 1 inch, increase the voltage by 0.05
+	// If we're off by 1 inch, this is how much we increase the right side voltage
 	double rateScale = 0.04;
-	int ticks = 0;
+	// timeToStop is how long it takes to get to 0 volts from current rate at rateStep per cycle
+	double timeToStop = 0.0;
+
+	int timeTicks = 0;
 	DriveSubsystem *driveSubsystem;
+
 public:
 	DriveDistance(double distL, double distR);
 	virtual void Initialize();

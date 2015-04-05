@@ -17,11 +17,9 @@
 DriveDistance::DriveDistance(double distL, double distR) : _distL(distL) , _distR(distR) {
 	Requires(Robot::driveSubsystem);
 	driveSubsystem = Robot::driveSubsystem;
-	wheelDiam = !RobotMap::testBot ? 6.25 : 4.25;
-	distancePerRev = 3.14159*wheelDiam;
-	inchesPerTick = distancePerRev/(!RobotMap::testBot ? 7680 : 1000);
-	printf("DriveDistanceCommand constructed for left: %1.2f, right: %1.2f inches, inches per tick %1.6f.\n",
-			_distL, _distR, inchesPerTick);
+	distancePerRev = 3.14159*RobotMap::wheelDiameter;
+	printf("DriveDistance constructed for left: %1.2f, right: %1.2f inches, inches per tick %1.6f.\n",
+			_distL, _distR, RobotMap::inchesPerTick);
 }
 
 // Called just before this Command runs the first time
@@ -33,24 +31,32 @@ void DriveDistance::Initialize() {
 	RobotMap::driveBackRight->SetPosition(0);
 	distanceTravelledR = 0.0;
 	rateRight =initialRate;
-	ticks = 0;
+	timeTicks = 0;
 	remainingDistance = 0.0;
 	// Disable the voltage ramp rate
 	RobotMap::driveBackLeft->SetVoltageRampRate(0.0);
 	RobotMap::driveBackRight->SetVoltageRampRate(0.0);
 	printf("DriveDistanceCommand initialized: %1.2f, right: %1.2f inches, inches per tick %1.6f.\n",
-			_distL, _distR, inchesPerTick);
+			_distL, _distR, RobotMap::inchesPerTick);
 }
 
 // Called repeatedly when this Command is scheduled to run
 void DriveDistance::Execute() {
 	// If we're farther away than five inches then speed up to max
-	distanceTravelledL = inchesPerTick * driveSubsystem->GetLeftEncoderPosition();
-	distanceTravelledR = inchesPerTick * driveSubsystem->GetRightEncoderPosition();
+	distanceTravelledL = RobotMap::inchesPerTick * driveSubsystem->GetLeftEncoderPosition();
+	distanceTravelledR = RobotMap::inchesPerTick * driveSubsystem->GetRightEncoderPosition();
 	// Left will be the opposite sign of right.
 	// When going forward, we expect left to be negative and right to be positive.
 	remainingDistance = std::max(_distL + distanceTravelledL, 0.0);
-	if (remainingDistance > 5.0)
+
+	// Compute how far we would go if we started decelerating at the max rate
+	// It turns out timeToStop = velocity/acceleration and
+	// distanceToStop = currentSpeed * timeToStop / 2
+	timeToStop = rateLeft/rateStep * 0.02;
+
+	maxDecelDistance = driveSubsystem->GetLeftSpeed() * timeToStop / 2.0;
+
+	if (remainingDistance > maxDecelDistance)
 	{
 		rateLeft = std::min(rateLeft + rateStep, maxRate);
 	}
@@ -71,7 +77,7 @@ void DriveDistance::Execute() {
 	driveSubsystem->robotDrive->TankDrive(-rateLeft, -rateRight, true);
 
 
-	if (ticks++%2==0)
+	if (timeTicks++%2==0)
 	{
 		printf("distanceError = %1.2f, distanceLeft = %1.2f, distanceRight = %1.2f, remainingDistance = %1.2f, rateLeft = %1.2f, rateRight = %1.2f\n",
 				distanceError, distanceTravelledL, distanceTravelledR, remainingDistance, rateLeft, rateRight);

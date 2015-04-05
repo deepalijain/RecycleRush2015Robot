@@ -102,4 +102,18 @@ double DriveSubsystem::RightTalonGet() {
 	return backRightMotor->Get();
 }
 
+double DriveSubsystem::GetLeftSpeed() {
+	// GetSpeed returns ticks per 100ms
+	// ticks/100ms * 10 = ticks/sec
+	// ticks/sec / ticks/inch = inches/sec
+	return backLeftMotor->GetSpeed()*10.0*RobotMap::inchesPerTick;
+}
+
+double DriveSubsystem::GetRightSpeed() {
+	// GetSpeed returns ticks per 100ms
+	// ticks/100ms * 10 = ticks/sec
+	// ticks/sec / ticks/inch = inches/sec
+	return backRightMotor->GetSpeed()*10.0*RobotMap::inchesPerTick;
+}
+
 

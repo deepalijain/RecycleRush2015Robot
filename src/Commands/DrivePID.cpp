@@ -11,6 +11,7 @@
 
 #include "DrivePID.h"
 #include "../Robot.h"
+#include "../RobotMap.h"
 #include "../Subsystems/Parameters.h"
 
 DrivePID::DrivePID(double leftInches, double rightInches, bool autonomous)  :
@@ -24,13 +25,8 @@ DrivePID::DrivePID(double leftInches, double rightInches, bool autonomous)  :
 	Requires(Robot::driveSubsystem);
 	_isFinished = false;
 	printf("drivePID constructed for leftInches=%1.2f, rightInches=%1.2f.\n", leftInches, rightInches);
-	double wheelDiameter = 6.25; 				// starting guess
-
-	double ticksPerRotation = (!RobotMap::testBot ? 7680 : 1000);
-	// double ticksPerRotation = 6912;			// empircally determined
-	double inchesPerRotation = wheelDiameter * 3.14159;
-	_leftTicks = leftInches * (ticksPerRotation/inchesPerRotation);
-	_rightTicks = rightInches * (ticksPerRotation/inchesPerRotation);
+	_leftTicks = leftInches * RobotMap::ticksPerInch;
+	_rightTicks = rightInches * RobotMap::ticksPerInch;
 	printf("drivePID constructed for leftTicks=%1.2f, rightInches=%1.2f.\n", _leftTicks, _rightTicks);
 }
 

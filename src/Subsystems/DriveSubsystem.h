@@ -46,6 +46,8 @@ public:
 	double GetRightEncoderPosition();
 	double LeftTalonGet();
 	double RightTalonGet();
+	double GetLeftSpeed(); // return value in inches/sec
+	double GetRightSpeed(); // return value in inches/sec
 	bool IsFinished();
 //	float distanceSensorThreshold = 0.7;
 };

@@ -46,6 +46,15 @@ public:
 	static DoubleSolenoid* totePusherSolenoid;
 
 	static bool testBot;
+
+	// Some values that are needed in different commands or subsystems but are different
+	// for testBot vs. competition bot
+	static double ticksPerRotation;
+	static double wheelDiameter;
+	static double inchesPerRotation;
+	static double ticksPerInch;
+	static double inchesPerTick;
+
 	static void init();
 };
 #endif
