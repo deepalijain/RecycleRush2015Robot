@@ -16,7 +16,8 @@
 
 DriveDistance::DriveDistance(double distL, double distR) : _distL(distL) , _distR(distR) {
 	Requires(Robot::driveSubsystem);
-	wheelDiam = !RobotMap::testBot ? 6.25 : 4.0;
+	driveSubsystem = Robot::driveSubsystem;
+	wheelDiam = !RobotMap::testBot ? 6.25 : 4.25;
 	distancePerRev = 3.14159*wheelDiam;
 	inchesPerTick = distancePerRev/(!RobotMap::testBot ? 7680 : 1000);
 	printf("DriveDistanceCommand constructed for left: %1.2f, right: %1.2f inches, inches per tick %1.6f.\n",
@@ -44,9 +45,11 @@ void DriveDistance::Initialize() {
 // Called repeatedly when this Command is scheduled to run
 void DriveDistance::Execute() {
 	// If we're farther away than five inches then speed up to max
-	distanceTravelledL = inchesPerTick * RobotMap::driveBackLeft->GetPosition();
-	distanceTravelledR = inchesPerTick * RobotMap::driveBackRight->GetPosition();
-	remainingDistance = std::max(_distL - distanceTravelledL, 0.0);
+	distanceTravelledL = inchesPerTick * driveSubsystem->GetLeftEncoderPosition();
+	distanceTravelledR = inchesPerTick * driveSubsystem->GetRightEncoderPosition();
+	// Left will be the opposite sign of right.
+	// When going forward, we expect left to be negative and right to be positive.
+	remainingDistance = std::max(_distL + distanceTravelledL, 0.0);
 	if (remainingDistance > 5.0)
 	{
 		rateLeft = std::min(rateLeft + rateStep, maxRate);
@@ -65,7 +68,7 @@ void DriveDistance::Execute() {
 	// For test bot use '-'
 	rateRight = rateLeft - distanceError * rateScale;
 
-	Robot::driveSubsystem->robotDrive->TankDrive(rateLeft, rateRight, true);
+	driveSubsystem->robotDrive->TankDrive(-rateLeft, -rateRight, true);
 
 
 	if (ticks++%2==0)
@@ -77,13 +80,13 @@ void DriveDistance::Execute() {
 
 // Make this return true when this Command no longer needs to run execute()
 bool DriveDistance::IsFinished() {
-	isCommandDone = remainingDistance < 1.0 || distanceTravelledL > _distL;
+	isCommandDone = remainingDistance < 1.0 || -distanceTravelledL > _distL;
 	return isCommandDone;
 }
 
 // Called once after isFinished returns true
 void DriveDistance::End() {
-	Robot::driveSubsystem->robotDrive->ArcadeDrive(0, 0, true);
+	driveSubsystem->robotDrive->ArcadeDrive(0, 0, true);
 	printf("distanceLeft = %f, distanceRight = %f\n",distanceTravelledL, distanceTravelledR);
 
 	// Set the voltage ramp rate for both drive motors

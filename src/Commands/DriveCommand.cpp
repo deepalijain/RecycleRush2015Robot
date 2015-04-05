@@ -34,6 +34,8 @@ void DriveCommand::Execute() {
 	// Note that the sense of Y is negative, That is, if one pushes the joystick forward, Y is negative.
 	// So a negative y value means we want to drive forward.
 	// The ArcadeDrive method seems to expect this.
+
+	// limit our max rates on the test bot just for safety in tight places.
 	if (RobotMap::testBot) {
 		if (y > 0.66) y = 0.65;
 		if (y < -0.65) y = -0.65;

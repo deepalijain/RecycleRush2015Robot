@@ -54,8 +54,9 @@ private:
 	double distancePerRev;
 	double inchesPerTick;
 	// If we're off by 1 inch, increase the voltage by 0.05
-	double rateScale = 0.03;
+	double rateScale = 0.04;
 	int ticks = 0;
+	DriveSubsystem *driveSubsystem;
 public:
 	DriveDistance(double distL, double distR);
 	virtual void Initialize();

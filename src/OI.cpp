@@ -36,7 +36,8 @@ OI::OI() {
 	//applyBreakCommand = new ApplyBreakCommand();
 	driveCommand = new DriveCommand();
 	drive100 = new DrivePID(100.0, 100.0, false);
-	driveDistanceCommand = new DriveDistance(15.0, 15.0);
+	drive10 = new DrivePID(10.0, 10.0, false);
+	driveDistanceCommand = new DriveDistance(10.0, 10.0);
 	toggleArmFlap = new ToggleFlapsCommand(0);
 	armsUp = new ToggleFlapsCommand(-1);
 	armsDown = new ToggleFlapsCommand(1);
@@ -78,6 +79,7 @@ OI::OI() {
 		Joystick2WhenPressed(toggleCameras, 10);		// middle right button?
 
 		Joystick2WhenPressed(drive100, 6);			    // upper left button on Logitech Attack 3
+		Joystick2WhenPressed(drive10, 7);
 		Joystick2WhenPressed(turnLeft, 8);
 		Joystick2WhenPressed(turnRight, 9);
 
