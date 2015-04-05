@@ -13,7 +13,7 @@
 #include "DriveDistanceCommand.h"
 #include "../Subsystems/Parameters.h"
 
-DriveDistanceCommand::DriveDistanceCommand(float distL, float distR) {
+DriveDistanceCommand::DriveDistanceCommand(double distL, double distR) {
 	// Use requires() here to declare subsystem dependencies
 	// eg. requires(chassis);
 	distanceL = distL;
@@ -51,7 +51,7 @@ void DriveDistanceCommand::Execute() {
 	else
 		// We're getting close so slow down
 	{
-		voltageLeft = std::max(voltageLeft - voltageStep, 0.0F);
+		voltageLeft = std::max(voltageLeft - voltageStep, 0.0);
 	}
 	// Now let's check to see how far each side has traveled
 	// and scale the right side accordingly
