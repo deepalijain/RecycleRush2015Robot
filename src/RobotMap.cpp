@@ -47,7 +47,7 @@ void RobotMap::init() {
 	testBot = !Ct->Status(1);
 
 	ticksPerRotation = (!testBot ? 7680 : 1000);
-	wheelDiameter = (!testBot ? 6.25 : 4.0);
+	wheelDiameter = (!testBot ? 6.25 : 4.3);
 	inchesPerRotation = wheelDiameter * 3.14159;
 	ticksPerInch = ticksPerRotation/inchesPerRotation;
 	inchesPerTick = 1.0/ticksPerInch;

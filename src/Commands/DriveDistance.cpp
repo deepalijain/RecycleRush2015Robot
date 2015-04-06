@@ -47,16 +47,18 @@ void DriveDistance::Execute() {
 	distanceTravelledR = RobotMap::inchesPerTick * driveSubsystem->GetRightEncoderPosition();
 	// Left will be the opposite sign of right.
 	// When going forward, we expect left to be negative and right to be positive.
-	remainingDistance = std::max(_distL + distanceTravelledL, 0.0);
+	remainingDistance = _distL >= 0 ? std::max(_distL + distanceTravelledL, 0.0) : std::min(_distL - distanceTravelledL, 0.0);
 
 	// Compute how far we would go if we started decelerating at the max rate
 	// It turns out timeToStop = velocity/acceleration and
 	// distanceToStop = currentSpeed * timeToStop / 2
 	timeToStop = rateLeft/rateStep * 0.02;
+	double speed = driveSubsystem->GetLeftSpeed();
 
-	maxDecelDistance = driveSubsystem->GetLeftSpeed() * timeToStop / 2.0;
+	maxDecelDistance = fabs(speed) * timeToStop / 2.0;
 
-	if (remainingDistance > maxDecelDistance)
+	// arbitrarily add 5.0 to our Decel Distance, based on testing
+	if (remainingDistance > (maxDecelDistance + 3.5))
 	{
 		rateLeft = std::min(rateLeft + rateStep, maxRate);
 	}
@@ -79,6 +81,7 @@ void DriveDistance::Execute() {
 
 	if (timeTicks++%2==0)
 	{
+		printf("speed=%1.2f (inches per second), timeToStop = %1.4f, maxDecelDistance = %1.4f\n", speed, timeToStop, maxDecelDistance);
 		printf("distanceError = %1.2f, distanceLeft = %1.2f, distanceRight = %1.2f, remainingDistance = %1.2f, rateLeft = %1.2f, rateRight = %1.2f\n",
 				distanceError, distanceTravelledL, distanceTravelledR, remainingDistance, rateLeft, rateRight);
 	}
