@@ -17,7 +17,6 @@
 DriveD2::DriveD2(double distL, double distR) : m_distL(distL) , m_distR(distR) {
 	Requires(Robot::driveSubsystem);
 	driveSubsystem = Robot::driveSubsystem;
-	m_distancePerRev = 3.14159*RobotMap::wheelDiameter;
 	m_direction = (m_distR > 0.0) ? 1.0 : -1.0;
 	if (m_distL != 0) m_ratio = m_distR / m_distL;
 	else m_ratio = 0.0;

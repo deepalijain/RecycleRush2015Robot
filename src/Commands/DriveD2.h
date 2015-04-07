@@ -31,7 +31,6 @@ private:
 	// Using the Talon VoltageRampRate interferes with this control loop
 	double m_rateStep = .02;
 	double m_initialRate = 0.15; 	// overcome intertia
-	double m_distancePerRev;
 	// If we're off by 1 inch, this is how much we increase the right side voltage
 	double m_rateScale = 0.04;
 	// timeToStop is how long it takes to get to 0 volts from current rate at rateStep per cycle

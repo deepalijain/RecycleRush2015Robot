@@ -17,7 +17,6 @@
 DriveDistance::DriveDistance(double distL, double distR) : _distL(distL) , _distR(distR) {
 	Requires(Robot::driveSubsystem);
 	driveSubsystem = Robot::driveSubsystem;
-	distancePerRev = 3.14159*RobotMap::wheelDiameter;
 	printf("DriveDistance constructed for left: %1.2f, right: %1.2f inches, inches per tick %1.6f.\n",
 			_distL, _distR, RobotMap::inchesPerTick);
 }

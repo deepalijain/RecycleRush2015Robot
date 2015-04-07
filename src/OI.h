@@ -49,6 +49,10 @@ public:
 	CommandGroup *autoCommand1Can1Tote;
 	Button *cgtestbutton;
 
+	// Commands to slide left or right
+	CommandGroup *slideLeft;
+	CommandGroup *slideRight;
+
 	OI();
  
 	Joystick *getJoystick1();
