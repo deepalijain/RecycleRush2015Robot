@@ -9,8 +9,7 @@
 // it from being updated in the future.
 
 
-#ifndef DRIVECOMMAND_H
-#define DRIVECOMMAND_H
+#pragma once
 
 
 
@@ -33,4 +32,4 @@ private:
 	double turnMax;
 };
 
-#endif
+

@@ -23,6 +23,8 @@
 #include "Commands/ZeroElevator.h"
 #include "Commands/SwitchCamera.h"
 #include "Commands/AutonomousCommand1Can1Tote.h"
+#include "Commands/DriveD2.h"
+#include "Commands/DriveD2.h"
 #include "Commands/DriveDistance.h"
 #include "Commands/ToggleOverlay.h"
 
@@ -32,13 +34,12 @@ OI::OI() {
 	joystick1 = new Joystick(0);
 	joystick2 = new Joystick(1);
 
-
 	//applyBreakCommand = new ApplyBreakCommand();
+	driveDistanceCommand = new DriveD2(10.0, 10.0); 	// new DriveDistance(10.0, 10.0);
 	driveCommand = new DriveCommand();
 	drive100 = new DrivePID(100.0, 100.0, false);
 	drive10 = new DrivePID(10.0, 10.0, false);
-	driveDistance25 = new DriveDistance(25.0, 25.0);
-	driveDistanceCommand = new DriveDistance(10.0, 10.0);
+	driveDistance25 = new DriveD2(25.0, 25.0);
 	toggleArmFlap = new ToggleFlapsCommand(0);
 	armsUp = new ToggleFlapsCommand(-1);
 	armsDown = new ToggleFlapsCommand(1);
