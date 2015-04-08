@@ -12,16 +12,17 @@
 #pragma once
 
 
-#include "../Robot.h"
+#include "WPILib.h"
+#include "../Subsystems/Delay.h"
 
 /**
  *
  *
  * @author ExampleAuthor
  */
-class Delay: public Command {
+class DelayCommand: public Command {
 public:
-	Delay(double delayTime);
+	DelayCommand(double delayTime);
 	virtual void Initialize();
 	virtual void Execute();
 	virtual bool IsFinished();

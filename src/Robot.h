@@ -11,8 +11,6 @@
 
 #ifndef _ROBOT_H
 #define _ROBOT_H
-#define inchesBetweenWheels 25.5
-#define ninetyDegreeTurn (inchesBetweenWheels*(3.14159/4))
 
 #include "WPILib.h"
 #include "Commands/Command.h"
@@ -32,6 +30,7 @@
 #include "Subsystems/CompressorSubsystem.h"
 #include "Commands/DrivePID.h"
 #include "Subsystems/Parameters.h"
+#include "Subsystems/Delay.h"
 
 class Robot : public IterativeRobot {
 private:
@@ -43,6 +42,7 @@ public:
 	static int Ticks;
 	static PowerDistributionPanel* pdp;
 	static Parameters *parameters;
+	static Delay *delaySubsystem;
 	static Command *driveCommand;
 	static Command *driveElevatorCommand;
 	static Command *holdElevatorCommand;

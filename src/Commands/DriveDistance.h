@@ -60,6 +60,7 @@ private:
 	double timeToStop = 0.0;
 
 	int timeTicks = 0;
+	double encoderStartL, encoderStartR;
 	DriveSubsystem *driveSubsystem;
 
 public:

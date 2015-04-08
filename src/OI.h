@@ -53,6 +53,9 @@ public:
 	CommandGroup *slideLeft;
 	CommandGroup *slideRight;
 
+	// Simple left and right
+	Command *leftOnly, *rightOnly;
+
 	OI();
  
 	Joystick *getJoystick1();

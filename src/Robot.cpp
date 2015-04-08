@@ -16,8 +16,8 @@
 #include "Commands/AutonomousCommand1Can1Tote.h"
 #include "Commands/AutonomousMoveToZone.h"
 #include "Commands/AutonomousEmpty.h"
+#include "Commands/DelayCommand.h"
 #include "Subsystems/Camera.h"
-#include "Commands/Delay.h"
 #include "Commands/DriveDistance.h"
 #include "Commands/ToggleFlapsCommand.h"
 
@@ -44,6 +44,7 @@ void Robot::RobotInit() {
 		RobotMap::init();
 		pdp = new PowerDistributionPanel();
 		printf("PDP Temperature: %f\n", pdp->GetTemperature());
+		delaySubsystem = new Delay();
 		driveSubsystem = new DriveSubsystem();
 		elevator = new Elevator();
 		compressorSubsystem = new CompressorSubsystem(7);			// CAN channel 7

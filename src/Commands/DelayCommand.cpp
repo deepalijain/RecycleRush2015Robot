@@ -9,14 +9,18 @@
 // it from being updated in the future.
 
 
-#include "Delay.h"
+#include "../Robot.h"
+#include "DelayCommand.h"
 
-Delay::Delay(double t) : _delayPeriod(t) {
+Delay *Robot::delaySubsystem;
 
+DelayCommand::DelayCommand(double t) : _delayPeriod(t) {
+	Requires(Robot::delaySubsystem);
 }
 
 // Called just before this Command runs the first time
-void Delay::Initialize() {
+void DelayCommand::Initialize() {
+
 	printf("Delay init'd for %1.2f seconds\n", _delayPeriod);
 	SetInterruptible(false);
 	//SetTimeout(_delayPeriod);
@@ -24,23 +28,23 @@ void Delay::Initialize() {
 }
 
 // Called repeatedly when this Command is scheduled to run
-void Delay::Execute() {
+void DelayCommand::Execute() {
 }
 
 // Make this return true when this Command no longer needs to run execute()
-bool Delay::IsFinished() {
+bool DelayCommand::IsFinished() {
 	return ((++_ticks/50.0 >= _delayPeriod));
 	//return IsTimedOut();
 }
 
 // Called once after isFinished returns true
-void Delay::End() {
+void DelayCommand::End() {
 	printf("Delay Done at %d\n", _ticks);
 	_ticks = 0;
 }
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
-void Delay::Interrupted() {
+void DelayCommand::Interrupted() {
 	printf("Delay INTERRUPTED at %d\n", _ticks);
 }

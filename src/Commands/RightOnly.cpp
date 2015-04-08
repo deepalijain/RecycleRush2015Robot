@@ -22,6 +22,7 @@ RightOnly::RightOnly(double inches) : m_inches(inches) {
 void RightOnly::Initialize() {
 	SetInterruptible(false);
 	m_startPosition = RobotMap::driveBackRight->GetPosition();
+	printf("Right Only initialized for %1.2f inches.\n", m_inches);
 	// Disable the voltage ramp rate
 	RobotMap::driveBackLeft->SetVoltageRampRate(0.0);
 	RobotMap::driveBackRight->SetVoltageRampRate(0.0);
@@ -30,14 +31,16 @@ void RightOnly::Initialize() {
 // Called repeatedly when this Command is scheduled to run
 void RightOnly::Execute() {
 	// For right side, positive is forward
-	double percentVbus = ((m_inches > 0) ? 0.2 : -0.2);
+	double percentVbus = ((m_inches > 0) ? 0.25 : -0.25);
 	m_driveSubsystem->robotDrive->TankDrive(0.0, percentVbus, false);
 }
 
 // Make this return true when this Command no longer needs to run execute()
 bool RightOnly::IsFinished() {
-	double ticksTravelled = RobotMap::driveBackRight->GetPosition() - m_startPosition;
-	return fabs(ticksTravelled)*RobotMap::inchesPerTick > m_inches;
+	double ticksTraveled = RobotMap::driveBackRight->GetPosition() - m_startPosition;
+	if (Robot::Ticks%2) printf("RightOnly: ticksTraveled = %1.0f, inches traveled = %1.2f, inches to travel = %1.2f, done = %d.\n",
+			ticksTraveled, fabs(ticksTraveled)*RobotMap::inchesPerTick , m_inches, fabs(ticksTraveled)*RobotMap::inchesPerTick > fabs(m_inches));
+	return fabs(ticksTraveled)*RobotMap::inchesPerTick > fabs(m_inches);
 }
 
 // Called once after isFinished returns true
@@ -47,10 +50,12 @@ void RightOnly::End() {
 	RobotMap::driveBackLeft->SetVoltageRampRate(Parameters::driveRampRate);
 	RobotMap::driveBackRight->SetVoltageRampRate(Parameters::driveRampRate);
 
-	((DriveCommand *)Robot::driveCommand)->Start();
+	// Can't do this and expect to be part of a command group
+	//((DriveCommand *)Robot::driveCommand)->Start();
 }
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
 void RightOnly::Interrupted() {
+	printf("RightOnly INTERRUPTED at %d\n", Robot::Ticks);
 }
