@@ -15,12 +15,13 @@ SlideLeft::SlideLeft(double inches) {
 	double w = RobotMap::robotWidth;
 	double a = acos((w-inches) / w);
 	double arc = a * w;
-	double d = w * sin(a);
+
 	AddSequential(new RightOnly(-arc));
 	AddSequential(new DelayCommand(0.2));
 	AddSequential(new LeftOnly(-arc));
 	AddSequential(new DelayCommand(0.2));
-	AddSequential(new DriveDistance(d, d));
+	//double d = w * sin(a);
+	//AddSequential(new DriveDistance(d, d));
 	AddSequential(new RestoreDrive());
 
 }
