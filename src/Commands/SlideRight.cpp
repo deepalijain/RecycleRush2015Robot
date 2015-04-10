@@ -7,6 +7,8 @@
 #include "DriveDistance.h"
 #include "../RobotMap.h"
 #include "DelayCommand.h"
+#include "RestoreDrive.h"
+
 
 SlideRight::SlideRight(double inches) {
 	printf("SlideLeft constructed\n");
@@ -20,5 +22,6 @@ SlideRight::SlideRight(double inches) {
 	AddSequential(new RightOnly(-arc));
 	AddSequential(new DelayCommand(0.2));
 	AddSequential(new DriveDistance(d, d));
+	AddSequential(new RestoreDrive());
 
 }

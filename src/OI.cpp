@@ -68,8 +68,8 @@ OI::OI() {
 	slideLeft = new SlideLeft(inchesToSlide);
 	slideRight = new SlideRight(inchesToSlide);
 
-	Joystick1WhenPressed(toteUp, 6);			// Right bumper
-	Joystick1WhenPressed(toteDown, 5);			// Left bumper
+	//Joystick1WhenPressed(toteUp, 6);			// Right bumper
+	//Joystick1WhenPressed(toteDown, 5);			// Left bumper
 	//Joystick1WhenPressed(canUp, 4);				// Y button
 	Joystick1WhenPressed(driveDistanceCommand, 4);
 	// Joystick1WhenPressed(canDown, XXX);			// B button (open, widen arms)
@@ -85,12 +85,21 @@ OI::OI() {
 	Joystick1WhenPressed(toggleOverlay, 10);
 	Joystick1WhenPressed(toggleCameras, 9);		// Left joystick press
 
+	Joystick1WhenPressed(slideLeft, 5);
+	Joystick1WhenPressed(slideRight, 6);
+
+
+
 
 	printf("Joystick2 button count: %d.\n", joystick2->GetButtonCount());
 	if (joystick2->GetButtonCount() > 0) {
 	// these next two commands are only for testing
 		Joystick2WhenPressed(slideRight, 11);			// upper right button on Logitech Attack 3
 		Joystick2WhenPressed(slideLeft, 10);		// middle right button?
+
+		Joystick2WhenPressed(toteUp, 1);			// trigger
+		Joystick2WhenPressed(toteDown, 2);			// behind trigger
+
 
 		Joystick2WhenPressed(driveDistance25, 5);
 		Joystick2WhenPressed(drive100, 6);			    // upper left button on Logitech Attack 3

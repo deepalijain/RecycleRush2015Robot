@@ -31,7 +31,7 @@ void RightOnly::Initialize() {
 // Called repeatedly when this Command is scheduled to run
 void RightOnly::Execute() {
 	// For right side, positive is forward
-	double percentVbus = ((m_inches > 0) ? 0.25 : -0.25);
+	double percentVbus = ((m_inches <= 0) ? 0.4 : -0.4);
 	m_driveSubsystem->robotDrive->TankDrive(0.0, percentVbus, false);
 }
 

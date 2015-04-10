@@ -31,7 +31,7 @@ void LeftOnly::Initialize() {
 // Called repeatedly when this Command is scheduled to run
 void LeftOnly::Execute() {
 	// For left side, positive is backward
-	double percentVbus = ((m_inches < 0) ? 0.25 : -0.25);
+	double percentVbus = ((m_inches < 0) ? 0.4 : -0.4);
 	m_driveSubsystem->robotDrive->TankDrive(percentVbus, 0.0, false);
 
 }

@@ -176,7 +176,8 @@ double Elevator::GetPosition() {
 
 double Elevator::GetEncPosition() {
 	if (RobotMap::testBot) return encoderPos;
-	return elevatorMotor1->GetEncPosition();
+	return elevatorMotor1->GetPosition();
+	//return elevatorMotor1->GetEncPosition();
 }
 
 bool Elevator::IsAtTop() {
