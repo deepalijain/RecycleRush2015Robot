@@ -49,7 +49,7 @@ void DriveDistance::Execute() {
 	distanceTravelledR = RobotMap::inchesPerTick * (driveSubsystem->GetRightEncoderPosition() - encoderStartR);
 	// Left will be the opposite sign of right.
 	// When going forward, we expect left to be negative and right to be positive.
-	remainingDistance = _distL >= 0 ? std::max(_distL + distanceTravelledL, 0.0) : std::min(_distL - distanceTravelledL, 0.0);
+	remainingDistance = _distL >= 0 ? std::max(_distL + distanceTravelledL, 0.0) : std::min(_distL + distanceTravelledL, 0.0);
 
 	// Compute how far we would go if we started decelerating at the max rate
 	// It turns out timeToStop = velocity/acceleration and

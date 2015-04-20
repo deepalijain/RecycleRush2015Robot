@@ -52,6 +52,7 @@ public:
 	CommandGroup *autoCommand1Can;
 	CommandGroup *autoCommandMoveToZone;
 	CommandGroup *autoCommand1Can1Tote;
+	CommandGroup *autoCommand1CanBackup;
 // moved to OI for testing	CommandGroup *autoCommand1Can1Tote;
 
 	static OI *oi;

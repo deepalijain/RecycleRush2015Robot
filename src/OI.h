@@ -27,6 +27,7 @@ public:
 	Joystick *joystick1;
 
 	Command *driveDistanceCommand;	// don't have time to debug this?
+	Command *zeroElevator;
 	Command *driveCommand;
 	Command *toggleArmFlap;
 	Command *armsUp;	// open, widen

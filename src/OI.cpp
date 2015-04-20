@@ -40,6 +40,7 @@ OI::OI() {
 
 	//applyBreakCommand = new ApplyBreakCommand();
 	driveDistanceCommand = new DriveDistance(10.0, 10.0); 	// new DriveDistance(10.0, 10.0);
+	zeroElevator= new ZeroElevator();
 	driveCommand = new DriveCommand();
 	drive100 = new DriveDistance(100.0, 100.0);
 	drive10 = new DrivePID(10.0, 10.0, false);
@@ -71,7 +72,7 @@ OI::OI() {
 	//Joystick1WhenPressed(toteUp, 6);			// Right bumper
 	//Joystick1WhenPressed(toteDown, 5);			// Left bumper
 	//Joystick1WhenPressed(canUp, 4);				// Y button
-	Joystick1WhenPressed(driveDistanceCommand, 4);
+	Joystick1WhenPressed(zeroElevator, 4);
 	// Joystick1WhenPressed(canDown, XXX);			// B button (open, widen arms)
 
 	Joystick1WhenPressed(armsUp, 1);			// A button
