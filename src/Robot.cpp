@@ -22,6 +22,8 @@
 #include "Commands/DriveDistance.h"
 #include "Commands/ToggleFlapsCommand.h"
 
+#include "networktables/NetworkTable.h"
+
 DriveSubsystem *Robot::driveSubsystem = 0;
 Elevator *Robot::elevator = 0;
 ArmFlaps *Robot::armFlaps = 0;
@@ -95,6 +97,8 @@ void Robot::RobotInit() {
 		Camera::EnumerateCameras();
 		Camera::EnableCameras();
 
+		monitorTable = NetworkTable::GetTable( "Monitoring" );
+
 		lw = LiveWindow::GetInstance();
 
 		// instantiate the command used for the autonomous period
@@ -117,12 +121,13 @@ void Robot::DisabledInit() {
 
 void Robot::DisabledPeriodic() {
 	Scheduler::GetInstance()->Run();
-	UpdateDashboardPeriodic();
+	
+	PeriodicUpdate();
 }
 
 void Robot::AutonomousInit() {
 	RobotMap::driveBackLeft->SetPosition(0.0);
-	UpdateDashboardPeriodic();
+	PeriodicUpdate();
 	parameters->UpdateDrivePIDParams();
 	parameters->UpdateElevatorPIDParams();
 	RobotMap::armFlapSolenoid->Set(DoubleSolenoid::kOff);
@@ -148,8 +153,10 @@ void Robot::AutonomousPeriodic() {
 		printf("autoCommandMoveToZone Run: %x\n", (unsigned int)Scheduler::GetInstance());
 	}
 	else if (autoPeriodicCount==120) printf("AutoPeriodic still alive %d!\n", autoPeriodicCount);
+	
 	Scheduler::GetInstance()->Run();
-	UpdateDashboardPeriodic();
+	
+	PeriodicUpdate();
 }
 
 void Robot::TeleopInit() {
@@ -167,7 +174,9 @@ void Robot::TeleopInit() {
 
 void Robot::TeleopPeriodic() {
 	Scheduler::GetInstance()->Run();
-	UpdateDashboardPeriodic();
+	
+	PeriodicUpdate();
+	
 	float up = Robot::oi->joystick1->GetRawAxis(3);
 	float down = Robot::oi->joystick1->GetRawAxis(2);
 	if (fabs(up) > 0.06 || fabs(down) > 0.06)
@@ -179,65 +188,94 @@ void Robot::TeleopPeriodic() {
 
 void Robot::TestPeriodic() {
 	lw->Run();
-	UpdateDashboardPeriodic();
+	
+	PeriodicUpdate();
 }
 
-void Robot::UpdateDashboardPeriodic() {
+void Robot::PeriodicUpdate() {
+	// Note: 1 tick is roughly 20 milliseconds.
+	Ticks++;
 	try {
+		// Update the Camera feed. We just feed the Camera class the clock,
+		// it decide on update frequency.
+		Camera::Feed(Ticks);
+
 		// Do this every 1/10th of a second, not more often for efficiency
-		if (Ticks++%5==0) {
-			Compressor* wC = compressorSubsystem->workingCompressor;
-			if (NULL!=wC) {
-				SmartDashboard::PutBoolean("CompEnabled", wC->Enabled());
-				SmartDashboard::PutNumber("CompCurrent", wC->GetCompressorCurrent());
-			}
-			try {
-				SmartDashboard::PutNumber("CAN Front Left Fault", RobotMap::driveFrontLeft->GetFaults());
-				SmartDashboard::PutNumber("Left Encoder Position", Robot::driveSubsystem->GetLeftEncoderPosition());
-				SmartDashboard::PutNumber("Right Encoder Position", Robot::driveSubsystem->GetRightEncoderPosition());
-				SmartDashboard::PutNumber("DrivePID Left  Error",RobotMap::driveBackLeft->GetClosedLoopError());
-				SmartDashboard::PutNumber("DrivePID Right Error",RobotMap::driveBackRight->GetClosedLoopError());
-
-				if (Robot::oi->driveDistanceCommand != NULL) {
-					SmartDashboard::PutNumber("DriveDistanceCmd distL",((DriveDistance *)Robot::oi->driveDistanceCommand)->distanceTravelledL);
-					SmartDashboard::PutNumber("DriveDistanceCmd distR",((DriveDistance *)Robot::oi->driveDistanceCommand)->distanceTravelledR);
-				}
-				// CANTalon 1, which is the Elevator lead Talon, isn't present on the kit bot
-				if (!RobotMap::testBot) {
-					SmartDashboard::PutNumber("Elevator PID Error", RobotMap::elevatorMotor1->GetClosedLoopError());
-					//SmartDashboard::PutNumber("Elevator height", elevator->GetPositionInInches());
-				}
-				SmartDashboard::PutNumber("Elevator Position", elevator->GetPosition());
-				SmartDashboard::PutNumber("Elevator Target Position", elevator->targetHeight);
-				int elevatorIndex = elevator->elevatorIndex;
-				SmartDashboard::PutBoolean("Elevator Index", elevatorIndex);
-				SmartDashboard::PutBoolean("0", elevatorIndex>=0);
-				SmartDashboard::PutBoolean("0.2", elevatorIndex>=1);
-				SmartDashboard::PutBoolean("1", elevatorIndex>=2);
-				SmartDashboard::PutBoolean("2", elevatorIndex>=3);
-				SmartDashboard::PutBoolean("3", elevatorIndex>=4);
-				SmartDashboard::PutBoolean("Too High!", elevatorIndex<5);
-				if (5==elevatorIndex && (Ticks < (rumbleTicks+20)) ) {
-					oi->joystick1->SetRumble(Joystick::kRightRumble, 0.2);
-					if (INT_MAX==rumbleTicks) rumbleTicks = Ticks;
-				}
-				else {rumbleTicks = INT_MAX;}
-			}
-			catch(int e) {
-				printf("SmartDashboard exception, post ShowPIDParams.\n");
-			}
-
-			//SmartDashboard::PutNumber("PDP Temperature", pdp->GetTemperature());
-			RobotMap::Ct->UpdateDashboard();
+		// PaulR: seems kind of fast. why not 1 second?
+		if ( Ticks % 5 == 0 )
+		{
+			UpdateSmartDashboard();
 		}
 
-		// Run camaera feeds whenever Dashboard is being updated, but on a
-		// more frequent clock. (We just feed the Camera class the clock,
-		// it decide on update frequency.)
-		Camera::Feed(Ticks);
+		// Do this every 5 seconds
+		if ( Ticks % 250 == 0 )
+		{
+			UpdateMonitoring();
+		}
+
+		// If elevator is HIGH, rumble for 20 ticks
+		if ( 5 == elevator->elevatorIndex && ( Ticks < (rumbleTicks+20) ) ) {
+			oi->joystick1->SetRumble(Joystick::kRightRumble, 0.2);
+			if (INT_MAX==rumbleTicks) rumbleTicks = Ticks;
+		}
+		else
+		{
+			rumbleTicks = INT_MAX;
+		}
+
 	}
 	catch (std::exception& e) {
 		printf("SmartDashboard Exception: %s\n",  e.what());
+	}
+}
+
+void Robot::UpdateSmartDashboard() {
+	try {
+		Compressor* wC = compressorSubsystem->workingCompressor;
+		if ( NULL != wC ) {
+			SmartDashboard::PutBoolean("CompEnabled", wC->Enabled());
+			SmartDashboard::PutNumber("CompCurrent", wC->GetCompressorCurrent());
+		}
+
+		SmartDashboard::PutNumber("CAN Front Left Fault", RobotMap::driveFrontLeft->GetFaults());
+		SmartDashboard::PutNumber("Left Encoder Position", Robot::driveSubsystem->GetLeftEncoderPosition());
+		SmartDashboard::PutNumber("Right Encoder Position", Robot::driveSubsystem->GetRightEncoderPosition());
+		SmartDashboard::PutNumber("DrivePID Left  Error",RobotMap::driveBackLeft->GetClosedLoopError());
+		SmartDashboard::PutNumber("DrivePID Right Error",RobotMap::driveBackRight->GetClosedLoopError());
+
+		if (Robot::oi->driveDistanceCommand != NULL) {
+			SmartDashboard::PutNumber("DriveDistanceCmd distL",((DriveDistance *)Robot::oi->driveDistanceCommand)->distanceTravelledL);
+			SmartDashboard::PutNumber("DriveDistanceCmd distR",((DriveDistance *)Robot::oi->driveDistanceCommand)->distanceTravelledR);
+		}
+		// CANTalon 1, which is the Elevator lead Talon, isn't present on the kit bot
+		if (!RobotMap::testBot) {
+			SmartDashboard::PutNumber("Elevator PID Error", RobotMap::elevatorMotor1->GetClosedLoopError());
+			//SmartDashboard::PutNumber("Elevator height", elevator->GetPositionInInches());
+		}
+		SmartDashboard::PutNumber("Elevator Position", elevator->GetPosition());
+		SmartDashboard::PutNumber("Elevator Target Position", elevator->targetHeight);
+		int elevatorIndex = elevator->elevatorIndex;
+		SmartDashboard::PutBoolean("Elevator Index", elevatorIndex);
+		SmartDashboard::PutBoolean("0", elevatorIndex>=0);
+		SmartDashboard::PutBoolean("0.2", elevatorIndex>=1);
+		SmartDashboard::PutBoolean("1", elevatorIndex>=2);
+		SmartDashboard::PutBoolean("2", elevatorIndex>=3);
+		SmartDashboard::PutBoolean("3", elevatorIndex>=4);
+		SmartDashboard::PutBoolean("Too High!", elevatorIndex<5);
+	}
+	catch(int e) {
+		printf("SmartDashboard exception, post ShowPIDParams.\n");
+	}
+
+	RobotMap::Ct->UpdateDashboard();
+}
+
+void Robot::UpdateMonitoring() {
+	try {
+		monitorTable->PutNumber( "PDPTemp", pdp->GetTemperature() );
+	}
+	catch(int e) {
+		printf( "UpdateMonitoring exception\n" );
 	}
 }
 
