@@ -15,6 +15,7 @@
 #define ninetyDegreeTurn (inchesBetweenWheels*(3.14159/4))
 
 #include "WPILib.h"
+#include "AHRS.h"
 #include "Commands/Command.h"
 #include "Commands/CommandGroup.h"
 #include "RobotMap.h"
