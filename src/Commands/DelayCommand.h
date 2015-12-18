@@ -9,26 +9,29 @@
 // it from being updated in the future.
 
 
-#ifndef BREAKCOMMAND_H
-#define BREAKCOMMAND_H
+#pragma once
 
 
-#include "Commands/Subsystem.h"
-#include "../Robot.h"
+#include "WPILib.h"
+#include "../Subsystems/Delay.h"
 
 /**
  *
  *
  * @author ExampleAuthor
  */
-class BreakCommand: public Command {
+class DelayCommand: public Command {
 public:
-	BreakCommand();
+	DelayCommand(double delayTime);
 	virtual void Initialize();
 	virtual void Execute();
 	virtual bool IsFinished();
 	virtual void End();
 	virtual void Interrupted();
+
+private:
+	int _ticks;
+	double _delayPeriod;		// number of seconds to delay
 };
 
-#endif
+

@@ -14,10 +14,11 @@
 #include "Commands/AutonomousCommand1Tote.h"
 #include "Commands/AutonomousCommand1Can.h"
 #include "Commands/AutonomousCommand1Can1Tote.h"
+#include "Commands/AutonomousCommand1CanBackup.h"
 #include "Commands/AutonomousMoveToZone.h"
 #include "Commands/AutonomousEmpty.h"
+#include "Commands/DelayCommand.h"
 #include "Subsystems/Camera.h"
-#include "Commands/Delay.h"
 #include "Commands/DriveDistance.h"
 #include "Commands/ToggleFlapsCommand.h"
 
@@ -44,6 +45,7 @@ void Robot::RobotInit() {
 		RobotMap::init();
 		pdp = new PowerDistributionPanel();
 		printf("PDP Temperature: %f\n", pdp->GetTemperature());
+		delaySubsystem = new Delay();
 		driveSubsystem = new DriveSubsystem();
 		elevator = new Elevator();
 		compressorSubsystem = new CompressorSubsystem(7);			// CAN channel 7
@@ -70,6 +72,7 @@ void Robot::RobotInit() {
 		autoCommandDoNothing = new AutonomousEmpty();
 		autoCommand1Can1Tote = new AutonomousCommand1Can1Tote();
 		autoCommand1Can = new AutonomousCommand1Can();
+		autoCommand1CanBackup = new AutonomousCommand1CanBackup();
 
 		// Add a button to the SmartDashboard to allow the command to be tested
 		SmartDashboard::PutData("autoCommandDoNothing", autoCommandDoNothing);
@@ -85,6 +88,7 @@ void Robot::RobotInit() {
 		chooser->AddObject("2. Tote to Auto Zone", autoCommand1Tote);
 		chooser->AddObject("3. Can to Auto Zone", autoCommand1Can);
 		chooser->AddObject("4. Can+Tote to Auto Zone", autoCommand1Can1Tote);
+		chooser->AddObject("5. Pickup Can Backup", autoCommand1CanBackup);
 
 		SmartDashboard::PutData("Autonomous Modes",chooser);
 
@@ -131,7 +135,8 @@ void Robot::AutonomousInit() {
 					autonomousCommand==autoCommand1Tote ? "autoCommand1Tote" :
 							autonomousCommand==autoCommand1Can ? "autoCommand1Can" :
 									autonomousCommand==autoCommand1Can1Tote ? "autoCommand1Can1Tote" :
-											autonomousCommand==autoCommandDoNothing ? "autoCommandDoNothing" : "NO AUTO CHOSEN");
+											autonomousCommand==autoCommand1CanBackup ? "autoCommand1CanBackup" :
+													autonomousCommand==autoCommandDoNothing ? "autoCommandDoNothing" : "NO AUTO CHOSEN");
 	if (autonomousCommand != NULL)
 		autonomousCommand->Start();
 

@@ -46,9 +46,12 @@ void DriveCommand::Execute() {
 	if (x < -turnMax) x = -turnMax;
 
 	Robot::driveSubsystem->DriveJoysticks(y, x);
-	SmartDashboard::PutNumber("Drive Command Y", y);
-	SmartDashboard::PutNumber("Drive Command X", x);
 
+
+	if (Robot::Ticks%5==0) {
+		SmartDashboard::PutNumber("Drive Command Y", y);
+		SmartDashboard::PutNumber("Drive Command X", x);
+	}
 	
 }
 

@@ -27,6 +27,7 @@ public:
 	Joystick *joystick1;
 
 	Command *driveDistanceCommand;	// don't have time to debug this?
+	Command *zeroElevator;
 	Command *driveCommand;
 	Command *toggleArmFlap;
 	Command *armsUp;	// open, widen
@@ -52,6 +53,9 @@ public:
 	// Commands to slide left or right
 	CommandGroup *slideLeft;
 	CommandGroup *slideRight;
+
+	// Simple left and right
+	Command *leftOnly, *rightOnly;
 
 	OI();
  

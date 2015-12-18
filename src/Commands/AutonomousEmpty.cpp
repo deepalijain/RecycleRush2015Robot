@@ -1,9 +1,10 @@
 // RobotBuilder Version: 1.5
 
 #include "AutonomousEmpty.h"
-#include "Delay.h"
+
+#include "DelayCommand.h"
 
 AutonomousEmpty::AutonomousEmpty() {
 	printf("AutonomousEmpty constructed\n");
-	AddSequential(new Delay(0.5));
+	AddSequential(new DelayCommand(0.5));
 }

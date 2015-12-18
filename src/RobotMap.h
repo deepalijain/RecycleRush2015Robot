@@ -55,6 +55,7 @@ public:
 	static double ticksPerInch;
 	static double inchesPerTick;
 	static double robotWidth;
+	static double ninetyDegreeTurn;
 
 	static void init();
 };
